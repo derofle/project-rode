@@ -74,3 +74,11 @@ html {
 .park-menu-item {
   list-style-type: none;
 }
+
+.info-card {
+  height: 25vh;
+}
+
+.card-image-tag {
+  height: 15vh;
+}

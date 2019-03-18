@@ -4,10 +4,6 @@ import { Link } from 'react-router-dom';
 
 class ParkShows extends React.Component {
 
-    componentDidMount() {
-        this.context.searchData("shows", "park_id", this.context.parks.id);
-    }
-
     render() {
         return (
             <AppConsumer>

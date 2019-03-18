@@ -10,8 +10,8 @@ const NavBar = (props) => {
             <div style={{ width: "90%", margin: "auto"}}>
                 <Link to="/" className="brand-logo left">Project Rode</Link>
                 <ul className="right">
-                    <li><NavLink to="/">Parken</NavLink></li>
-                    <li><NavLink to="/">Attracties</NavLink></li>
+                    <li><NavLink to="/parken">Parken</NavLink></li>
+                    <li><NavLink to="/attracties">Attracties</NavLink></li>
                     <li><NavLink to="/">Over ons</NavLink></li>
                 </ul>
             </div>

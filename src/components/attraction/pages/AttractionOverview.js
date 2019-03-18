@@ -2,12 +2,13 @@ import React from 'react'
 import { AppConsumer } from '../../context/appContext';
 import { Slider, Slide } from 'react-materialize';
 
-const ParkOverview = () => {
+const AttractionOverview = () => {
   return (
        <AppConsumer>
                         { (context) => {
-                            const slides = context.park.slides;
-                            const slideArray = slides && slides.map(slide => {
+                            if (!context.loading) {
+                                const slides = context.attraction.slides;
+                                const slideArray = slides && slides.map(slide => {
                                 return (
                                     <Slide
                                             key={slides.indexOf(slide)}
@@ -15,9 +16,10 @@ const ParkOverview = () => {
                                             >
                                         </Slide>
                                 )
-                            })
-                            return (
-                                <div>
+                                })
+                                return (
+                                
+                                    <div>
                                 {slideArray ? (
                          
                                     <div>
@@ -28,8 +30,8 @@ const ParkOverview = () => {
                                 </div>
                                         <div className="card">
                                         <div className="card-content white">
-                                        {context.park.description}
-                                        <blockquote><a href={context.park.descriptionSource} target="_blank" rel="noopener noreferrer">{context.park.descriptionSource}</a></blockquote>
+                                        {context.attraction.description}
+                                        <blockquote><a href={context.attraction.descriptionSource} target="_blank" rel="noopener noreferrer">{context.attraction.descriptionSource}</a></blockquote>
                                         </div>
                                         </div>
                                         </div>
@@ -37,7 +39,13 @@ const ParkOverview = () => {
                           
                             ) : null }
                             </div>
-                            )
+                                
+                               
+                
+                 
+                    )
+                            }
+                            
                             
                             
      
@@ -47,4 +55,4 @@ const ParkOverview = () => {
   )
 }
 
-export default ParkOverview
+export default AttractionOverview

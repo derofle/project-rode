@@ -8,47 +8,10 @@ import ParkShows from './components/ParkShows';
 
 
 
-class ParkDashboard extends React.Component {
-    state = {
-        currentWindow: null
-    }
+class Park extends React.Component {
 
     componentDidMount() {
-        this.context.searchSingleData("parks", "id", this.props.match.params.Id);
-
-        if (this.props.match.path === "/park/:Id" && this.props.match.isExact === true) {
-            this.setState({
-                currentWindow: <ParkOverview />
-            })
-        } else if (this.props.location.pathname.includes("/attracties") === true) {
-            this.setState({
-                currentWindow: <ParkAttractions />
-            })
-        }   else if (this.props.location.pathname.includes("/shows") === true) {
-            this.setState({
-                currentWindow: <ParkShows />
-            })
-        }
-    }
-
-    handleWindow = (button) => {
-        if (button === "overview") {
-            this.setState({
-                currentWindow: <ParkOverview />
-            })
-        }
-
-        if (button === "attractions") {
-            this.setState({
-                currentWindow: <ParkAttractions />
-            })
-        }
-
-        if (button === "shows") {
-            this.setState({
-                currentWindow: <ParkShows />
-            })
-        }
+        this.context.watchPark(this.props.match.params.Id);
     }
 
 
@@ -56,7 +19,7 @@ class ParkDashboard extends React.Component {
         return (
             <AppConsumer>
                         { (context) => {
-                            const park = context.parks;
+                            const park = context.park;
                             if (park) {
                                 return (
                                     <div className="container">
@@ -71,18 +34,18 @@ class ParkDashboard extends React.Component {
                                         <div className="card">
                                         <div className="card-content grey lighten-2 georgia bold-text grey-text text-darken-2">
                                                 
-                                            <p className="park-name">{park.name} </p>
+                                            <p className="park-name" style={{ fontSize: "1.5em" }}>{park.name} </p>
                                             <p>{park.location}</p>
                                                 
                                         </div>
                                         <div className="collection no-border no-margin bold-text">
-                                        <Link to={"/park/" + this.props.match.params.Id} className="collection-item" onClick={() => this.handleWindow("overview")}>Overzicht</Link>
+                                        <Link to={"/park/" + this.props.match.params.Id} className="collection-item" >Overzicht</Link>
                                             <Link to={"/park/" + this.props.match.params.Id} className="collection-item">Informatie</Link>
-                                            <Link to={"/park/" + this.props.match.params.Id + "/attracties"} className="collection-item" onClick={() => this.handleWindow("attractions")}>Attracties</Link>
-                                            <Link to={"/park/" + this.props.match.params.Id + "/shows"} className="collection-item" onClick={() => this.handleWindow("shows")}>Shows</Link>
-                                            <Link to={"/park/" + this.props.match.params.Id} className="collection-item">Horeca</Link>
-                                            <Link to={"/park/" + this.props.match.params.Id} className="collection-item">Nieuws</Link>
-                                            <Link to={"/park/" + this.props.match.params.Id} className="collection-item">Beoordelingen</Link>
+                                            <Link to={"/park/" + this.props.match.params.Id + "/attracties"} className="collection-item">Attracties</Link>
+                                            <Link to={"/park/" + this.props.match.params.Id + "/shows"} className="collection-item">Shows</Link>
+                                            <Link to={"/park/" + this.props.match.params.Id + "/horeca"} className="collection-item">Horeca</Link>
+                                            <Link to={"/park/" + this.props.match.params.Id + "/nieuws"} className="collection-item">Nieuws</Link>
+                                            <Link to={"/park/" + this.props.match.params.Id + "/beoordelingen"} className="collection-item">Beoordelingen</Link>
                                         </div>
                                         
                                         
@@ -90,7 +53,9 @@ class ParkDashboard extends React.Component {
                                         </div>
                                     
                                     <div className="col s12 m9">
-                                            {this.state.currentWindow}
+                                            {this.props.match.path === "/park/:Id" && this.props.match.isExact === true ? <ParkOverview /> : null}
+                                            {this.props.location.pathname.includes("/attracties") === true ? <ParkAttractions /> : null}
+                                            {this.props.location.pathname.includes("/shows") === true ? <ParkShows /> : null}
                                         </div>
                                     </div>
                                 </div>  
@@ -106,5 +71,5 @@ class ParkDashboard extends React.Component {
   
 }
 
-ParkDashboard.contextType = AppConsumer;
-export default ParkDashboard
+Park.contextType = AppConsumer;
+export default Park

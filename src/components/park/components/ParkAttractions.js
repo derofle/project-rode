@@ -2,18 +2,18 @@ import React from 'react'
 import { AppConsumer } from '../../context/appContext';
 import { Link } from 'react-router-dom';
 
+import Card from "../../modules/Card";
+
 class ParkAttractions extends React.Component {
 
-    componentDidMount() {
-        this.context.searchData("attractions", "park_id", this.context.parks.id);
-    }
 
     render() {
         return (
             <AppConsumer>
             { (context) => {
             
-                const attractions = context.attractions;
+                if (context.attractions) {
+                    const attractions = context.attractions;
                 const coasters = attractions.filter(attraction => attraction.category === "roller-coaster");
                 const thrills = attractions.filter(attraction => attraction.category === "thrill-ride");
                 const waterrides = attractions.filter(attraction => attraction.category === "water-ride");
@@ -34,20 +34,7 @@ class ParkAttractions extends React.Component {
                                 <div className="row">
                             {coasters && coasters.map(attraction => {
                     return (
-                        <div className="col s12 m3" key={attraction.id}>
-                        <div className="card hoverable" key={attraction.id}>
-                        <div className="card-image">
-                        <img src={attraction.img} alt={attraction.Id}></img>
-                        <Link to={'/attractions/' + attraction.id} className="btn-floating halfway-fab waves-effect waves-light white ">
-                        <i className="material-icons" style={{ color: "black" }}>add</i>
-                        </Link>
-                            </div>
-                            <div className="card-content">
-                                <span className="georgia">{attraction.name}</span>
-                            </div>
-                        </div>
-                        
-                        </div>
+                        <Card item={attraction} type="attractie" key={attraction.id}/>
                     )
                 })}
                             </div>
@@ -69,20 +56,7 @@ class ParkAttractions extends React.Component {
                                 <div className="row">
                             {thrills && thrills.map(attraction => {
                     return (
-                        <div className="col s12 m3" key={attraction.id}>
-                        <div className="card hoverable" key={attraction.id}>
-                        <div className="card-image">
-                        <img src={attraction.img} alt={attraction.Id}></img>
-                        <Link to={'/attractions/' + attraction.id} className="btn-floating halfway-fab waves-effect waves-light white ">
-                        <i className="material-icons" style={{ color: "black" }}>add</i>
-                        </Link>
-                            </div>
-                            <div className="card-content">
-                                <span className="georgia">{attraction.name}</span>
-                            </div>
-                        </div>
-                        
-                        </div>
+                        <Card item={attraction} type="attractie" key={attraction.id}/>
                     )
                 })}
                             </div>
@@ -104,20 +78,7 @@ class ParkAttractions extends React.Component {
                                 <div className="row">
                             {waterrides && waterrides.map(attraction => {
                     return (
-                        <div className="col s12 m3" key={attraction.id}>
-                        <div className="card hoverable" key={attraction.id}>
-                        <div className="card-image">
-                        <img src={attraction.img} alt={attraction.Id}></img>
-                        <Link to={'/attractions/' + attraction.id} className="btn-floating halfway-fab waves-effect waves-light white ">
-                        <i className="material-icons" style={{ color: "black" }}>add</i>
-                        </Link>
-                            </div>
-                            <div className="card-content">
-                                <span className="georgia">{attraction.name}</span>
-                            </div>
-                        </div>
-                        
-                        </div>
+                        <Card item={attraction} type="attractie" key={attraction.id}/>
                     )
                 })}
                             </div>
@@ -137,20 +98,7 @@ class ParkAttractions extends React.Component {
                                 <div className="row">
                             {gentle && gentle.map(attraction => {
                     return (
-                        <div className="col s12 m3" key={attraction.id}>
-                        <div className="card hoverable" key={attraction.id}>
-                        <div className="card-image">
-                        <img src={attraction.img} alt={attraction.Id}></img>
-                        <Link to={'/attractions/' + attraction.id} className="btn-floating halfway-fab waves-effect waves-light white ">
-                        <i className="material-icons" style={{ color: "black" }}>add</i>
-                        </Link>
-                            </div>
-                            <div className="card-content">
-                                <span className="georgia">{attraction.name}</span>
-                            </div>
-                        </div>
-                        
-                        </div>
+                        <Card item={attraction} type="attractie" key={attraction.id}/>
                     )
                 })}
                             </div>
@@ -160,7 +108,9 @@ class ParkAttractions extends React.Component {
                     ): null}
                 </div>
                 ) 
-            }}
+            }
+                }
+                }
             </AppConsumer>
           )
     }
