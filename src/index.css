@@ -6,9 +6,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
   min-height: 100vh;
+  flex-direction: column;
 }
 
+main {
+  flex: 1 0 auto;
+}
+   
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -16,12 +22,12 @@ code {
 
 html {
   min-height: 100vh;
-  background: url(/img/prism.png) repeat;
+  background: url(/img/bg.png) repeat;
 }
 
 #root {
   min-height: 100vh;
-  
+  flex: 1 0 auto;
 }
 
 .no-border {
@@ -51,4 +57,20 @@ html {
   width: auto !important;
   left: 60% !important;
   top: 65% !important;
+}
+
+.georgia {
+  font-family: "Georgia", Georgia, serif;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.park-name {
+  font-size: 2em;
+}
+
+.park-menu-item {
+  list-style-type: none;
 }

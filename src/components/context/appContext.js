@@ -3,7 +3,9 @@ import { db } from '../config/fbConfig';
 
 const initialState = {
     InformationData: [],
-    attractions: []
+    attractions: [],
+    parks: null,
+    shows: [],
 }
 
 export const AppContext = React.createContext();
@@ -18,11 +20,32 @@ export class AppProvider extends React.Component {
         })
     }
 
-    searchData = (collection, param, criteria) => {
+    searchSingleData = (collection, param, criteria) => {
+        console.log(collection, param, criteria);
         db.collection(collection).where(param, '==', criteria).onSnapshot(snapshot => {
             let changes = snapshot.docChanges();
             changes.forEach(change => {
                 console.log(change);
+                    const newDoc = {...change.doc.data()};
+                    console.log(newDoc);
+                    this.setState({
+                        [collection]: newDoc
+                    })
+            })      
+        })
+    }
+
+    searchData = (collection, param, criteria) => {
+        console.log(collection, param, criteria);
+        this.setState({
+            [collection]: []
+        })
+        db.collection(collection).where(param, '==', criteria).onSnapshot(snapshot => {
+            let changes = snapshot.docChanges();
+            console.log(changes);
+            
+            changes.forEach(change => {
+                console.log(change.doc.data());
                 if (change.type === "added") {
                     const newDoc = {...change.doc.data()};
                     this.setState({
@@ -119,13 +142,16 @@ export class AppProvider extends React.Component {
     render() {
         return (
             <AppContext.Provider value={{
-                attraction: this.state.attractions,
+                attractions: this.state.attractions,
                 information: this.state.InformationData,
+                parks: this.state.parks,
+                shows: this.state.shows,
                 setData: this.setData,
                 deleteData: this.deleteData,
                 watchData: this.watchData,
                 searchData: this.searchData,
-                watchCollectionData: this.watchCollectionData
+                watchCollectionData: this.watchCollectionData,
+                searchSingleData: this.searchSingleData
             }}>
                 {this.props.children}
             </AppContext.Provider>

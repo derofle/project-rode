@@ -1,14 +1,22 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 
 const NavBar = (props) => {
     return (
-        <nav className="nav-wrapper grey darken-3">
-            <div className="container">
+        <div>
+        <div className="row"></div>
+        <nav className="nav-wrapper grey lighten-1 container">
+            <div style={{ width: "90%", margin: "auto"}}>
                 <Link to="/" className="brand-logo left">Project Rode</Link>
+                <ul className="right">
+                    <li><NavLink to="/">Parken</NavLink></li>
+                    <li><NavLink to="/">Attracties</NavLink></li>
+                    <li><NavLink to="/">Over ons</NavLink></li>
+                </ul>
             </div>
         </nav>
+        </div>
     )
 }
 

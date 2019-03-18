@@ -20,7 +20,7 @@ class TestScreen extends React.Component {
                 { (context) => (
                     <div>
                         
-                        {context.information.length > 0 ? <p>{context.information[0].name} </p> : null}
+                       
                         
                     </div>
                 )}
