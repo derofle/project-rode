@@ -1,120 +1,70 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 import { AppConsumer } from '../../context/appContext';
 
-import Card from "../../modules/Card";
+import AttractionTable from '../../attraction/AttractionTable';
 
 class ParkAttractions extends React.Component {
-
-
-    render() {
-        return (
-            <AppConsumer>
-            { (context) => {
-            
-                if (context.attractions) {
-                    const attractions = context.attractions;
-                const coasters = attractions.filter(attraction => attraction.category === "roller-coaster");
-                const thrills = attractions.filter(attraction => attraction.category === "thrill-ride");
-                const waterrides = attractions.filter(attraction => attraction.category === "water-ride");
-                const gentle = attractions.filter(attraction => attraction.category === "gentle-ride");
-                return (
-                    <div>
-                    {coasters.length > 0 ? (
-                        <div className="row">
-                            <div className="col s12">
-                            <div className="card">
-                                
-                                
-                            <div className="card-content">
-                            
-                                <span className="card-title georgia bold-text grey-text text-darken-2">Achtbanen</span>
-                                
-                               
-                                <div className="row">
-                            {coasters && coasters.map(attraction => {
-                    return (
-                        <Card item={attraction} type="attractie" key={attraction.id}/>
-                    )
-                })}
-                            </div>
-                            </div>
-                        </div>
-                        </div></div>
-                    ): null}
-                    {thrills.length > 0 ? (
-                        <div className="row">
-                            <div className="col s12">
-                            <div className="card">
-                                
-                                
-                            <div className="card-content">
-                            
-                                <span className="card-title georgia bold-text grey-text text-darken-2">Spannende Attracties</span>
-                                
-                               
-                                <div className="row">
-                            {thrills && thrills.map(attraction => {
-                    return (
-                        <Card item={attraction} type="attractie" key={attraction.id}/>
-                    )
-                })}
-                            </div>
-                            </div>
-                        </div>
-                        </div></div>
-                    ): null}
-                    {waterrides.length > 0 ? (
-                        <div className="row">
-                            <div className="col s12">
-                            <div className="card">
-                                
-                                
-                            <div className="card-content">
-                            
-                                <span className="card-title georgia bold-text grey-text text-darken-2">Water Attracties</span>
-                                
-                               
-                                <div className="row">
-                            {waterrides && waterrides.map(attraction => {
-                    return (
-                        <Card item={attraction} type="attractie" key={attraction.id}/>
-                    )
-                })}
-                            </div>
-                            </div>
-                        </div>
-                        </div></div>
-                    ): null}
-                    {gentle.length > 0 ? (
-                        <div className="row">
-                            <div className="col s12">
-                            <div className="card">
-                                
-                                
-                                
-                                <div className="card-content">
-                                <span className="card-title georgia bold-text grey-text text-darken-2">Familie Attracties</span>
-                                <div className="row">
-                            {gentle && gentle.map(attraction => {
-                    return (
-                        <Card item={attraction} type="attractie" key={attraction.id}/>
-                    )
-                })}
-                            </div>
-                            </div>
-                        </div>
-                        </div></div>
-                    ): null}
-                </div>
-                ) 
-            }
-                }
-                }
-            </AppConsumer>
-          )
-    }
-  
+  render() {
+    const { attractions, history } = this.props;
+    const coasters = attractions.filter(
+      attraction => attraction.category === 'roller-coaster'
+    );
+    const thrills = attractions.filter(
+      attraction => attraction.category === 'thrill-ride'
+    );
+    const waterrides = attractions.filter(
+      attraction => attraction.category === 'water-ride'
+    );
+    const gentle = attractions.filter(
+      attraction => attraction.category === 'gentle-ride'
+    );
+    return (
+      <div>
+        {coasters.length > 0 ? (
+          <div className="card" style={{ borderRadius: '6px' }}>
+            <AttractionTable
+              attractions={coasters}
+              history={history}
+              name="ACHTBANEN"
+            />
+          </div>
+        ) : null}
+        {thrills.length > 0 ? (
+          <div className="card" style={{ borderRadius: '6px' }}>
+            <AttractionTable
+              attractions={thrills}
+              history={history}
+              name="SPANNENDE ATTRACTIES"
+            />
+          </div>
+        ) : null}
+        {waterrides.length > 0 ? (
+          <div className="card" style={{ borderRadius: '6px' }}>
+            <AttractionTable
+              attractions={waterrides}
+              history={history}
+              name="WATER ATTRACTIES"
+            />
+          </div>
+        ) : null}
+        {gentle.length > 0 ? (
+          <div className="card" style={{ borderRadius: '6px' }}>
+            <AttractionTable
+              attractions={gentle}
+              history={history}
+              name="FAMILIE ATTRACTIES"
+            />
+          </div>
+        ) : null}
+      </div>
+    );
+  }
 }
 
+ParkAttractions.propTypes = {
+  attractions: PropTypes.array,
+};
+
 ParkAttractions.contextType = AppConsumer;
-export default ParkAttractions
+export default ParkAttractions;

@@ -1,79 +1,99 @@
-import React from 'react'
+import React from 'react';
 import { AppConsumer } from './context/appContext';
-import Card from "./modules/Card";
+import AttractionTable from './attraction/AttractionTable';
 
 class ParkList extends React.Component {
+  state = {
+    search: '',
+    filteredArray: [],
+  };
 
-    state = {
-        search: ""
-    }
+  componentDidMount() {
+    const { parks } = this.context;
+    this.setState({
+      filteredArray: parks,
+    });
+  }
 
-    componentDidMount() {
-        this.context.loadData();
-        this.context.watchAllParks();
-    }
+  filterParks = (param, input) => {
+    const { parks } = this.context;
+    const filter = input.toUpperCase();
+    const filtered = parks.filter(item => {
+      if (item[param].toUpperCase().includes(filter)) {
+        return item;
+      }
+      return null;
+    });
+    this.setState({
+      filteredArray: filtered,
+    });
+  };
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.id]: e.target.value
-        })
-    }
+  handleChange = e => {
+    this.setState({
+      [e.target.id]: e.target.value,
+    });
+  };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.context.filterData("parks", "parks", "name", this.state.search);
-    }
+  handleSubmit = e => {
+    const { search } = this.state;
+    e.preventDefault();
+    this.filterParks('name', search);
+  };
 
-    render () {
-        return (
-            <AppConsumer>
-                        { (context) => {              
-                            if (!context.loading) {
-                                const { parks } = context;
-                                return (
-                                    <div className="container">
-                                        <div className="row"></div>
-                                            <div className="row">
-                                                <div className="col s12 m3">
-                                                    <div className="card">
-                                                        <div className="card-content grey lighten-2 georgia bold-text grey-text text-darken-2"> 
-                                                            <p className="park-name" style={{ fontSize: "1.5em" }}>Zoek Parken </p>
-                                                        </div>
-                                                    
-                                                    <div className="card-content">
-                                                            <div className="row">
-                                                            <form onSubmit={this.handleSubmit}>
-                                                            <div className="input-field col">
-                                                            <input id="search" type="text" className="validate" onChange={this.handleChange}/>
-                                                            <label htmlFor="search">Zoek park...</label>
-                                                            <button className="waves-effect waves-light btn"><i className="material-icons left">search</i>Zoeken</button>
-                                                            </div>
+  render() {
+    const { filteredArray } = this.state;
+    const { history } = this.props;
+    return (
+      <div className="container">
+        <div className="row" />
+        <div className="row">
+          <div className="col s12 m3">
+            <div className="card">
+              <div className="card-content grey lighten-2 georgia bold-text grey-text text-darken-2">
+                <p className="park-name" style={{ fontSize: '1.5em' }}>
+                  Zoek Parken{' '}
+                </p>
+              </div>
 
-                                                            
-                                                            </form>
-
-                                                          
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col s12 m9">
-                                                {parks && parks.map(park => {
-                                                        return (
-                                                            <Card item={park} type="park" key={park.id}/>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>
-                                    </div>  
-                                )
-                            }
-                            return null;
-                        }}
-            </AppConsumer>
-          )
-    } 
+              <div className="card-content">
+                <div className="row">
+                  <form onSubmit={this.handleSubmit}>
+                    <div className="input-field col">
+                      <input
+                        id="search"
+                        type="text"
+                        className="validate"
+                        onChange={this.handleChange}
+                      />
+                      <label htmlFor="search">Zoek park...</label>
+                      <button
+                        type="button"
+                        className="waves-effect waves-light btn"
+                      >
+                        <i className="material-icons left">search</i>
+                        Zoeken
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col s12 m9">
+            <AttractionTable
+              attractions={filteredArray}
+              history={history}
+              name="NAAM"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 ParkList.contextType = AppConsumer;
-export default ParkList
+export default props => (
+  <AppConsumer>{() => <ParkList {...props} />}</AppConsumer>
+);

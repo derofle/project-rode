@@ -123,3 +123,7 @@ html {
 .indicator-item {
   box-shadow: 0 0 10px black;
 }
+
+.table-item:hover {
+  background-color: #f8f8f8 !important;
+}

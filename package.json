@@ -33,7 +33,6 @@
   "main": "index.js",
   "devDependencies": {
     "babel-eslint": "^9.0.0",
-    "eslint": "^5.15.3",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-config-wesbos": "0.0.19",
