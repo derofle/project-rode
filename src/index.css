@@ -12,7 +12,13 @@ body {
 }
 
 main {
-  flex: 1 0 auto;
+  flex: 1;
+}
+
+.root-app {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
    
 code {
@@ -27,7 +33,6 @@ html {
 
 #root {
   min-height: 100vh;
-  flex: 1 0 auto;
 }
 
 .no-border {
@@ -81,4 +86,40 @@ html {
 
 .card-image-tag {
   height: 15vh;
+}
+
+.slides li img {
+  border-radius: 6px 6px 0px 0px;
+}
+
+.slides li {
+  border-radius: 6px 6px 0px 0px;
+}
+
+.slides {
+  border-radius: 6px 6px 0px 0px;
+}
+
+.slider .indicators {
+  bottom: 5% !important;
+  z-index: 10;
+}
+
+.slider {
+  height: auto !important;
+}
+.slider .indicators .indicator-item {
+  height: 12px !important;
+  width: 12px !important;
+  background-color:#d1d0d0 !important;
+}
+
+.slider .indicators .indicator-item.active {
+  height: 18px !important;
+  width: 18px !important;
+  background-color:white !important;
+}
+
+.indicator-item {
+  box-shadow: 0 0 10px black;
 }

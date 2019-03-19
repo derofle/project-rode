@@ -40,7 +40,7 @@ class Park extends React.Component {
                                         </div>
                                         <div className="collection no-border no-margin bold-text">
                                         <Link to={"/park/" + this.props.match.params.Id} className="collection-item" >Overzicht</Link>
-                                            <Link to={"/park/" + this.props.match.params.Id} className="collection-item">Informatie</Link>
+                                            <Link to={"/park/" + this.props.match.params.Id + "/informatie"} className="collection-item">Informatie</Link>
                                             <Link to={"/park/" + this.props.match.params.Id + "/attracties"} className="collection-item">Attracties</Link>
                                             <Link to={"/park/" + this.props.match.params.Id + "/shows"} className="collection-item">Shows</Link>
                                             <Link to={"/park/" + this.props.match.params.Id + "/horeca"} className="collection-item">Horeca</Link>

@@ -1,0 +1,6 @@
+{
+	"extends": [ "wesbos" ],
+	"rules": {
+		"react/display-name": 0
+	}
+}

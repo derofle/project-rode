@@ -23,13 +23,11 @@ const AttractionOverview = () => {
                                 {slideArray ? (
                          
                                     <div>
-                                <div className="card">
-                                    <Slider indicators={false}>
+                                    <div className="card" style={{borderRadius: "6px 6px 6px 6px"}}>
+                                    <Slider indicators={true}>
                                     {slideArray}
                                 </Slider>
-                                </div>
-                                        <div className="card">
-                                        <div className="card-content white">
+                                        <div className="card-content white" style={{borderRadius: "0px 0px 6px 6px"}} >
                                         {context.attraction.description}
                                         <blockquote><a href={context.attraction.descriptionSource} target="_blank" rel="noopener noreferrer">{context.attraction.descriptionSource}</a></blockquote>
                                         </div>

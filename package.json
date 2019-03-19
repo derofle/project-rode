@@ -5,7 +5,8 @@
   "dependencies": {
     "firebase": "^5.8.6",
     "jquery": "^3.3.1",
-    "materialize-css": "^1.0.0",
+    "materialize-css": "^1.0.0-rc.2",
+    "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-materialize": "^2.6.0",
@@ -16,7 +17,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -26,5 +29,32 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "main": "index.js",
+  "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-config-wesbos": "0.0.19",
+    "eslint-plugin-html": "^5.0.3",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^1.5.1",
+    "prettier": "^1.16.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolfoldenkotte/project-rode.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rolfoldenkotte/project-rode/issues"
+  },
+  "homepage": "https://github.com/rolfoldenkotte/project-rode#readme",
+  "description": ""
 }

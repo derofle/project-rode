@@ -8,7 +8,7 @@ const Card = (props) => {
                                                             <div className="card hoverable info-card" key={item.id}>
                                                             <div className="card-image">
                                                             <img src={item.img} alt={item.Id} className="card-image-tag"></img>
-                                                            <Link to={'/'+ type + '/' + item.id} className="btn-floating halfway-fab waves-effect waves-light white ">
+                                                            <Link to={'/'+ type + '/' + item.uid} className="btn-floating halfway-fab waves-effect waves-light white ">
                                                             <i className="material-icons" style={{ color: "black" }}>add</i>
                                                             </Link>
                                                                 </div>

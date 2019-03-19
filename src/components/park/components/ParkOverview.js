@@ -2,7 +2,9 @@ import React from 'react'
 import { AppConsumer } from '../../context/appContext';
 import { Slider, Slide } from 'react-materialize';
 
+
 const ParkOverview = () => {
+
   return (
        <AppConsumer>
                         { (context) => {

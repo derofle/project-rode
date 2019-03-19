@@ -1,6 +1,5 @@
 import React from 'react'
 import { AppConsumer } from './context/appContext';
-import { Link } from 'react-router-dom';
 import Card from "./modules/Card";
 
 class ParkList extends React.Component {
@@ -61,7 +60,7 @@ class ParkList extends React.Component {
                                                 <div className="col s12 m9">
                                                 {parks && parks.map(park => {
                                                         return (
-                                                            <Card item={park} type="attractie" key={park.id}/>
+                                                            <Card item={park} type="park" key={park.id}/>
                                                         )
                                                     })}
                                                 </div>

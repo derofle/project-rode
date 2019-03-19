@@ -1,6 +1,5 @@
 import React from 'react'
 import { AppConsumer } from '../../context/appContext';
-import { Link } from 'react-router-dom';
 
 import Card from "../../modules/Card";
 
