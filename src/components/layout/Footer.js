@@ -9,7 +9,6 @@ const FooterRender = props => {
   if (currentUser && currentUser.uid) {
     user = users.find(obj => obj.uid === currentUser.uid);
   }
-  console.log(user);
 
   return (
     <footer

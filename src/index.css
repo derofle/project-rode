@@ -127,3 +127,18 @@ html {
 .table-item:hover {
   background-color: #f8f8f8 !important;
 }
+
+.trackdiv {
+  width: 100vw;
+  height: 25px;
+  background: url("/img/track.png");
+  background-size: 50px 25px;
+  background-repeat: repeat-x;
+}
+
+.cardiv {
+  width: 50px;
+  height: 25px;
+  background-color: red;
+  position: relative;
+}

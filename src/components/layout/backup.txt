@@ -1,0 +1,22 @@
+state = {
+    color: 'red',
+  };
+
+  getStyle = () => {
+    const ride = keyframes`
+    from {left: 0px;}
+    to {left: 300px;}
+`;
+    const animation = props =>
+      css`
+        ${ride} 5s forwards;
+      `;
+    return css`
+      animation: ${animation};
+      background-color: white;
+    `;
+  };
+
+  render() {
+    return <div className="cardiv" id="car" style={this.getStyle()} />;
+  }
