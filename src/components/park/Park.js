@@ -15,7 +15,7 @@ class Park extends React.Component {
   };
 
   render() {
-    const { attractions, parks, manufacturers } = this.context;
+    const { attractions, parks } = this.context;
     const { match, location, history } = this.props;
 
     const park = parks.find(obj => obj.uid === match.params.Id);

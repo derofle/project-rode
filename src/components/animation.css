@@ -1,0 +1,44 @@
+
+.test-div {
+    width: 100px;
+    height: 50px;
+    background-color: red;
+    font-weight: bold;
+    position: relative;
+
+}
+
+.right-anim {
+    -webkit-animation: right 5s forwards; /* Safari 4.0 - 8.0 */
+    animation: right 5s forwards;
+}
+
+.left-anim {
+    -webkit-animation: left 5s forwards; /* Safari 4.0 - 8.0 */
+    animation: left 5s forwards;
+
+}
+
+.test-div {animation-timing-function: ease-in-out;}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes right {
+    from {left: 0px;}
+    to {left: 300px;}
+  }
+  
+  /* Standard syntax */
+  @keyframes right {
+    from {left: 0px;}
+    to {left: 300px;}
+  }
+
+  @-webkit-keyframes left {
+    from {left: 300px;}
+    to {left: 0px;}
+  }
+  
+  /* Standard syntax */
+  @keyframes left {
+    from {left: 300px;}
+    to {left: 0px;}
+  }
