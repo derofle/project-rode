@@ -11,28 +11,26 @@ const AttractionOverview = props => {
     ));
   return (
     <div>
-      {slideArray ? (
-        <div>
-          <div className="card" style={{ borderRadius: '6px 6px 6px 6px' }}>
-            <Slider>{slideArray}</Slider>
-            <div
-              className="card-content white"
-              style={{ borderRadius: '0px 0px 6px 6px' }}
-            >
-              {attraction.description}
-              <blockquote>
-                <a
-                  href={attraction.descriptionSource}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {attraction.descriptionSource}
-                </a>
-              </blockquote>
-            </div>
+      <div>
+        <div className="card" style={{ borderRadius: '6px 6px 6px 6px' }}>
+          {slideArray ? <Slider>{slideArray}</Slider> : null}
+          <div
+            className="card-content white"
+            style={{ borderRadius: '0px 0px 6px 6px' }}
+          >
+            {attraction.description}
+            <blockquote>
+              <a
+                href={attraction.description_source}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {attraction.description_source}
+              </a>
+            </blockquote>
           </div>
         </div>
-      ) : null}
+      </div>
     </div>
   );
 };

@@ -1,34 +1,21 @@
-import React from 'react'
-import { AppConsumer } from './context/appContext';
-
+import React from 'react';
+import { Consumer } from '../context/AppProvider';
 
 class Home extends React.Component {
+  seeContext = () => {
+    const { users, currentUser } = this.context;
+    const user = users.find(obj => obj.uid === currentUser.uid);
+    console.log(user);
+  };
 
-    seeContext = () => {
-        console.log(this.context);
+  render() {
+    if (!this.context.loading) {
+      return <div />;
     }
-
-
-    render() {
-        if (!this.context.loading) {
-            return (
-                <div>
-                   <button onClick={this.seeContext}>Klik</button> 
-                </div>
-      )
-        } else {
-            return (
-                <div></div>
-            )
-        }
-        
-    }
-  
+    return <div />;
+  }
 }
 
-Home.contextType = AppConsumer;
+Home.contextType = Consumer;
 
-export default props => (<AppConsumer>{(context) => {
-    return <Home {...props} context={context} />
-}}
-</AppConsumer>) 
+export default props => <Consumer>{context => <Home {...props} />}</Consumer>;

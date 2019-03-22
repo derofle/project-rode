@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { MediaBox } from 'react-materialize';
-import { AppConsumer } from '../context/appContext';
+import { Consumer } from '../../context/AppProvider';
 
 import ParkOverview from './components/ParkOverview';
 import ParkAttractions from './components/ParkAttractions';
@@ -15,7 +15,7 @@ class Park extends React.Component {
   };
 
   render() {
-    const { attractions, parks, manufacturers } = this.context;
+    const { attractions, parks } = this.context;
     const { match, location, history } = this.props;
 
     const park = parks.find(obj => obj.uid === match.params.Id);
@@ -132,6 +132,16 @@ class Park extends React.Component {
                   Horeca
                 </Link>
                 <Link
+                  to={`/park/${match.params.Id}/faciliteiten`}
+                  className="collection-item"
+                  style={{
+                    borderBottom: '2px solid #f3f5f8',
+                    padding: '12px 16px 12px 16px',
+                  }}
+                >
+                  Faciliteiten
+                </Link>
+                <Link
                   to={`/park/${match.params.Id}/nieuws`}
                   className="collection-item"
                   style={{
@@ -182,5 +192,5 @@ class Park extends React.Component {
   }
 }
 
-Park.contextType = AppConsumer;
-export default props => <AppConsumer>{() => <Park {...props} />}</AppConsumer>;
+Park.contextType = Consumer;
+export default props => <Consumer>{() => <Park {...props} />}</Consumer>;
