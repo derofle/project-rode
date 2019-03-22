@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppConsumer } from './context/appContext';
-import AttractionTable from './attraction/AttractionTable';
+import { Consumer } from '../../context/AppProvider';
+import ParkTable from './ParkTable';
 
 class ParkList extends React.Component {
   state = {
@@ -81,11 +81,7 @@ class ParkList extends React.Component {
             </div>
           </div>
           <div className="col s12 m9">
-            <AttractionTable
-              attractions={filteredArray}
-              history={history}
-              name="NAAM"
-            />
+            <ParkTable parks={filteredArray} history={history} name="NAAM" />
           </div>
         </div>
       </div>
@@ -93,7 +89,5 @@ class ParkList extends React.Component {
   }
 }
 
-ParkList.contextType = AppConsumer;
-export default props => (
-  <AppConsumer>{() => <ParkList {...props} />}</AppConsumer>
-);
+ParkList.contextType = Consumer;
+export default props => <Consumer>{() => <ParkList {...props} />}</Consumer>;

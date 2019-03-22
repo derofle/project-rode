@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AppConsumer } from '../../context/appContext';
+import { Consumer } from '../../../context/AppProvider';
 
 import AttractionTable from '../../attraction/AttractionTable';
 
@@ -66,5 +66,5 @@ ParkAttractions.propTypes = {
   attractions: PropTypes.array,
 };
 
-ParkAttractions.contextType = AppConsumer;
+ParkAttractions.contextType = Consumer;
 export default ParkAttractions;

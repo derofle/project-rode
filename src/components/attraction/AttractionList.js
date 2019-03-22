@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppConsumer } from './context/appContext';
-import AttractionTable from './attraction/AttractionTable';
+import { Consumer } from '../../context/AppProvider';
+import AttractionTable from './AttractionTable';
 
 class AttractionList extends React.Component {
   state = {
@@ -93,7 +93,7 @@ class AttractionList extends React.Component {
   }
 }
 
-AttractionList.contextType = AppConsumer;
+AttractionList.contextType = Consumer;
 export default props => (
-  <AppConsumer>{() => <AttractionList {...props} />}</AppConsumer>
+  <Consumer>{() => <AttractionList {...props} />}</Consumer>
 );

@@ -1,27 +1,37 @@
-import React from 'react';
+import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
-import { db } from '../config/fbConfig';
+import { firebase } from '../firebase';
+import { db } from '../firebase/firebase';
 
-export const AppContext = React.createContext();
-export const AppConsumer = AppContext.Consumer;
+export const { Provider, Consumer } = createContext();
 
-export class AppProvider extends React.Component {
+export class AppProvider extends Component {
   state = {
     loading: true,
-    collections: ['parks', 'attractions', 'shows', 'manufacturers'],
+    collections: ['parks', 'attractions', 'shows', 'manufacturers', 'users'],
     collectionsProcessed: 0,
     parks: [],
     attractions: [],
     shows: [],
     manufacturers: [],
+    users: [],
+    currentUser: null,
   };
 
-  propTypes = {
+  static propTypes = {
     children: PropTypes.object.isRequired,
   };
 
   componentDidMount() {
+    firebase.auth.onAuthStateChanged(
+      user =>
+        user &&
+        this.setState({
+          currentUser: user,
+        })
+    );
     const prevState = this.state;
+
     prevState.collections.forEach(collection => {
       this.loadData(collection);
     });
@@ -71,6 +81,22 @@ export class AppProvider extends React.Component {
     });
   };
 
+  addData = (object, collection) => {
+    db.collection(collection).add({
+      ...object,
+      AddedAt: new Date(),
+    });
+  };
+
+  updateData = (object, collection) => {
+    delete object.uid;
+    db.collection(collection)
+      .doc(object.uid)
+      .update({
+        ...object,
+      });
+  };
+
   /*
   filterData = (originalData, toFilterState, param, input) => {
     console.log(originalData, toFilterState, param, input);
@@ -108,20 +134,36 @@ export class AppProvider extends React.Component {
   };
 */
   render() {
-    const { loading, parks, attractions, shows, manufacturers } = this.state;
+    const {
+      loading,
+      parks,
+      attractions,
+      shows,
+      manufacturers,
+      users,
+      currentUser,
+    } = this.state;
     const { children } = this.props;
     return (
-      <AppContext.Provider
+      <Provider
         value={{
           loading,
           parks,
           attractions,
           shows,
           manufacturers,
+          users,
+          currentUser,
+          addData: this.addData,
+          updateData: this.updateData,
+          destroySession: () =>
+            this.setState({
+              currentUser: null,
+            }),
         }}
       >
         {children}
-      </AppContext.Provider>
+      </Provider>
     );
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class AttractionTable extends React.Component {
+class ParkTable extends React.Component {
   // eslint-disable-next-line class-methods-use-this
   renderSwitch(param) {
     switch (param) {
@@ -19,7 +19,7 @@ class AttractionTable extends React.Component {
   }
 
   render() {
-    const { attractions, name, history } = this.props;
+    const { parks, name, history } = this.props;
     return (
       <table className="z-depth-1 highlight" style={{ borderRadius: '6px' }}>
         <thead
@@ -36,28 +36,28 @@ class AttractionTable extends React.Component {
           >
             <th style={{ width: '8vw', borderRadius: '6px 0 0 0' }} />
             <th>{name}</th>
-            <th style={{ borderRadius: '0 6px 0 0' }}>CATEGORIE</th>
+            <th style={{ borderRadius: '0 6px 0 0' }}>LOCATIE</th>
           </tr>
         </thead>
         <tbody>
-          {attractions
+          {parks
             .sort((a, b) => a.name.localeCompare(b.name))
-            .map(attraction => (
+            .map(park => (
               <tr
                 style={{
                   backgroundColor: 'white',
                   borderBottom: '2px solid #edf1f3',
                 }}
                 className="table-item"
-                key={attraction.uid}
+                key={park.uid}
                 onClick={() => {
-                  history.push(`/attractie/${attraction.uid}`);
+                  history.push(`/park/${park.uid}`);
                 }}
               >
                 <td style={{ padding: '10px' }}>
                   <img
-                    src={attraction.img}
-                    alt={attraction.id}
+                    src={park.img}
+                    alt={park.id}
                     style={{
                       display: 'block',
                       width: '6vw',
@@ -75,7 +75,7 @@ class AttractionTable extends React.Component {
                         margin: 0,
                       }}
                     >
-                      {attraction.name}
+                      {park.name}
                     </p>
                     <p
                       style={{
@@ -84,12 +84,12 @@ class AttractionTable extends React.Component {
                         paddingTop: '4px',
                       }}
                     >
-                      {attraction.type}
+                      {park.type}
                     </p>
                   </div>
                 </td>
                 <td>
-                  <p>{this.renderSwitch(attraction.category)}</p>
+                  <p>{park.location}</p>
                 </td>
               </tr>
             ))}
@@ -109,10 +109,10 @@ class AttractionTable extends React.Component {
   }
 }
 
-AttractionTable.propTypes = {
+ParkTable.propTypes = {
   attractions: PropTypes.array,
   name: PropTypes.string,
   history: PropTypes.object,
 };
 
-export default AttractionTable;
+export default ParkTable;

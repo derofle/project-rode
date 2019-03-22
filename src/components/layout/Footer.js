@@ -1,26 +1,51 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Consumer } from '../../context/AppProvider';
 
-const Footer = () => (
-  <footer
-    className="page-footer grey container"
-    style={{
-      boxShadow:
-        '0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2)',
-      borderRadius: '6px 6px 0px 0px',
-    }}
-  >
-    <div style={{ width: '90%', margin: 'auto' }}>
-      <div className="row">
-        <div className="col l6 s12">
-          <h5 className="white-text">Project Rode</h5>
+const FooterRender = props => {
+  const { context } = props;
+  const { currentUser, users } = context;
+  let user;
+  if (currentUser && currentUser.uid) {
+    user = users.find(obj => obj.uid === currentUser.uid);
+  }
+  console.log(user);
+
+  return (
+    <footer
+      className="page-footer z-depth-1"
+      style={{
+        borderRadius: '6px 6px 0px 0px',
+        backgroundColor: '#f2f2f2',
+      }}
+    >
+      <div style={{ width: '90%', margin: 'auto' }} />
+      <div
+        className="footer-copyright z-depth-1"
+        style={{ backgroundColor: '#596a79' }}
+      >
+        <div className="container">
+          <div style={{ width: '90%', margin: 'auto' }}>
+            <p>
+              © 2019 Evilife -
+              {user && user.uid ? (
+                <Link to="/admin" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                  {' '}
+                  Admin Paneel
+                </Link>
+              ) : null}
+            </p>
+          </div>
         </div>
-        <div className="col l4 offset-l2 s12" />
       </div>
-    </div>
-    <div className="footer-copyright">
-      <div style={{ width: '90%', margin: 'auto' }}>© 2019 Evilife</div>
-    </div>
-  </footer>
+    </footer>
+  );
+};
+
+const Footer = props => (
+  <Consumer>
+    {context => <FooterRender {...props} context={context} />}
+  </Consumer>
 );
 
 export default Footer;
