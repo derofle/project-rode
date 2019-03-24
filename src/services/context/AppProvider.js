@@ -1,17 +1,26 @@
 import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
-import { firebase } from '../firebase';
-import { db } from '../firebase/firebase';
+import { firebase, database } from '../firebase';
 
 export const { Provider, Consumer } = createContext();
 
 export class AppProvider extends Component {
   state = {
     loading: true,
-    collections: ['parks', 'attractions', 'shows', 'manufacturers', 'users'],
+    collections: [
+      'parks',
+      'attractions',
+      'attractionCategories',
+      'attractionTypes',
+      'shows',
+      'manufacturers',
+      'users',
+    ],
     collectionsProcessed: 0,
     parks: [],
     attractions: [],
+    attractionCategories: [],
+    attractionTypes: [],
     shows: [],
     manufacturers: [],
     users: [],
@@ -22,7 +31,7 @@ export class AppProvider extends Component {
     children: PropTypes.object.isRequired,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     firebase.auth.onAuthStateChanged(
       user =>
         user &&
@@ -30,15 +39,19 @@ export class AppProvider extends Component {
           currentUser: user,
         })
     );
+    console.log(await database.getCollectionData('attractions'));
+    /*
     const prevState = this.state;
 
     prevState.collections.forEach(collection => {
       this.loadData(collection);
     });
+    */
   }
 
+  /*
   loadData = collection => {
-    db.collection(collection).onSnapshot(snapshot => {
+    database.collection(collection).onSnapshot(snapshot => {
       const changes = snapshot.docChanges();
       let itemsProcessed = 0;
       changes.forEach(change => {
@@ -82,7 +95,7 @@ export class AppProvider extends Component {
   };
 
   addData = (object, collection) => {
-    db.collection(collection).add({
+    database.collection(collection).add({
       ...object,
       AddedAt: new Date(),
     });
@@ -90,54 +103,22 @@ export class AppProvider extends Component {
 
   updateData = (object, collection) => {
     delete object.uid;
-    db.collection(collection)
+    database
+      .collection(collection)
       .doc(object.uid)
       .update({
         ...object,
       });
   };
 
-  /*
-  filterData = (originalData, toFilterState, param, input) => {
-    console.log(originalData, toFilterState, param, input);
-
-    const filter = input.toUpperCase();
-    const backupState = `${toFilterState}Backup`;
-    console.log(filter);
-
-    if (!this.state[backupState]) {
-      const backupArray = `${toFilterState}Original`;
-      const filtered = this.state[originalData].filter(item => {
-        if (item[param].toUpperCase().includes(filter)) {
-          return item;
-        }
-        return null;
-      });
-      this.setState({
-        [backupArray]: this.state[originalData],
-        [toFilterState]: filtered,
-        [backupState]: true,
-      });
-    }
-    if (this.state[backupState]) {
-      const backupArray = `${toFilterState}Original`;
-      const filtered = this.state[backupArray].filter(item => {
-        if (item[param].toUpperCase().includes(filter)) {
-          return item;
-        }
-        return null;
-      });
-      this.setState({
-        [toFilterState]: filtered,
-      });
-    }
-  };
-*/
+ */
   render() {
     const {
       loading,
       parks,
       attractions,
+      attractionCategories,
+      attractionTypes,
       shows,
       manufacturers,
       users,
@@ -149,7 +130,11 @@ export class AppProvider extends Component {
         value={{
           loading,
           parks,
-          attractions,
+          attractionsInfo: {
+            attractions,
+            attractionCategories,
+            attractionTypes,
+          },
           shows,
           manufacturers,
           users,

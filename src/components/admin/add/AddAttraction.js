@@ -1,24 +1,28 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
+import Select from 'react-select';
 import { Consumer } from '../../../context/AppProvider';
 
 class AddAttraction extends React.Component {
   state = {
     id: '',
     name: '',
-    type: '',
-    park_id: '',
-    category: '',
+    parkId: '',
+    categoryId: '',
+    manufacturerId: '',
+    typeId: '',
     img: '',
     description: '',
+    selectedOption: null,
   };
+
+  componentDidMount() {}
 
   handleSubmit = e => {
     e.preventDefault();
     const { addData } = this.context;
     const { name } = this.state;
-    const { history } = this.props;
     const objId = name.toLowerCase().replace(/ /g, '-');
     this.setState(
       {
@@ -29,11 +33,12 @@ class AddAttraction extends React.Component {
         this.setState({
           id: '',
           name: '',
-          type: '',
-          park_id: '',
-          category: '',
+          typeId: '',
+          parkId: '',
+          categoryId: '',
           img: '',
           description: '',
+          manufacturerId: '',
         });
       }
     );
@@ -45,151 +50,261 @@ class AddAttraction extends React.Component {
     });
   };
 
+  handleSelectChange = (input, state) => {
+    this.setState({
+      [state]: input,
+    });
+  };
+
+  handleRadio = e => {
+    this.setState({
+      status: e.target.value,
+    });
+  };
+
   render() {
-    const { parks } = this.context;
+    const { parks, attractionsInfo, manufacturers } = this.context;
+    const { attractionCategories, attractionTypes } = attractionsInfo;
     const {
       name,
-      park_id: parkId,
-      type,
-      category,
+      parkId,
+      categoryId,
+      typeId,
       img,
       description,
+      manufacturerId,
+      selectedOption,
+      coasterMaterial,
+      status,
     } = this.state;
+    const parkSelection = parks
+      .map(park => ({
+        value: park.id,
+        label: park.name,
+      }))
+      .sort((a, b) => (a.label > b.label ? 1 : -1));
+
+    const categorySelection = attractionCategories
+      .map(category => ({
+        value: category.id,
+        label: category.name,
+      }))
+      .sort((a, b) => (a.label > b.label ? 1 : -1));
+
+    const typeSelection = attractionTypes
+      .filter(
+        el => categoryId && categoryId.some(f => f.value === el.categoryId)
+      )
+      .map(el => ({
+        value: el.id,
+        label: el.name,
+      }))
+      .sort((a, b) => (a.label > b.label ? 1 : -1));
+    const statusSelection = [
+      { value: 'operating', label: 'Geopend' },
+      { value: 'constructing', label: 'In opbouw' },
+      { value: 'defunct', label: 'Afgebroken' },
+      { value: 'in-storage', label: 'In opslag' },
+      { value: 'moved', label: 'Verhuisd' },
+    ];
+
+    const materialSelection = [
+      { value: 'wood', label: 'Hout' },
+      { value: 'steel', label: 'Staal' },
+      { value: 'hybrid', label: 'Hybride' },
+    ];
+
+    const manufacturersSelection = manufacturers
+      .map(manu => ({
+        value: manu.id,
+        label: manu.name,
+      }))
+      .sort((a, b) => (a.label > b.label ? 1 : -1));
     return (
       <div className="container">
-        <div className="row" />
-        <div className="card" style={{ borderRadius: '6px' }}>
-          <div
-            className="card-content"
-            style={{ borderBottom: '2px solid #f3f5f8' }}
-          >
-            <span
-              className="card-title"
-              style={{ fontWeight: 'bold', color: '#62676a' }}
+        <div className="container">
+          <div className="row" />
+          <div className="card" style={{ borderRadius: '6px' }}>
+            <div
+              className="card-content"
+              style={{ borderBottom: '2px solid #f3f5f8' }}
             >
-              Voeg attractie toe
-            </span>
-          </div>
-          <div className="card-content">
-            <form onSubmit={this.handleSubmit}>
+              <p
+                className="center bold-text grey-text text-darken-2"
+                style={{ fontSize: '1.5em' }}
+              >
+                Voeg Attractie toe aan database
+              </p>
+            </div>
+            <div
+              className="card-action"
+              style={{ borderBottom: '2px solid #f3f5f8' }}
+            >
               <div className="row">
-                <div className="col s12 m4">Attractie</div>
+                <div className="col s12 m4">
+                  <p className="bold-text grey-text text-darken-2">Algemeen</p>
+                  <p>(verplicht)</p>
+                </div>
                 <div className="col s12 m8">
-                  <div className="row">
-                    <div className="row">
-                      <div className="input-field col s12 m6">
-                        <input
-                          id="name"
-                          type="text"
-                          className="validate"
-                          onChange={this.handleChange}
-                          required
-                          value={name}
-                        />
-                        <label htmlFor="name">Naam Attractie</label>
-                      </div>
-                      <div className="input-field col s12 m6">
-                        <select
-                          className="browser-default"
-                          onChange={this.handleChange}
-                          id="park_id"
-                          required
-                          value={parkId}
-                        >
-                          <option value="" disabled selected>
-                            Kies Park
-                          </option>
-                          {parks &&
-                            parks.map(park => (
-                              <option key={park.id} value={park.id}>
-                                {park.name}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="input-field col s12 m6">
-                      <input
-                        id="type"
-                        type="text"
-                        className="validate"
-                        onChange={this.handleChange}
-                        required
-                        value={type}
-                      />
-                      <label htmlFor="type">Type Attractie</label>
-                    </div>
-                    <div className="input-field col s12 m6">
-                      <select
-                        className="browser-default"
-                        onChange={this.handleChange}
-                        id="category"
-                        required
-                        value={category}
-                      >
-                        <option value="" disabled selected>
-                          Kies Categorie
-                        </option>
-                        <option value="roller-coaster">Achtbaan</option>
-                        <option value="thrill-ride">Spannende Attractie</option>
-                        <option value="water-ride">Water Attractie</option>
-                        <option value="gentle-ride">Familie Attractie</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="row"
-                  style={{ borderBottom: '2px solid #f3f5f8' }}
-                >
-                  <div className="col s12 m4">Informatie</div>
-                  <div className="row">
-                    <div className="input-field col s12 m6">
-                      <i className="material-icons prefix">description</i>
-                      <textarea
-                        id="description"
-                        className="materialize-textarea"
-                        onChange={this.handleChange}
-                        required
-                        value={description}
-                      />
-                      <label htmlFor="description">Beschrijving</label>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="row"
-                  style={{ borderBottom: '2px solid #f3f5f8' }}
-                >
-                  <div className="col s12 m4">Afbeeldingen</div>
-                  <div className="row">
-                    <div className="input-field col s12 m6">
-                      <i className="material-icons prefix">image</i>
-                      <input
-                        id="img"
-                        type="text"
-                        className="validate"
-                        onChange={this.handleChange}
-                        required
-                        value={img}
-                      />
-                      <label htmlFor="img">Afbeelding URL</label>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <button
-                    className="waves-effect waves-light btn"
-                    type="submit"
-                    value="Submit"
+                  <p
+                    className="bold-text grey-text text-darken-2"
+                    style={{ marginTop: 0 }}
                   >
-                    Opslaan
-                  </button>
+                    Naam:
+                  </p>
+                  <div className="input-field" style={{ marginBottom: 0 }}>
+                    <label htmlFor="name">Naam attractie</label>
+                    <input
+                      id="name"
+                      type="text"
+                      className="validate"
+                      onChange={this.handleChange}
+                      required
+                      value={name}
+                    />
+                  </div>
                 </div>
               </div>
-            </form>
+              <div className="row">
+                <div className="col s12 m4">
+                  <p className="bold-text grey-text text-darken-2" />
+                </div>
+                <div className="col s12 m4">
+                  <p
+                    className="bold-text grey-text text-darken-2"
+                    style={{ marginTop: 0 }}
+                  >
+                    Park:
+                  </p>
+                  <Select
+                    value={parkId}
+                    onChange={e => this.handleSelectChange(e, 'parkId')}
+                    options={parkSelection}
+                    placeholder="Kies een park"
+                  />
+                </div>
+                <div className="col s12 m4">
+                  <p
+                    className="bold-text grey-text text-darken-2"
+                    style={{ marginTop: 0 }}
+                  >
+                    Status:
+                  </p>
+                  <Select
+                    value={status}
+                    onChange={e => this.handleSelectChange(e, 'status')}
+                    options={statusSelection}
+                    placeholder="Kies de status"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col s12 m4">
+                  <p className="bold-text grey-text text-darken-2" />
+                </div>
+                <div className="col s12 m8">
+                  <p
+                    className="bold-text grey-text text-darken-2"
+                    style={{ marginTop: 0 }}
+                  >
+                    Categorie:
+                  </p>
+                  <Select
+                    value={categoryId}
+                    onChange={e => this.handleSelectChange(e, 'categoryId')}
+                    options={categorySelection}
+                    isMulti
+                    placeholder="Kies een of meerdere categoriën"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col s12 m4">
+                  <p className="bold-text grey-text text-darken-2" />
+                </div>
+                <div className="col s12 m8">
+                  <p
+                    className="bold-text grey-text text-darken-2"
+                    style={{ marginTop: 0 }}
+                  >
+                    Type:
+                  </p>
+                  <Select
+                    value={typeId}
+                    onChange={e => this.handleSelectChange(e, 'typeId')}
+                    options={typeSelection}
+                    isMulti
+                    placeholder="Kies een of meerdere types"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="card-content">
+              <div className="row">
+                <div className="col s12 m4">
+                  <p className="bold-text grey-text text-darken-2">
+                    Bouweigenschappen
+                  </p>
+                </div>
+                <div className="col s12 m8">
+                  <p
+                    className="bold-text grey-text text-darken-2"
+                    style={{ marginTop: 0 }}
+                  >
+                    Fabrikant:
+                  </p>
+                  <div className="input-field" style={{ marginBottom: 0 }}>
+                    <Select
+                      value={manufacturerId}
+                      onChange={e =>
+                        this.handleSelectChange(e, 'manufacturerId')
+                      }
+                      isMulti
+                      options={manufacturersSelection}
+                      placeholder="Kies een of meerdere fabrikanten"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {categoryId &&
+            categoryId.some(e => e.value === 'roller-coaster') ? (
+              <div className="card-content">
+                <div className="row">
+                  <div className="col s12 m4">
+                    <p className="bold-text grey-text text-darken-2">
+                      Achtbaan
+                    </p>
+                  </div>
+                  <div className="col s12 m8">
+                    <p
+                      className="bold-text grey-text text-darken-2"
+                      style={{ marginTop: 0 }}
+                    >
+                      Materiaal:
+                    </p>
+                    <div className="input-field" style={{ marginBottom: 0 }}>
+                      <Select
+                        value={coasterMaterial}
+                        onChange={e =>
+                          this.handleSelectChange(e, 'coasterMaterial')
+                        }
+                        options={materialSelection}
+                        placeholder="Kies het materiaal"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+            <div className="card-action">
+              <div className="row">
+                <div className="col s12 m8" />
+                <div className="col s12 m4">
+                  <button className="btn right">Toevoegen</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-expressions */
+
 import * as firebase from 'firebase';
-import { devConfig } from './config';
+import { devConfig } from '../config/config';
 
 !firebase.apps.length && firebase.initializeApp(devConfig);
 

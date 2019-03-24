@@ -9,16 +9,16 @@ class AttractionList extends React.Component {
   };
 
   componentDidMount() {
-    const { attractions } = this.context;
+    const { attractionsInfo } = this.context;
     this.setState({
-      filteredArray: attractions,
+      filteredArray: attractionsInfo.attractions,
     });
   }
 
   filterAttractions = (param, input) => {
-    const { attractions } = this.context;
+    const { attractionsInfo } = this.context;
     const filter = input.toUpperCase();
-    const filtered = attractions.filter(item => {
+    const filtered = attractionsInfo.attractions.filter(item => {
       if (item[param].toUpperCase().includes(filter)) {
         return item;
       }

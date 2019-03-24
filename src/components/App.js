@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
-import { AppProvider, Consumer } from '../context/AppProvider';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { AppProvider, Consumer } from '../services/context/AppProvider';
 
-import NavBar from './layout/NavBar';
-import Footer from './layout/Footer';
+// import NavBar from './layout/NavBar';
+// import Footer from './layout/Footer';
 
 import Home from './Home';
+/*
 import Login from './auth/Signin';
 import Signup from './auth/Signup';
 import Admin from './admin/Admin';
@@ -17,7 +18,7 @@ import AttractionList from './attraction/AttractionList';
 import ParkList from './park/ParkList';
 import AddAttraction from './admin/add/AddAttraction';
 
-/*
+
 import Manufacturer from './manufacturer/Manufacturer';
 
 */
@@ -29,12 +30,11 @@ class AppRender extends React.Component {
       return (
         <BrowserRouter>
           <div className="root-app">
-            <header>
-              <NavBar />
-            </header>
+            <header>{/* <NavBar /> */}</header>
             <main>
               <Switch>
                 <Route exact path="/" component={Home} />
+                {/*
                 <Route exact path="/admin" component={Admin} />
                 <Route path="/park/:Id" component={Park} />
                 <Route path="/attractie/:Id" component={Attraction} />
@@ -44,14 +44,14 @@ class AppRender extends React.Component {
                   path="/admin/toevoegen/attractie"
                   component={AddAttraction}
                 />
-                {/* }
+                 }
                 
                 
                 
                 
                 <Route path="/fabrikant/:Id" component={Manufacturer} />
                 
-                */}
+                
                 <Route exact path="/login" component={() => <Login />} />
                 <Route exact path="/aanmelden" component={() => <Signup />} />
                 <Route
@@ -71,11 +71,10 @@ class AppRender extends React.Component {
                     </h1>
                   )}
                 />
+                */}
               </Switch>
             </main>
-            <footer>
-              <Footer />
-            </footer>
+            <footer>{/* <Footer /> */}</footer>
           </div>
         </BrowserRouter>
       );

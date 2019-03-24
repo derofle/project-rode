@@ -18,6 +18,7 @@ class Attraction extends React.Component {
     loading: true,
     editMode: false,
     attraction: {},
+    attractionType: {},
     park: {},
   };
 
@@ -27,15 +28,21 @@ class Attraction extends React.Component {
   };
 
   componentDidMount() {
-    const { attractions, parks, manufacturers } = this.context;
+    const { attractionsInfo, parks, manufacturers } = this.context;
+    const { attractions, attractionTypes } = attractionsInfo;
     const { match } = this.props;
     const attraction = attractions.find(obj => obj.uid === match.params.Id);
+    const attractionType = attractionTypes.find(
+      obj => obj.id === attraction.typeId
+    );
+    console.log(attractionType);
     const park = parks.find(obj => obj.id === attraction.parkId);
     const manufacturer = manufacturers.find(
       obj => obj.id === attraction.manufacturerId
     );
     this.setState({
       attraction,
+      attractionType,
       park,
       manufacturer,
       loading: false,
@@ -78,7 +85,13 @@ class Attraction extends React.Component {
 
   render() {
     const { manufacturers, currentUser, users } = this.context;
-    const { attraction, park, manufacturer, loading } = this.state;
+    const {
+      attraction,
+      attractionType,
+      park,
+      manufacturer,
+      loading,
+    } = this.state;
     const { match, location } = this.props;
     const { editMode } = this.state;
     let user;
@@ -146,7 +159,7 @@ class Attraction extends React.Component {
                     {editMode ? (
                       <div className="input-field">
                         <input
-                          value={attraction.type}
+                          value={attraction.typeId}
                           id="type"
                           type="text"
                           className="validate bold-text"
@@ -154,8 +167,8 @@ class Attraction extends React.Component {
                           style={{ color: 'rgb(92, 102, 114)' }}
                         />
                       </div>
-                    ) : attraction.type ? (
-                      attraction.type.toUpperCase()
+                    ) : attractionType.name ? (
+                      attractionType.name.toUpperCase()
                     ) : (
                       'TYPE ONBEKEND'
                     )}

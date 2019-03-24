@@ -1,0 +1,15 @@
+import { db } from './firebase';
+
+const getCollectionData = collection =>
+  db
+    .collection(collection)
+    .get()
+    .then(querySnapshot => {
+      let dataArray = [];
+      querySnapshot.forEach(doc => {
+        dataArray = [...dataArray, doc.data()];
+      });
+      return dataArray;
+    });
+
+export { getCollectionData };

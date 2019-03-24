@@ -20,3 +20,192 @@ state = {
   render() {
     return <div className="cardiv" id="car" style={this.getStyle()} />;
   }
+
+
+   <ul id="nav-mobile" className="right hide-on-med-and-down">
+                {user && user.uid ? null : (
+                  <li>
+                    <Link
+                      to="/login"
+                      className="waves-effect waves-light btn"
+                      style={{ backgroundColor: '#76899a' }}
+                    >
+                      INLOGGEN
+                    </Link>
+                  </li>
+                )}
+                {user && user.uid ? null : (
+                  <li>
+                    <Link
+                      to="/aanmelden"
+                      className="waves-effect waves-light btn"
+                      style={{ backgroundColor: '#76899a' }}
+                    >
+                      AANMELDEN
+                    </Link>
+                  </li>
+                )}
+                {user && user.uid ? (
+                  <li>
+                    <Link
+                      to={window.location.pathname}
+                      hash="/#"
+                      className="waves-effect waves-light btn"
+                      style={{ backgroundColor: '#76899a' }}
+                      onClick={this.handleLogout}
+                    >
+                      UITLOGGEN
+                    </Link>
+                  </li>
+                ) : null}
+              </ul>
+
+
+
+              
+                <div className="col s12 m4">Attractie</div>
+                <div className="col s12 m8">
+                  <div className="row">
+                    <div className="row">
+                      <div className="input-field col s12 m6">
+                        <input
+                          id="name"
+                          type="text"
+                          className="validate"
+                          onChange={this.handleChange}
+                          required
+                          value={name}
+                        />
+                        <label htmlFor="name">Naam Attractie</label>
+                      </div>
+                      <div className="input-field col s12 m6">
+                        <select
+                          className="browser-default"
+                          onChange={this.handleChange}
+                          id="park_id"
+                          required
+                          value={parkId}
+                        >
+                          <option value="" disabled selected>
+                            Kies Park
+                          </option>
+                          {parks &&
+                            parks.map(park => (
+                              <option key={park.id} value={park.id}>
+                                {park.name}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="input-field col s12 m6">
+                      <input
+                        id="type"
+                        type="text"
+                        className="validate"
+                        onChange={this.handleChange}
+                        required
+                        value={type}
+                      />
+                      <label htmlFor="type">Type Attractie</label>
+                    </div>
+                    <div className="input-field col s12 m6">
+                      <select
+                        className="browser-default"
+                        onChange={this.handleChange}
+                        id="category"
+                        required
+                        value={category}
+                      >
+                        <option value="" disabled selected>
+                          Kies Categorie
+                        </option>
+                        <option value="roller-coaster">Achtbaan</option>
+                        <option value="thrill-ride">Spannende Attractie</option>
+                        <option value="water-ride">Water Attractie</option>
+                        <option value="gentle-ride">Familie Attractie</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="row"
+                  style={{ borderBottom: '2px solid #f3f5f8' }}
+                >
+                  <div className="col s12 m4">Informatie</div>
+                  <div className="row">
+                    <div className="input-field col s12 m6">
+                      <i className="material-icons prefix">description</i>
+                      <textarea
+                        id="description"
+                        className="materialize-textarea"
+                        onChange={this.handleChange}
+                        required
+                        value={description}
+                      />
+                      <label htmlFor="description">Beschrijving</label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="row"
+                  style={{ borderBottom: '2px solid #f3f5f8' }}
+                >
+                  <div className="col s12 m4">Afbeeldingen</div>
+                  <div className="row">
+                    <div className="input-field col s12 m6">
+                      <i className="material-icons prefix">image</i>
+                      <input
+                        id="img"
+                        type="text"
+                        className="validate"
+                        onChange={this.handleChange}
+                        required
+                        value={img}
+                      />
+                      <label htmlFor="img">Afbeelding URL</label>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+                 /*
+  filterData = (originalData, toFilterState, param, input) => {
+    console.log(originalData, toFilterState, param, input);
+
+    const filter = input.toUpperCase();
+    const backupState = `${toFilterState}Backup`;
+    console.log(filter);
+
+    if (!this.state[backupState]) {
+      const backupArray = `${toFilterState}Original`;
+      const filtered = this.state[originalData].filter(item => {
+        if (item[param].toUpperCase().includes(filter)) {
+          return item;
+        }
+        return null;
+      });
+      this.setState({
+        [backupArray]: this.state[originalData],
+        [toFilterState]: filtered,
+        [backupState]: true,
+      });
+    }
+    if (this.state[backupState]) {
+      const backupArray = `${toFilterState}Original`;
+      const filtered = this.state[backupArray].filter(item => {
+        if (item[param].toUpperCase().includes(filter)) {
+          return item;
+        }
+        return null;
+      });
+      this.setState({
+        [toFilterState]: filtered,
+      });
+    }
+  };
+*/

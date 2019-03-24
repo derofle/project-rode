@@ -1,6 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
-import { Consumer } from '../context/AppProvider';
+import { Consumer } from '../services/context/AppProvider';
 import './animation.css';
 
 class Home extends React.Component {

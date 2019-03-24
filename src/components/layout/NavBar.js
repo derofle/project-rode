@@ -57,11 +57,8 @@ class NavBarRender extends Component {
     return (
       <div>
         <nav className="nav-extended">
-          <div
-            className="nav-wrapper z-depth-1"
-            style={{ backgroundColor: '#596a79' }}
-          >
-            <div className="container">
+          <div style={{ backgroundColor: '#596a79' }}>
+            <div className="nav-content container">
               <a href="/" className="brand-logo">
                 <img
                   className="brand-logo"
@@ -69,56 +66,12 @@ class NavBarRender extends Component {
                   style={{ height: '44px', marginTop: '12px' }}
                 />
               </a>
-              <a href="#" data-target="mobile-demo" className="sidenav-trigger">
-                <i className="material-icons">menu</i>
-              </a>
-              <ul id="nav-mobile" className="right hide-on-med-and-down">
-                {user && user.uid ? null : (
-                  <li>
-                    <Link
-                      to="/login"
-                      className="waves-effect waves-light btn"
-                      style={{ backgroundColor: '#76899a' }}
-                    >
-                      INLOGGEN
-                    </Link>
-                  </li>
-                )}
-                {user && user.uid ? null : (
-                  <li>
-                    <Link
-                      to="/aanmelden"
-                      className="waves-effect waves-light btn"
-                      style={{ backgroundColor: '#76899a' }}
-                    >
-                      AANMELDEN
-                    </Link>
-                  </li>
-                )}
-                {user && user.uid ? (
-                  <li>
-                    <Link
-                      to={window.location.pathname}
-                      hash="/#"
-                      className="waves-effect waves-light btn"
-                      style={{ backgroundColor: '#76899a' }}
-                      onClick={this.handleLogout}
-                    >
-                      UITLOGGEN
-                    </Link>
-                  </li>
-                ) : null}
-              </ul>
-            </div>
-          </div>
-          <div style={{ backgroundColor: '#f2f2f2' }}>
-            <div className="nav-content container">
               <ul className="tabs tabs-transparent">
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <li className="tab">
                     <NavLink
                       to="/parken"
-                      style={{ color: '#62676a' }}
+                      style={{ color: '#ffffff' }}
                       id="tab-1"
                       onClick={() => this.moveCar('tab-1')}
                     >
@@ -128,7 +81,7 @@ class NavBarRender extends Component {
                   <li className="tab">
                     <NavLink
                       to="/attracties"
-                      style={{ color: '#62676a' }}
+                      style={{ color: '#ffffff' }}
                       id="tab-2"
                       onClick={() => this.moveCar('tab-2')}
                     >
@@ -138,7 +91,7 @@ class NavBarRender extends Component {
                   <li className="tab">
                     <NavLink
                       to="/shows"
-                      style={{ color: '#62676a' }}
+                      style={{ color: '#ffffff' }}
                       id="tab-3"
                       onClick={() => this.moveCar('tab-3')}
                     >
@@ -148,7 +101,7 @@ class NavBarRender extends Component {
                   <li className="tab">
                     <NavLink
                       to="/fabrikanten"
-                      style={{ color: '#62676a' }}
+                      style={{ color: '#ffffff' }}
                       id="tab-4"
                       onClick={() => this.moveCar('tab-4')}
                     >
@@ -158,14 +111,15 @@ class NavBarRender extends Component {
                 </div>
               </ul>
             </div>
-            <div className="car-y">
-              <Car
-                offsetTab={this.state.offsetTab}
-                offsetCar={this.state.offsetCar}
-                rideMove={this.state.rideMove}
-                rideMoved={this.rideMoved}
-              />
-            </div>
+
+            <Car
+              offsetTab={this.state.offsetTab}
+              offsetCar={this.state.offsetCar}
+              rideMove={this.state.rideMove}
+              rideMoved={this.rideMoved}
+              moveCar={this.moveCar}
+            />
+
             <div
               style={{ display: 'flex', flexDirection: 'row' }}
               className="trackdiv"
