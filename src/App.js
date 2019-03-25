@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { AppProvider, Consumer } from '../services/context/AppProvider';
+import { AppProvider, Consumer } from './services/context';
 
-// import NavBar from './layout/NavBar';
+import NavBar from './components/Header';
 // import Footer from './layout/Footer';
 
-import Home from './Home';
+import Home from './scenes/Home';
 /*
 import Login from './auth/Signin';
 import Signup from './auth/Signup';
@@ -26,11 +26,13 @@ import Manufacturer from './manufacturer/Manufacturer';
 class AppRender extends React.Component {
   render() {
     const { loading } = this.context;
-    if (!loading) {
+    if (true) {
       return (
         <BrowserRouter>
           <div className="root-app">
-            <header>{/* <NavBar /> */}</header>
+            <header>
+              <NavBar />
+            </header>
             <main>
               <Switch>
                 <Route exact path="/" component={Home} />

@@ -5,9 +5,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
 import { timingSafeEqual } from 'crypto';
-import { auth } from '../../firebase';
-import { Consumer } from '../../context/AppProvider';
-import Car from './Car';
+import { auth } from '../../services/firebase';
+import { Consumer } from '../../services/context';
+import Car from './components/Car';
 
 class NavBarRender extends Component {
   state = {

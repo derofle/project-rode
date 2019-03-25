@@ -39,7 +39,7 @@ export class AppProvider extends Component {
           currentUser: user,
         })
     );
-    console.log(await database.getCollectionData('attractions'));
+    console.table(await database.getCollectionData('attractions'));
     /*
     const prevState = this.state;
 

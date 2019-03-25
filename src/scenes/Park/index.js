@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { MediaBox } from 'react-materialize';
 import { Consumer } from '../../context/AppProvider';
 
-import ParkOverview from './components/ParkOverview';
-import ParkAttractions from './components/ParkAttractions';
-import ParkShows from './components/ParkShows';
+import ParkOverview from './scenes/Overview';
+import ParkAttractions from './scenes/Attractions';
+import ParkShows from '../../components/park/components/ParkShows';
 
 class Park extends React.Component {
   propTypes = {

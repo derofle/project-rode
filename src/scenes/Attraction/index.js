@@ -7,11 +7,11 @@ import { Link } from 'react-router-dom';
 import { MediaBox } from 'react-materialize';
 import { Consumer } from '../../context/AppProvider';
 
-import AttractionOverview from './pages/AttractionOverview';
-import AttractionInformation from './pages/AttractionInformation';
-import AttractionStatistics from './pages/AttractionStatistics';
-import AttractionNews from './pages/AttractionNews';
-import AttractionReviews from './pages/AttractionReviews';
+import AttractionOverview from './scenes/Overview';
+import AttractionInformation from '../../components/attraction/pages/AttractionInformation';
+import AttractionStatistics from '../../components/attraction/pages/AttractionStatistics';
+import AttractionNews from '../../components/attraction/pages/AttractionNews';
+import AttractionReviews from '../../components/attraction/pages/AttractionReviews';
 
 class Attraction extends React.Component {
   state = {
