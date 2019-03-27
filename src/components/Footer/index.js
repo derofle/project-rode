@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Consumer } from '../../context/AppProvider';
+import { Consumer } from '../../services/context';
 
 const FooterRender = props => {
   const { context } = props;
@@ -14,24 +14,21 @@ const FooterRender = props => {
     <footer
       className="page-footer z-depth-1"
       style={{
-        borderRadius: '6px 6px 0px 0px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#EEF1ED',
+        borderTop: '5px solid #9A999B',
       }}
     >
       <div style={{ width: '90%', margin: 'auto' }} />
       <div
         className="footer-copyright z-depth-1"
-        style={{ backgroundColor: '#596a79' }}
+        style={{ backgroundColor: '#9A999B' }}
       >
         <div className="container">
           <div style={{ width: '90%', margin: 'auto' }}>
-            <p>
-              © 2019 Evilife -
+            <p style={{ color: '#323037', opacity: '0.8' }}>
+              © 2019 Evilife
               {user && user.uid ? (
-                <Link to="/admin" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                  {' '}
-                  Admin Paneel
-                </Link>
+                <Link to="/admin"> - Admin Paneel</Link>
               ) : null}
             </p>
           </div>

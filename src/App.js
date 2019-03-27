@@ -3,16 +3,17 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { AppProvider, Consumer } from './services/context';
 
 import NavBar from './components/Header';
-// import Footer from './layout/Footer';
+import Footer from './components/Footer';
 
 import Home from './scenes/Home';
+import Attraction from './scenes/Attraction';
 /*
 import Login from './auth/Signin';
 import Signup from './auth/Signup';
 import Admin from './admin/Admin';
 
 import Park from './park/Park';
-import Attraction from './attraction/Attraction';
+
 import AttractionList from './attraction/AttractionList';
 
 import ParkList from './park/ParkList';
@@ -26,7 +27,10 @@ import Manufacturer from './manufacturer/Manufacturer';
 class AppRender extends React.Component {
   render() {
     const { loading } = this.context;
-    if (true) {
+    if (loading) {
+      return <p>Loading ...</p>;
+    }
+    if (!loading) {
       return (
         <BrowserRouter>
           <div className="root-app">
@@ -36,10 +40,14 @@ class AppRender extends React.Component {
             <main>
               <Switch>
                 <Route exact path="/" component={Home} />
+                <Route
+                  path="/park/:parkId/attractie/:attractionId"
+                  component={Attraction}
+                />
                 {/*
                 <Route exact path="/admin" component={Admin} />
                 <Route path="/park/:Id" component={Park} />
-                <Route path="/attractie/:Id" component={Attraction} />
+                
                 <Route path="/attracties" component={AttractionList} />
                 <Route path="/parken" component={ParkList} />
                 <Route
@@ -76,7 +84,9 @@ class AppRender extends React.Component {
                 */}
               </Switch>
             </main>
-            <footer>{/* <Footer /> */}</footer>
+            <footer>
+              <Footer />
+            </footer>
           </div>
         </BrowserRouter>
       );

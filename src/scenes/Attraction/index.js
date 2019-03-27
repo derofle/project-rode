@@ -5,13 +5,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { MediaBox } from 'react-materialize';
-import { Consumer } from '../../context/AppProvider';
+import { Consumer } from '../../services/context';
 
-import AttractionOverview from './scenes/Overview';
+import Category from './components/Category';
+
+import Overview from './scenes/Overview';
+/*
 import AttractionInformation from '../../components/attraction/pages/AttractionInformation';
 import AttractionStatistics from '../../components/attraction/pages/AttractionStatistics';
 import AttractionNews from '../../components/attraction/pages/AttractionNews';
 import AttractionReviews from '../../components/attraction/pages/AttractionReviews';
+*/
 
 class Attraction extends React.Component {
   state = {
@@ -22,16 +26,21 @@ class Attraction extends React.Component {
     park: {},
   };
 
-  propTypes = {
+  static propTypes = {
     match: PropTypes.object,
     location: PropTypes.object,
   };
 
   componentDidMount() {
-    const { attractionsInfo, parks, manufacturers } = this.context;
+    const { parks, manufacturers, attractionsInfo } = this.context;
     const { attractions, attractionTypes } = attractionsInfo;
     const { match } = this.props;
-    const attraction = attractions.find(obj => obj.uid === match.params.Id);
+    console.log(attractions);
+    console.log(match.params.attractionId);
+    const attraction =
+      attractions &&
+      attractions.find(obj => obj.id === match.params.attractionId);
+    console.log(attraction);
     const attractionType = attractionTypes.find(
       obj => obj.id === attraction.typeId
     );
@@ -42,11 +51,10 @@ class Attraction extends React.Component {
     );
     this.setState({
       attraction,
-      attractionType,
       park,
-      manufacturer,
       loading: false,
     });
+    console.log(attraction);
   }
 
   handleChange = e => {
@@ -100,18 +108,30 @@ class Attraction extends React.Component {
     }
     if (!loading) {
       return (
-        <div className="container">
-          <div className="row" style={{ marginBottom: '6px' }} />
+        <div className="container" style={{ width: '100%' }}>
+          <div className="row" style={{ marginBottom: '30px' }} />
           <div className="row">
-            <div className="col s12 m3">
-              <div className="card" style={{ borderRadius: '6px' }}>
-                <div className="card-image" style={{ borderRadius: '8px' }}>
+            <div className="col s12 m6 l4">
+              <div
+                className="card z-depth-2"
+                style={{
+                  borderRadius: '8px',
+                  backgroundColor: '#F8F8F9',
+                  zIndex: 10,
+                }}
+              >
+                <div
+                  className="card-image"
+                  style={{ borderRadius: '6px', position: 'relative' }}
+                >
+                  <Category categoryId={attraction.categoryId} />
+
                   <div
                     style={{
                       position: 'absolute',
                       zIndex: '10',
-                      right: '3%',
-                      bottom: '5%',
+                      right: '10%',
+                      top: '-5%',
                     }}
                   >
                     <i
@@ -140,82 +160,29 @@ class Attraction extends React.Component {
                   <MediaBox
                     src={attraction.img}
                     alt="park-logo"
-                    className="materialboxed"
-                    style={{ borderRadius: '6px 6px 0px 0px' }}
+                    className="materialboxed z-depth-3 attraction-img"
+                    style={{
+                      borderRadius: '6px',
+                      position: 'relative',
+                      top: '-20px',
+                      width: '90%',
+                      margin: '0 auto',
+                    }}
                   />
                 </div>
-
                 <div
                   className="card-content"
                   style={{
-                    padding: '16px 16px 12px 16px',
+                    padding: '16px 24px 24px 24px',
                     borderRadius: '8px 8px 8px 8px',
+                    marginTop: '-20px',
                   }}
                 >
                   <p
                     className="bold-text"
-                    style={{ fontSize: '0.8em', color: '#5c6672' }}
+                    style={{ fontSize: '1em', color: '#9A999B' }}
                   >
-                    {editMode ? (
-                      <div className="input-field">
-                        <input
-                          value={attraction.typeId}
-                          id="type"
-                          type="text"
-                          className="validate bold-text"
-                          onChange={this.handleChange}
-                          style={{ color: 'rgb(92, 102, 114)' }}
-                        />
-                      </div>
-                    ) : attractionType.name ? (
-                      attractionType.name.toUpperCase()
-                    ) : (
-                      'TYPE ONBEKEND'
-                    )}
-                    {editMode ? null : ' • '}
-                    {editMode ? (
-                      <div className="input-field">
-                        <select
-                          className="browser-default bold-text"
-                          onChange={this.handleChange}
-                          id="manufacturer_id"
-                          required
-                          value={attraction.manufacturerId}
-                          style={{ color: 'rgb(92, 102, 114)' }}
-                        >
-                          {attraction.manufacturerId ||
-                          attraction.manufacturerId === '' ? null : (
-                            <option key="empty" value="" selected>
-                              Fabrikant Onbekend
-                            </option>
-                          )}
-                          {manufacturers &&
-                            manufacturers.map(manu => {
-                              if (manu.id === attraction.manufacturer_id) {
-                                return (
-                                  <option value={manu.id} selected>
-                                    {manu.name}
-                                  </option>
-                                );
-                              }
-                              return (
-                                <option key={manu.id} value={manu.id}>
-                                  {manu.name}
-                                </option>
-                              );
-                            })}
-                        </select>
-                      </div>
-                    ) : manufacturer ? (
-                      <Link
-                        to={`/fabrikant/${manufacturer.uid}`}
-                        style={{ color: '#5c6672' }}
-                      >
-                        {manufacturer.name_short.toUpperCase()}
-                      </Link>
-                    ) : (
-                      'FABRIKANT ONBEKEND'
-                    )}
+                    Dive Coaster • Bolliger & Mabillard
                     {}
                   </p>
                   {editMode ? (
@@ -233,108 +200,110 @@ class Attraction extends React.Component {
                     <p
                       className="park-name bold-text"
                       style={{
-                        fontSize: '1.5em',
+                        fontSize: '2em',
                         lineHeight: '100%',
                         paddingTop: '4px',
                         paddingBottom: '4px',
-                        color: '#222f40',
+                        color: '#23323C',
                       }}
                     >
-                      {attraction.name.toUpperCase()}{' '}
+                      {attraction.name.toUpperCase()}
                     </p>
                   )}
 
                   {}
                   <p className="grey-text">
-                    <Link to={`/park/${park.uid}`} style={{ color: '#5c6571' }}>
+                    <Link to={`/park/${park.id}`} style={{ color: '#23323C' }}>
                       {park.name}
                     </Link>
                   </p>
                 </div>
-
+              </div>
+              <div
+                style={{
+                  padding: '0 20px 0 20px',
+                  top: '-40px',
+                  position: 'relative',
+                  zIndex: 7,
+                }}
+              >
                 <div
-                  className="card-content"
+                  className="card z-depth-2"
                   style={{
-                    borderTop: '2px solid #f3f5f8',
-                    padding: '0px 16px 0px 16px',
+                    borderRadius: '8px',
+                    backgroundColor: '#f8f8f9',
                   }}
-                />
-                <div className="collection no-border no-margin bold-text">
-                  <Link
-                    to={`/attractie/${match.params.Id}`}
-                    className="collection-item"
-                    style={{
-                      borderBottom: '2px solid #f3f5f8',
-                      padding: '12px 16px 12px 16px',
-                    }}
+                >
+                  <div
+                    className="card-content"
+                    style={{ padding: '24px 0 12px 0' }}
                   >
-                    Overzicht
-                  </Link>
-                  <Link
-                    to={`/attractie/${match.params.Id}/informatie`}
-                    className="collection-item"
-                    style={{
-                      borderBottom: '2px solid #f3f5f8',
-                      padding: '12px 16px 12px 16px',
-                    }}
-                  >
-                    Informatie
-                  </Link>
-                  <Link
-                    to={`/attractie/${match.params.Id}/statistieken`}
-                    className="collection-item"
-                    style={{
-                      borderBottom: '2px solid #f3f5f8',
-                      padding: '12px 16px 12px 16px',
-                    }}
-                  >
-                    Statistieken
-                  </Link>
-                  <Link
-                    to={`/attractie/${match.params.Id}/niews`}
-                    className="collection-item"
-                    style={{
-                      borderBottom: '2px solid #f3f5f8',
-                      padding: '12px 16px 12px 16px',
-                    }}
-                  >
-                    Nieuws
-                  </Link>
-                  <Link
-                    to={`/attractie/${match.params.Id}/beoordelingen`}
-                    className="collection-item"
-                    style={{
-                      borderBottom: '2px solid #f3f5f8',
-                      padding: '12px 16px 12px 16px',
-                    }}
-                  >
-                    Beoordelingen
-                  </Link>
+                    <div className="collection no-border no-margin bold-text">
+                      <Link
+                        to={`/park/${match.params.parkId}/attractie/${
+                          match.params.attractionId
+                        }`}
+                        className="collection-item"
+                        style={{
+                          padding: '12px 16px 12px 16px',
+                        }}
+                      >
+                        Overzicht
+                      </Link>
+                      <Link
+                        to={`/park/${match.params.parkId}/attractie/${
+                          match.params.attractionId
+                        }/informatie`}
+                        className="collection-item"
+                        style={{
+                          padding: '12px 16px 12px 16px',
+                        }}
+                      >
+                        Informatie
+                      </Link>
+                      <Link
+                        to={`/park/${match.params.parkId}/attractie/${
+                          match.params.attractionId
+                        }/statistieken`}
+                        className="collection-item"
+                        style={{
+                          padding: '12px 16px 12px 16px',
+                        }}
+                      >
+                        Statistieken
+                      </Link>
+                      <Link
+                        to={`/park/${match.params.parkId}/attractie/${
+                          match.params.attractionId
+                        }/niews`}
+                        className="collection-item"
+                        style={{
+                          padding: '12px 16px 12px 16px',
+                        }}
+                      >
+                        Nieuws
+                      </Link>
+                      <Link
+                        to={`/park/${match.params.parkId}/attractie/${
+                          match.params.attractionId
+                        }/beoordelingen`}
+                        className="collection-item"
+                        style={{
+                          borderBottom: '1px solid #e0e0e0',
+                          padding: '12px 16px 12px 16px',
+                        }}
+                      >
+                        Beoordelingen
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-                <div
-                  className="card-content"
-                  style={{
-                    borderRadius: '0px 0px 6px 6px',
-                    backgroundColor: '#f8f9fa',
-                  }}
-                />
               </div>
             </div>
-            <div className="col s12 m9">
-              {match.path === '/attractie/:Id' && match.isExact === true ? (
-                <AttractionOverview attraction={attraction} />
-              ) : null}
-              {location.pathname.includes('/informatie') === true ? (
-                <AttractionInformation />
-              ) : null}
-              {location.pathname.includes('/statistieken') === true ? (
-                <AttractionStatistics />
-              ) : null}
-              {location.pathname.includes('/nieuws') === true ? (
-                <AttractionNews />
-              ) : null}
-              {location.pathname.includes('/beoordelingen') === true ? (
-                <AttractionReviews />
+            <div className="col s12 m6 l8">
+              {match.path === '/park/:parkId/attractie/:attractionId' &&
+              match.isExact === true ? (
+                <Overview attraction={attraction} />
               ) : null}
             </div>
           </div>

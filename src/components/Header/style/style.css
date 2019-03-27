@@ -1,0 +1,88 @@
+.nav-extended {
+	padding-top: 10px;
+	background-color: #f8f8f8;
+	border-bottom: 0px solid #4c1971;
+	overflow: visible !important;
+	box-shadow: none;
+}
+
+.nav-header {
+	background-color: #f8f8f8;
+}
+
+.nav-top {
+	z-index: 9;
+}
+
+.nav-tabs {
+	display: flex;
+	justify-content: center;
+}
+
+.marketing-text {
+	float: right;
+	margin: 0;
+	padding: 6px;
+}
+
+.nav-links {
+	background-color: transparent !important;
+}
+.nav-links:hover {
+	background-color: #f7585e !important;
+}
+
+.logo-image {
+	height: 80px;
+	margin-top: -5px;
+}
+
+.marketing-icon {
+	display: inline-flex;
+	padding: 10px;
+	border-radius: 50%;
+	height: 100%;
+	z-index: 10;
+}
+
+.marketing-icon img {
+	width: 28px;
+	z-index: 10;
+}
+.sign-button {
+	transition: none;
+	background-color: transparent !important;
+}
+
+.sign-icon {
+	height: auto !important;
+	line-height: inherit !important;
+}
+/*
+.skylinediv {
+	width: 100vw;
+	height: 100px;
+	background: url("/img/tempskyline.png");
+	background-size: 300px 100px;
+	background-repeat: repeat-x;
+	opacity: 0.15;
+	position: absolute;
+	margin-top: -100px;
+	z-index: 1;
+}
+
+.trackdiv {
+	width: 100vw;
+	height: 15px;
+	background: url("/img/track.png");
+	background-size: 50px 15px;
+	background-repeat: repeat-x;
+	z-index: 10;
+	position: relative;
+}
+*/
+
+.car-container {
+	overflow: hidden;
+	z-index: 9;
+}

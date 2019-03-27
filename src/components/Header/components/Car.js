@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 class Car extends Component {
   state = {
@@ -23,7 +23,7 @@ class Car extends Component {
       this.props.rideMoved();
       const ride = keyframes`
     from {left: ${this.props.offsetCar}px;}
-    to {left: ${this.props.offsetTab + 35}px;}
+    to {left: ${this.props.offsetTab}px;}
 `;
 
       this.setState({
@@ -34,6 +34,7 @@ class Car extends Component {
 
   carClicked = () => {
     this.props.rideMoved();
+    this.props.moveCar();
     const ride = keyframes`
       from {left: ${this.props.offsetCar}px;}
       to {left: 110vw;}

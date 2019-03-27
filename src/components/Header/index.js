@@ -3,11 +3,11 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, NavLink } from 'react-router-dom';
-import { timingSafeEqual } from 'crypto';
+import { NavLink, Link } from 'react-router-dom';
 import { auth } from '../../services/firebase';
 import { Consumer } from '../../services/context';
 import Car from './components/Car';
+import './style/style.css';
 
 class NavBarRender extends Component {
   state = {
@@ -30,10 +30,20 @@ class NavBarRender extends Component {
   };
 
   moveCar = id => {
-    const offsetTab = this.getOffset(document.getElementById(id));
+    let offsetTab;
+    if (id) {
+      offsetTab = this.getOffset(document.getElementById(id));
+      this.setState({
+        offsetTab: offsetTab.left,
+      });
+    } else {
+      this.setState({
+        offsetTab: '2000',
+      });
+    }
+
     const offsetCar = this.getOffset(document.getElementById('car'));
     this.setState({
-      offsetTab: offsetTab.left,
       offsetCar: offsetCar.left,
       rideMove: true,
     });
@@ -57,72 +67,130 @@ class NavBarRender extends Component {
     return (
       <div>
         <nav className="nav-extended">
-          <div style={{ backgroundColor: '#596a79' }}>
-            <div className="nav-content container">
-              <a href="/" className="brand-logo">
-                <img
-                  className="brand-logo"
-                  src="https://firebasestorage.googleapis.com/v0/b/project-rode.appspot.com/o/logo_pr.png?alt=media&token=f4a574bc-15fe-41c5-8040-51055886b76d"
-                  style={{ height: '44px', marginTop: '12px' }}
-                />
-              </a>
+          <div className="nav-header">
+            <div
+              className="nav-content nav-top container"
+              style={{ width: '80%' }}
+            >
+              <NavLink
+                to="/"
+                className="brand-logo nav-logo"
+                onClick={() => this.moveCar('nav-logo')}
+                id="nav-logo"
+              >
+                <img className="logo-image" src="/img/logo_pr.png" />
+              </NavLink>
+              <Link
+                to={window.location.pathname}
+                id="logout-button"
+                hash="/#"
+                className="waves-effect waves-light btn right sign-button z-depth-0 bold-text"
+                style={{
+                  color: '#4C1971',
+                  position: 'absolute',
+                  display: 'inline-block',
+                  right: '0.5rem',
+                  marginTop: '6px',
+                }}
+                onClick={() => {
+                  // this.handleLogout();
+                  this.moveCar('logout-button');
+                }}
+              >
+                <i className="material-icons sign-icon left">person</i>
+                UITLOGGEN
+              </Link>
               <ul className="tabs tabs-transparent">
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div className="nav-tabs">
                   <li className="tab">
                     <NavLink
                       to="/parken"
-                      style={{ color: '#ffffff' }}
                       id="tab-1"
-                      onClick={() => this.moveCar('tab-1')}
+                      hash="/#"
+                      className="waves-effect waves-light btn right sign-button z-depth-0 nav-links bold-text"
+                      style={{
+                        backgroundColor: '#cd283b',
+                        color: '#4C1971',
+                        margin: 0,
+                        padding: 0,
+                      }}
+                      onClick={() => {
+                        // this.handleLogout();
+                        this.moveCar('tab-1');
+                      }}
                     >
-                      Parken
+                      <div className="marketing-icon">
+                        <img src="/img/parks.svg" />
+                      </div>
+                      <p className="marketing-text">Parken</p>
                     </NavLink>
                   </li>
-                  <li className="tab">
+                  <li className="tab" style={{ padding: '0 10px 0 10px' }}>
                     <NavLink
                       to="/attracties"
-                      style={{ color: '#ffffff' }}
                       id="tab-2"
-                      onClick={() => this.moveCar('tab-2')}
+                      hash="/#"
+                      className="waves-effect waves-light btn right sign-button z-depth-0 nav-links bold-text"
+                      style={{
+                        backgroundColor: '#cd283b',
+                        color: '#4C1971',
+                        margin: 0,
+                        padding: '0',
+                      }}
+                      onClick={() => {
+                        // this.handleLogout();
+                        this.moveCar('tab-2');
+                      }}
                     >
-                      Attracties
+                      <div className="marketing-icon">
+                        <img src="/img/attractions.svg" />
+                      </div>
+                      <p className="marketing-text">Attracties</p>
                     </NavLink>
                   </li>
                   <li className="tab">
                     <NavLink
                       to="/shows"
-                      style={{ color: '#ffffff' }}
                       id="tab-3"
-                      onClick={() => this.moveCar('tab-3')}
+                      hash="/#"
+                      className="waves-effect waves-light btn right sign-button z-depth-0 nav-links bold-text"
+                      style={{
+                        backgroundColor: '#cd283b',
+                        color: '#4C1971',
+                        margin: 0,
+                        padding: '0',
+                      }}
+                      onClick={() => {
+                        // this.handleLogout();
+                        this.moveCar('tab-3');
+                      }}
                     >
-                      Shows
-                    </NavLink>
-                  </li>
-                  <li className="tab">
-                    <NavLink
-                      to="/fabrikanten"
-                      style={{ color: '#ffffff' }}
-                      id="tab-4"
-                      onClick={() => this.moveCar('tab-4')}
-                    >
-                      Fabrikanten
+                      <div className="marketing-icon">
+                        <img src="/img/shows.svg" />
+                      </div>
+                      <p className="marketing-text">Shows</p>
                     </NavLink>
                   </li>
                 </div>
               </ul>
             </div>
-
-            <Car
-              offsetTab={this.state.offsetTab}
-              offsetCar={this.state.offsetCar}
-              rideMove={this.state.rideMove}
-              rideMoved={this.rideMoved}
-              moveCar={this.moveCar}
-            />
+            <div className="car-container">
+              <Car
+                offsetTab={this.state.offsetTab}
+                offsetCar={this.state.offsetCar}
+                rideMove={this.state.rideMove}
+                rideMoved={this.rideMoved}
+                moveCar={this.moveCar}
+              />
+            </div>
 
             <div
-              style={{ display: 'flex', flexDirection: 'row' }}
+              style={{ display: 'flex', flexDirection: 'row', zIndex: 10 }}
               className="trackdiv"
+            />
+            <div
+              style={{ display: 'flex', flexDirection: 'row', zIndex: 0 }}
+              className="skylinediv"
             />
           </div>
         </nav>

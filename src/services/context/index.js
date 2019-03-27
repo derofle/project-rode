@@ -7,16 +7,6 @@ export const { Provider, Consumer } = createContext();
 export class AppProvider extends Component {
   state = {
     loading: true,
-    collections: [
-      'parks',
-      'attractions',
-      'attractionCategories',
-      'attractionTypes',
-      'shows',
-      'manufacturers',
-      'users',
-    ],
-    collectionsProcessed: 0,
     parks: [],
     attractions: [],
     attractionCategories: [],
@@ -39,7 +29,25 @@ export class AppProvider extends Component {
           currentUser: user,
         })
     );
-    console.table(await database.getCollectionData('attractions'));
+    this.setState(
+      {
+        parks: await database.getCollectionData('parks'),
+        attractions: await database.getCollectionData('attractions'),
+        attractionCategories: await database.getCollectionData(
+          'attractionCategories'
+        ),
+        attractionTypes: await database.getCollectionData('attractionTypes'),
+        shows: await database.getCollectionData('shows'),
+        manufacturers: await database.getCollectionData('manufacturers'),
+        users: await database.getCollectionData('users'),
+      },
+      () => {
+        console.log(this.state);
+        this.setState({
+          loading: false,
+        });
+      }
+    );
     /*
     const prevState = this.state;
 
