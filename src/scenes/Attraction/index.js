@@ -160,12 +160,10 @@ class Attraction extends React.Component {
                   <MediaBox
                     src={attraction.img}
                     alt="park-logo"
-                    className="materialboxed z-depth-3 attraction-img"
+                    className="materialboxed attraction-img"
                     style={{
                       borderRadius: '6px',
                       position: 'relative',
-                      top: '-20px',
-                      width: '90%',
                       margin: '0 auto',
                     }}
                   />
@@ -180,7 +178,7 @@ class Attraction extends React.Component {
                 >
                   <p
                     className="bold-text"
-                    style={{ fontSize: '1em', color: '#9A999B' }}
+                    style={{ fontSize: '1em', color: '#7C8EAE' }}
                   >
                     Dive Coaster • Bolliger & Mabillard
                     {}
@@ -204,7 +202,7 @@ class Attraction extends React.Component {
                         lineHeight: '100%',
                         paddingTop: '4px',
                         paddingBottom: '4px',
-                        color: '#23323C',
+                        color: '#1D131D',
                       }}
                     >
                       {attraction.name.toUpperCase()}
@@ -213,7 +211,7 @@ class Attraction extends React.Component {
 
                   {}
                   <p className="grey-text">
-                    <Link to={`/park/${park.id}`} style={{ color: '#23323C' }}>
+                    <Link to={`/park/${park.id}`} style={{ color: '#1D131D' }}>
                       {park.name}
                     </Link>
                   </p>

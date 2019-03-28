@@ -3,12 +3,12 @@ import './style/style.css';
 
 const Category = ({ categoryId }) => (
   <div
-    className="category-icon z-depth-2"
+    className="category-icon"
     style={{
       position: 'absolute',
       height: '50px',
       zIndex: 10,
-      bottom: '0%',
+      bottom: '-10%',
       right: '10%',
     }}
   >

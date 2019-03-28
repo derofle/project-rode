@@ -154,11 +154,11 @@ html {
 
 .collection-item {
 	background-color: #f8f8f9 !important;
-	color: #e56567 !important;
+	color: #1d131d !important;
 }
 
 .collection-item:hover {
-	background-color: #e56567 !important;
+	background-color: #7955b1 !important;
 	color: #f8f8f9 !important;
 }
 
@@ -172,4 +172,8 @@ html {
 	border-radius: 50%;
 	height: 100%;
 	z-index: 10;
+}
+
+.card-image {
+	box-shadow: none !important;
 }

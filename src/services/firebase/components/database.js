@@ -7,7 +7,7 @@ const getCollectionData = collection =>
     .then(querySnapshot => {
       let dataArray = [];
       querySnapshot.forEach(doc => {
-        dataArray = [...dataArray, doc.data()];
+        dataArray = [...dataArray, { ...doc.data(), uid: doc.id }];
       });
       return dataArray;
     });

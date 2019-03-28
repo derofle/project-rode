@@ -1,47 +1,94 @@
-.nav-extended {
+nav {
 	padding-top: 10px;
-	background-color: #f8f8f8;
-	border-bottom: 0px solid #4c1971;
+	background-color: transparent;
 	overflow: visible !important;
 	box-shadow: none;
 }
 
+.nav-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 130%;
+}
+
+nav.nav-center ul {
+	text-align: center !important;
+}
+nav.nav-center ul li {
+	display: inline !important;
+	float: none !important;
+}
+nav.nav-center ul li a {
+	display: inline-block !important;
+}
+
+.nav-wrapper {
+	margin: 0 auto;
+}
+.brand-logo {
+	position: initial !important;
+	height: 8vh !important;
+	padding-right: 3vw !important;
+}
 .nav-header {
 	background-color: #f8f8f8;
+}
+.brand-logo {
+	height: 100%;
+}
+
+.brand-logo:hover {
+	background-color: transparent !important;
 }
 
 .nav-top {
 	z-index: 9;
 }
 
-.nav-tabs {
-	display: flex;
-	justify-content: center;
-}
-
 .marketing-text {
 	float: right;
 	margin: 0;
-	padding: 6px;
+	padding: 0 6px 0 6px;
+}
+.nav-button {
+	background-color: transparent !important;
+	color: #1d131d !important;
+	box-shadow: inset 0px 0px 0px 1px #1d131d !important;
+}
+
+.nav-button:hover {
+	background-color: #4c1971 !important;
+	color: #f8f8f8 !important;
+	box-shadow: inset 0px 0px 0px 1px #4c1971 !important;
 }
 
 .nav-links {
 	background-color: transparent !important;
-}
-.nav-links:hover {
-	background-color: #f7585e !important;
+	transition: width .5s ease, background-color .5s ease;
+	color: #4c1971 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	display: inline-block;
 }
 
+.li-nav {
+	border-bottom: 5px solid transparent;
+	height: 45px;
+}
+
+.li-nav:hover {
+	border-bottom: 5px solid #4c1971;
+	cursor: pointer;
+}
 .logo-image {
-	height: 80px;
-	margin-top: -5px;
+	height: 100%;
 }
-
 .marketing-icon {
 	display: inline-flex;
-	padding: 10px;
+	padding: 0 10px 0 10px;
 	border-radius: 50%;
-	height: 100%;
+	height: 35px;
 	z-index: 10;
 }
 
@@ -50,13 +97,35 @@
 	z-index: 10;
 }
 .sign-button {
-	transition: none;
+	transition: 0.3s;
 	background-color: transparent !important;
+	border: 2px solid #4c1971;
+	padding: 0 4px 0 4px;
+	overflow: visible;
+	color: #4c1971;
+	line-height: normal;
+	display: inline-block;
+	align-items: center;
+}
+
+.nav-button-paragraph {
+	padding: 0;
+	vertical-align: middle;
+	text-align: center !important;
+	line-height: normal !important;
+}
+
+.sign-button:hover {
+	background-color: #4c1971 !important;
+	color: #f8f8f8 !important;
 }
 
 .sign-icon {
 	height: auto !important;
-	line-height: inherit !important;
+	line-height: normal !important;
+	vertical-align: middle;
+	display: inline-flex;
+	box-sizing: inherit !important;
 }
 /*
 .skylinediv {

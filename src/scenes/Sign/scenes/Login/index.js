@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { signIn } from '../../firebase/auth';
-import { Consumer } from '../../context/AppProvider';
+import { signIn } from '../../../../services/firebase/components/auth';
+import { Consumer } from '../../../../services/context';
 
 class SigninRender extends Component {
   state = {

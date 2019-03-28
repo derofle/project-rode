@@ -7,8 +7,9 @@ import Footer from './components/Footer';
 
 import Home from './scenes/Home';
 import Attraction from './scenes/Attraction';
+
+import Login from './scenes/Sign/scenes/Login';
 /*
-import Login from './auth/Signin';
 import Signup from './auth/Signup';
 import Admin from './admin/Admin';
 
@@ -44,6 +45,7 @@ class AppRender extends React.Component {
                   path="/park/:parkId/attractie/:attractionId"
                   component={Attraction}
                 />
+                <Route exact path="/login" component={() => <Login />} />
                 {/*
                 <Route exact path="/admin" component={Admin} />
                 <Route path="/park/:Id" component={Park} />
@@ -62,7 +64,7 @@ class AppRender extends React.Component {
                 <Route path="/fabrikant/:Id" component={Manufacturer} />
                 
                 
-                <Route exact path="/login" component={() => <Login />} />
+                
                 <Route exact path="/aanmelden" component={() => <Signup />} />
                 <Route
                   exact

@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 class Car extends Component {
   state = {
     animation: null,
-    firstLoad: false,
+    offsetTab: null,
   };
 
   componentDidMount() {
@@ -14,7 +14,6 @@ class Car extends Component {
 `;
     this.setState({
       animation: loop,
-      firstLoad: true,
     });
   }
 
@@ -32,9 +31,41 @@ class Car extends Component {
     }
   }
 
+  moveCar = id => {
+    let offsetTab;
+    if (id) {
+      offsetTab = this.getOffset(document.getElementById(id));
+      this.setState({
+        offsetTab: offsetTab.left,
+      });
+    } else {
+      this.setState({
+        offsetTab: '2000',
+      });
+    }
+    const offsetCar = this.getOffset(document.getElementById('car'));
+    this.setState({
+      offsetCar: offsetCar.left,
+      rideMove: true,
+    });
+  };
+
+  getOffset = el => {
+    const rect = el.getBoundingClientRect();
+    return {
+      left: rect.left + window.scrollX,
+    };
+  };
+
+  rideMoved = () => {
+    this.setState({
+      rideMove: false,
+    });
+  };
+
   carClicked = () => {
     this.props.rideMoved();
-    this.props.moveCar();
+    this.moveCar();
     const ride = keyframes`
       from {left: ${this.props.offsetCar}px;}
       to {left: 110vw;}
