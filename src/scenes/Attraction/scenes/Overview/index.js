@@ -23,7 +23,6 @@ const AttractionOverview = props => {
             borderRadius: '8px',
             width: '95%',
             margin: '0 auto',
-            marginTop: '-1.5%',
             backgroundColor: '#F8F8F9',
           }}
         >

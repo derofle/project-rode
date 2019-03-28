@@ -9,7 +9,7 @@ const Category = ({ categoryId }) => (
       height: '50px',
       zIndex: 10,
       bottom: '-10%',
-      right: '10%',
+      right: '5%',
     }}
   >
     <img

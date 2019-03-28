@@ -113,16 +113,17 @@ class Attraction extends React.Component {
           <div className="row">
             <div className="col s12 m6 l4">
               <div
-                className="card z-depth-2"
+                className="card z-depth-1"
                 style={{
-                  borderRadius: '8px',
+                  borderRadius: '6px',
                   backgroundColor: '#F8F8F9',
                   zIndex: 10,
+                  margin: '0 auto',
                 }}
               >
                 <div
                   className="card-image"
-                  style={{ borderRadius: '6px', position: 'relative' }}
+                  style={{ borderRadius: '4px 4px 0 0 ' }}
                 >
                   <Category categoryId={attraction.categoryId} />
 
@@ -130,8 +131,8 @@ class Attraction extends React.Component {
                     style={{
                       position: 'absolute',
                       zIndex: '10',
-                      right: '10%',
-                      top: '-5%',
+                      right: '5%',
+                      top: '5%',
                     }}
                   >
                     <i
@@ -160,9 +161,9 @@ class Attraction extends React.Component {
                   <MediaBox
                     src={attraction.img}
                     alt="park-logo"
-                    className="materialboxed attraction-img"
+                    className="materialboxed attraction-img z-depth-1"
                     style={{
-                      borderRadius: '6px',
+                      borderRadius: '4px 4px 0 0',
                       position: 'relative',
                       margin: '0 auto',
                     }}
@@ -172,8 +173,7 @@ class Attraction extends React.Component {
                   className="card-content"
                   style={{
                     padding: '16px 24px 24px 24px',
-                    borderRadius: '8px 8px 8px 8px',
-                    marginTop: '-20px',
+                    borderRadius: '4px',
                   }}
                 >
                   <p
@@ -220,7 +220,6 @@ class Attraction extends React.Component {
               <div
                 style={{
                   padding: '0 20px 0 20px',
-                  top: '-40px',
                   position: 'relative',
                   zIndex: 7,
                 }}
