@@ -108,201 +108,80 @@ class Attraction extends React.Component {
     }
     if (!loading) {
       return (
-        <div className="container" style={{ width: '100%' }}>
-          <div className="row" style={{ marginBottom: '30px' }} />
-          <div className="row">
-            <div className="col s12 m6 l4">
-              <div
-                className="card z-depth-1"
-                style={{
-                  borderRadius: '6px',
-                  backgroundColor: '#F8F8F9',
-                  zIndex: 10,
-                  margin: '0 auto',
-                }}
-              >
-                <div
-                  className="card-image"
-                  style={{ borderRadius: '4px 4px 0 0 ' }}
-                >
-                  <Category categoryId={attraction.categoryId} />
-
+        <div>
+          <div className="big-picture-div">
+            <img src={attraction.img} className="attraction-big-image" />
+          </div>
+          <div className="container" style={{ width: '80%' }}>
+            <div className="row" style={{ marginBottom: '30px' }} />
+            <div className="row">
+              <div className="col s12" style={{ position: 'relative' }}>
+                <div className="name-div">
+                  <span className="glow" style={{ fontSize: '1.5em' }}>
+                    Rapid River
+                  </span>
+                  <h2 className="glow">{attraction.name}</h2>
+                  <span className="glow" style={{ fontSize: '1.5em' }}>
+                    Reis door het Incarijk.
+                  </span>
+                </div>
+                <div className="card z-depth-2" style={{ borderRadius: '8px' }}>
                   <div
+                    className="card-image attraction-header"
                     style={{
-                      position: 'absolute',
-                      zIndex: '10',
-                      right: '5%',
-                      top: '5%',
+                      position: 'relative',
+                      height: '60vh',
+                      overflow: 'hidden',
+                      zIndex: 1,
+                      width: '100%',
+                      borderRadius: '8px 8px 0 0',
                     }}
                   >
-                    <i
-                      className="material-icons small"
-                      style={{
-                        color: 'white',
-                        textShadow: '0 0 10px black',
-                      }}
-                    >
-                      favorite_border
-                    </i>
-                    {user && user.role === 'admin' ? (
-                      <i
-                        className="material-icons small"
-                        style={{
-                          color: 'white',
-                          textShadow: '0 0 10px black',
-                          cursor: 'pointer',
-                        }}
-                        onClick={this.toggleEditMode}
-                      >
-                        edit
-                      </i>
+                    <div className="overlay" />
+                    {match.path === '/park/:parkId/attractie/:attractionId' &&
+                    match.isExact === true ? (
+                      <Overview attraction={attraction} />
                     ) : null}
                   </div>
-                  <MediaBox
-                    src={attraction.img}
-                    alt="park-logo"
-                    className="materialboxed attraction-img z-depth-1"
-                    style={{
-                      borderRadius: '4px 4px 0 0',
-                      position: 'relative',
-                      margin: '0 auto',
-                    }}
-                  />
-                </div>
-                <div
-                  className="card-content"
-                  style={{
-                    padding: '16px 24px 24px 24px',
-                    borderRadius: '4px',
-                  }}
-                >
-                  <p
-                    className="bold-text"
-                    style={{ fontSize: '1em', color: '#7C8EAE' }}
-                  >
-                    Dive Coaster • Bolliger & Mabillard
-                    {}
-                  </p>
-                  {editMode ? (
-                    <div className="input-field">
-                      <input
-                        value={attraction.name}
-                        id="name"
-                        type="text"
-                        className="validate bold-text"
-                        onChange={this.handleChange}
-                        style={{ color: 'rgb(92, 102, 114)' }}
-                      />
-                    </div>
-                  ) : (
-                    <p
-                      className="park-name bold-text"
-                      style={{
-                        fontSize: '2em',
-                        lineHeight: '100%',
-                        paddingTop: '4px',
-                        paddingBottom: '4px',
-                        color: '#1D131D',
-                      }}
-                    >
-                      {attraction.name.toUpperCase()}
-                    </p>
-                  )}
-
-                  {}
-                  <p className="grey-text">
-                    <Link to={`/park/${park.id}`} style={{ color: '#1D131D' }}>
-                      {park.name}
-                    </Link>
-                  </p>
-                </div>
-              </div>
-              <div
-                style={{
-                  padding: '0 20px 0 20px',
-                  position: 'relative',
-                  zIndex: 7,
-                }}
-              >
-                <div
-                  className="card z-depth-2"
-                  style={{
-                    borderRadius: '8px',
-                    backgroundColor: '#f8f8f9',
-                  }}
-                >
                   <div
                     className="card-content"
-                    style={{ padding: '24px 0 12px 0' }}
-                  >
-                    <div className="collection no-border no-margin bold-text">
-                      <Link
-                        to={`/park/${match.params.parkId}/attractie/${
-                          match.params.attractionId
-                        }`}
-                        className="collection-item"
-                        style={{
-                          padding: '12px 16px 12px 16px',
-                        }}
-                      >
-                        Overzicht
-                      </Link>
-                      <Link
-                        to={`/park/${match.params.parkId}/attractie/${
-                          match.params.attractionId
-                        }/informatie`}
-                        className="collection-item"
-                        style={{
-                          padding: '12px 16px 12px 16px',
-                        }}
-                      >
-                        Informatie
-                      </Link>
-                      <Link
-                        to={`/park/${match.params.parkId}/attractie/${
-                          match.params.attractionId
-                        }/statistieken`}
-                        className="collection-item"
-                        style={{
-                          padding: '12px 16px 12px 16px',
-                        }}
-                      >
-                        Statistieken
-                      </Link>
-                      <Link
-                        to={`/park/${match.params.parkId}/attractie/${
-                          match.params.attractionId
-                        }/niews`}
-                        className="collection-item"
-                        style={{
-                          padding: '12px 16px 12px 16px',
-                        }}
-                      >
-                        Nieuws
-                      </Link>
-                      <Link
-                        to={`/park/${match.params.parkId}/attractie/${
-                          match.params.attractionId
-                        }/beoordelingen`}
-                        className="collection-item"
-                        style={{
-                          borderBottom: '1px solid #e0e0e0',
-                          padding: '12px 16px 12px 16px',
-                        }}
-                      >
-                        Beoordelingen
-                      </Link>
-                    </div>
+                    style={{ padding: '8px', backgroundColor: '#F6F6F3' }}
+                  />
+                  <div className="card-content" style={{ padding: '0 12px' }}>
+                    <ul className="tabs">
+                      <li className="tab col s3 collection-item">
+                        <a href="#test1">Overzicht</a>
+                      </li>
+                      <li className="tab col s3 collection-item">
+                        <a className="active" href="#test2">
+                          Informatie
+                        </a>
+                      </li>
+                      <li className="tab col s3 disabled collection-item">
+                        <a href="#test3">Statistieken</a>
+                      </li>
+                      <li className="tab col s3 collection-item">
+                        <a href="#test4">Beoordelingen</a>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="col s12 m6 l8">
-              {match.path === '/park/:parkId/attractie/:attractionId' &&
-              match.isExact === true ? (
-                <Overview attraction={attraction} />
-              ) : null}
+            <div className="row">
+              <div className="col s12">
+                <div className="card" />
+              </div>
             </div>
+            <div className="row" />
+            <div className="row" />
+            <div className="row" />
+            <div className="row" />
+            <div className="row" />
+            <div className="row" />
+            <div className="row" />
+            <div className="row" />
+            <div className="row" />
           </div>
         </div>
       );

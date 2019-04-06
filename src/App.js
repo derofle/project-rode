@@ -4,6 +4,7 @@ import { AppProvider, Consumer } from './services/context';
 
 import NavBar from './components/Header';
 import Footer from './components/Footer';
+import Sidebar from './components/Sidebar';
 
 import Home from './scenes/Home';
 import Attraction from './scenes/Attraction';
@@ -37,6 +38,7 @@ class AppRender extends React.Component {
           <div className="root-app">
             <header>
               <NavBar />
+              <Sidebar />
             </header>
             <main>
               <Switch>

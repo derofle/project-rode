@@ -27,81 +27,53 @@ class NavBarRender extends Component {
     }
     console.log(user);
     return (
-      <nav>
-        <div className="nav-wrapper container" style={{ width: '80%' }}>
-          <ul id="nav-mobile" className="left nav-container">
-            <li style={{ height: '8vh' }}>
-              <NavLink to="/" className="brand-logo">
-                <img className="logo-image" src="/img/logo_pr.png" alt="logo" />
-              </NavLink>
-            </li>
-            <li className="li-nav">
-              <NavLink
-                to="/parken"
-                hash="/#"
-                className="waves-effect waves-light btn right z-depth-0 nav-links bold-text"
-              >
-                <div className="marketing-icon">
-                  <img src="/img/parks.svg" alt="parks-icon" />
-                </div>
-                <p className="marketing-text">Parken</p>
-              </NavLink>
-            </li>
-            <li className="li-nav">
-              <NavLink
-                to="/attracties"
-                hash="/#"
-                className="waves-effect waves-light btn right z-depth-0 nav-links bold-text"
-              >
-                <div className="marketing-icon">
-                  <img src="/img/attractions.svg" alt="attractions-icon" />
-                </div>
-                <p className="marketing-text">Attracties</p>
-              </NavLink>
-            </li>
-            <li className="li-nav">
-              <NavLink
-                to="/shows"
-                hash="/#"
-                className="waves-effect waves-light btn right z-depth-0 nav-links bold-text"
-              >
-                <div className="marketing-icon">
-                  <img src="/img/shows.svg" alt="shows-icon" />
-                </div>
-                <p className="marketing-text">Shows</p>
-              </NavLink>
-            </li>
-          </ul>
-          <ul id="nav-mobile" className="right nav-container">
-            {user ? (
+      <div className="navbar-fixed">
+        <nav>
+          <div className="nav-wrapper container" style={{ width: '75%' }}>
+            <NavLink to="/" className="brand-logo center">
+              <img className="logo-image" src="/img/logo_pr.png" alt="logo" />
+            </NavLink>
+            <ul id="nav-mobile" className="left">
               <li>
-                <Link
-                  to={window.location.pathname}
-                  hash="/#"
-                  className="waves-effect waves-light btn-small z-depth-0 nav-button"
-                  onClick={() => {
-                    this.handleLogout();
-                  }}
+                <a
+                  href="#"
+                  data-target="slide-out"
+                  className="sidenav-trigger sidebar-trigger btn z-depth-0 nav-links bold-text "
                 >
-                  <i className="material-icons left">person</i>
-                  UITLOGGEN
-                </Link>
+                  <i className="material-icons nav-sidebar-button">menu</i>
+                </a>
               </li>
-            ) : (
-              <li>
-                <NavLink
-                  to="/login"
-                  hash="/#"
-                  className="waves-effect waves-light btn-small z-depth-0 nav-button"
-                >
-                  <i className="material-icons left">person</i>
-                  INLOGGEN
-                </NavLink>
+            </ul>
+            <ul id="nav-mobile" className="right">
+              <li className="li-nav" style={{ color: '#4c1971' }}>
+                <form>
+                  <div
+                    className="input-field"
+                    style={{ backgroundColor: '#f8f8f8' }}
+                  >
+                    <input
+                      id="search"
+                      className="search-field"
+                      type="search"
+                      placeholder="Zoeken"
+                    />
+                    <label className="label-icon" htmlFor="search">
+                      <i
+                        className="material-icons label-icon"
+                        style={{ color: '#4c1971' }}
+                      >
+                        search
+                      </i>
+                    </label>
+                    <i className="material-icons label-icon">close</i>
+                  </div>
+                </form>
               </li>
-            )}
-          </ul>
-        </div>
-      </nav>
+            </ul>
+          </div>
+          <div className="nav-wrapper" />
+        </nav>
+      </div>
     );
   }
 }
