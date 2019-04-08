@@ -150,25 +150,6 @@ html {
 	background-color: red;
 	position: relative;
 }
-
-.collection-item {
-	background-color: transparent !important;
-	color: #1d131d !important;
-}
-.collection-item a {
-	background-color: transparent !important;
-	color: #1d131d !important;
-}
-
-.collection-item:hover {
-	background-color: #7955b1 !important;
-	color: #f8f8f9 !important;
-}
-.collection-item a:hover {
-	background-color: #7955b1 !important;
-	color: #f8f8f9 !important;
-}
-
 .attraction-img:hover {
 	opacity: 1 !important;
 }
@@ -286,21 +267,4 @@ html {
 .glow2 {
 	font-family: 'Roboto', sans-serif;
 	text-shadow: 0 1px 1px black;
-}
-
-.big-picture-div {
-	position: relative;
-	height: 70vh;
-	width: 100%;
-	overflow: hidden;
-}
-
-.attraction-big-image {
-	position: absolute;
-	width: 100%;
-	top: -9999px;
-	left: -9999px;
-	right: -9999px;
-	bottom: -9999px;
-	margin: auto;
 }

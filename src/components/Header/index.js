@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { auth } from '../../services/firebase';
 import { Consumer } from '../../services/context';
 import './style/style.css';
