@@ -139,6 +139,7 @@ const parkLinkStyle = css`
   font-style: italic;
   text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
 `;
+
 const editButtonStyle = css`
   position: absolute;
   color: white;
@@ -212,6 +213,7 @@ class AttractionRender extends React.Component {
       attractionsInfo,
     } = this.context;
     const { attraction, attractionType, loading, park } = this.state;
+
     const { match, location } = this.props;
 
     let user;

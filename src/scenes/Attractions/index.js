@@ -2,6 +2,7 @@ import React from 'react';
 import { Consumer } from '../../services/context';
 import Table from './components/Table';
 
+
 class AttractionList extends React.Component {
   state = {
     search: '',
