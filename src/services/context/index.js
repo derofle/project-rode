@@ -40,7 +40,7 @@ export class AppProvider extends Component {
         attractionTypes: await database.getCollectionData('attractionTypes'),
         licenses: await database.getCollectionData('licenses'),
         media: await database.getCollectionData('media'),
-        mediaCreators: await database.getCollectionData('mediaCreators'),
+        mediaProviders: await database.getCollectionData('mediaProviders'),
         shows: await database.getCollectionData('shows'),
         manufacturers: await database.getCollectionData('manufacturers'),
         users: await database.getCollectionData('users'),
@@ -136,7 +136,7 @@ export class AppProvider extends Component {
       users,
       currentUser,
       media,
-      mediaCreators,
+      mediaProviders,
       licenses,
     } = this.state;
     const { children } = this.props;
@@ -155,7 +155,7 @@ export class AppProvider extends Component {
           users,
           currentUser,
           media,
-          mediaCreators,
+          mediaProviders,
           licenses,
           addData: this.addData,
           updateData: this.updateData,

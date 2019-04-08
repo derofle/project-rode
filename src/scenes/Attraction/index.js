@@ -206,7 +206,7 @@ class AttractionRender extends React.Component {
       currentUser,
       users,
       media,
-      mediaCreators,
+      mediaProviders,
       licenses,
     } = this.context;
     const {
@@ -226,15 +226,15 @@ class AttractionRender extends React.Component {
     const headerImageFile =
       media && media.find(med => med.uid === attraction.headerImage);
 
-    console.log(headerImageFile);
+    console.log('HeaderImage:', headerImageFile);
     const license =
       headerImageFile &&
-      licenses.find(lic => (lic.id = headerImageFile.licenseId));
+      licenses.find(lic => lic.id === headerImageFile.licenseId);
     console.log(license);
-    console.log(mediaCreators);
+    console.log(mediaProviders);
     const provider =
       headerImageFile &&
-      mediaProviders.find(prov => (prov.id = headerImageFile.providerId));
+      mediaProviders.find(prov => prov.id === headerImageFile.providerId);
     console.log(provider);
     if (!loading) {
       return (
