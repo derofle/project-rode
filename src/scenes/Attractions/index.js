@@ -49,6 +49,7 @@ class AttractionList extends React.Component {
     return (
       <div className="container">
         <div className="row" />
+        <div className="row" />
         <div className="row">
           <div className="col s12 m3">
             <div className="card">
@@ -86,7 +87,6 @@ class AttractionList extends React.Component {
             <Table
               attractions={filteredArray}
               history={history}
-              name="NAAM"
               media={media}
             />
           </div>
