@@ -1,6 +1,7 @@
 import React from 'react';
 import { Consumer } from '../../services/context';
-import AttractionTable from './components/Table';
+import Table from './components/Table';
+
 
 class AttractionList extends React.Component {
   state = {
@@ -43,8 +44,8 @@ class AttractionList extends React.Component {
 
   render() {
     const { filteredArray } = this.state;
-    const { history } = this.props;
     const { media } = this.context;
+    const { history } = this.props;
     return (
       <div className="container">
         <div className="row" />
@@ -82,7 +83,7 @@ class AttractionList extends React.Component {
             </div>
           </div>
           <div className="col s12 m9">
-            <AttractionTable
+            <Table
               attractions={filteredArray}
               history={history}
               name="NAAM"
