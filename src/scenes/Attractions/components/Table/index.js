@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Category from '../../../../components/Category';
 
 class AttractionTable extends React.Component {
   // eslint-disable-next-line class-methods-use-this
@@ -35,8 +36,9 @@ class AttractionTable extends React.Component {
             }}
           >
             <th style={{ width: '8vw', borderRadius: '6px 0 0 0' }} />
-            <th>{name}</th>
-            <th style={{ borderRadius: '0 6px 0 0' }}>CATEGORIE</th>
+            <th>NAAM</th>
+            <th>CATEGORIE</th>
+            <th>PARK</th>
           </tr>
         </thead>
         <tbody>
@@ -88,12 +90,16 @@ class AttractionTable extends React.Component {
                         paddingTop: '4px',
                       }}
                     >
-                      {attraction.type}
+                      {attraction &&
+                        attraction.typeIds.map(type => <p>{type}</p>)}
                     </p>
                   </div>
                 </td>
                 <td>
-                  <p>{this.renderSwitch(attraction.category)}</p>
+                  <Category categoryIds={attraction.categoryIds} />
+                </td>
+                <td>
+                  <p>{attraction.parkId}</p>
                 </td>
               </tr>
             ))}

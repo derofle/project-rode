@@ -11,7 +11,7 @@ import { Consumer } from '../../services/context';
 import Overview from './scenes/Overview';
 import Footage from './scenes/Footage';
 
-import Category from './components/Category';
+import Category from '../../components/Category';
 
 const bigPictureDivStyle = css`
   position: relative;

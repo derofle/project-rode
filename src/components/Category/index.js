@@ -2,7 +2,7 @@ import React from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Link } from 'react-router-dom';
-import { Consumer } from '../../../../services/context';
+import { Consumer } from '../../services/context';
 
 const categoryDivStyle = css`
   cursor: pointer;
