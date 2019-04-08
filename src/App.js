@@ -10,6 +10,7 @@ import Home from './scenes/Home';
 import Attraction from './scenes/Attraction';
 
 import Login from './scenes/Sign/scenes/Login';
+import NotFound from './components/NotFound';
 /*
 import Signup from './auth/Signup';
 import Admin from './admin/Admin';
@@ -86,6 +87,8 @@ class AppRender extends React.Component {
                   )}
                 />
                 */}
+                <Route path="/404" component={NotFound} />
+                <Route component={NotFound} />
               </Switch>
             </main>
             <footer>

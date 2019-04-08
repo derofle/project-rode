@@ -17,15 +17,14 @@ class NavBarRender extends Component {
   };
 
   render() {
+    /*
     const { context } = this.props;
     const { currentUser, users } = context;
-    console.log(context);
     let user;
-
     if (currentUser && currentUser.uid) {
       user = users.find(obj => obj.uid === currentUser.uid);
     }
-    console.log(user);
+    */
     return (
       <div className="navbar-fixed">
         <nav>
@@ -71,7 +70,6 @@ class NavBarRender extends Component {
               </li>
             </ul>
           </div>
-          <div className="nav-wrapper" />
         </nav>
       </div>
     );

@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
-import { BrowserRouter, Route, NavLink, Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import { auth } from '../../services/firebase';
 import 'materialize-css/dist/css/materialize.min.css';
 
 class Sidebar extends Component {
   componentDidMount() {
     const elem = document.querySelector('.sidenav');
-    const instance = M.Sidenav.init(elem, {
+    M.Sidenav.init(elem, {
       edge: 'left',
       inDuration: 250,
     });
   }
+
+  handleLogout = () => {
+    const { destroySession } = this.context;
+    auth.signOut();
+    destroySession();
+  };
 
   render() {
     return (
