@@ -8,8 +8,7 @@ import Sidebar from './components/Sidebar';
 
 import Home from './scenes/Home';
 import AttractionDetails from './scenes/AttractionDetails';
-import Attractions from './scenes/Attractions';
-
+import Attractions from './scenes/Attractions/Attractions';
 
 import Login from './scenes/Sign/scenes/Login';
 import NotFound from './components/NotFound';

@@ -210,7 +210,6 @@ class AttractionRender extends React.Component {
       media,
       mediaProviders,
       licenses,
-      attractionsInfo,
     } = this.context;
     const { attraction, attractionType, loading, park } = this.state;
 
