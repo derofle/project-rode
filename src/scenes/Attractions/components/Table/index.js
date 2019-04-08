@@ -19,7 +19,7 @@ class AttractionTable extends React.Component {
   }
 
   render() {
-    const { attractions, name, history } = this.props;
+    const { attractions, name, history, media } = this.props;
     return (
       <table className="z-depth-1 highlight" style={{ borderRadius: '6px' }}>
         <thead
@@ -51,12 +51,16 @@ class AttractionTable extends React.Component {
                 className="table-item"
                 key={attraction.uid}
                 onClick={() => {
-                  history.push(`/attractie/${attraction.uid}`);
+                  history.push(
+                    `/park/${attraction.parkId}/attractie/${attraction.id}`
+                  );
                 }}
               >
                 <td style={{ padding: '10px' }}>
                   <img
-                    src={attraction.img}
+                    src={
+                      media.find(med => med.uid === attraction.headerImage).src
+                    }
                     alt={attraction.id}
                     style={{
                       display: 'block',

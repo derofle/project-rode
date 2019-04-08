@@ -123,6 +123,22 @@ const creditUrl = css`
   text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
 `;
 
+const parkBoxStyle = css`
+  position: absolute;
+  z-index: 9;
+  bottom: 2%;
+  left: 1%;
+  padding: 6px 10px 6px 10px;
+  color: white;
+  text-align: right;
+  font-size: 0.9rem;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
+`;
+const parkLinkStyle = css`
+  color: white;
+  font-style: italic;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
+`;
 const editButtonStyle = css`
   position: absolute;
   color: white;
@@ -195,7 +211,7 @@ class AttractionRender extends React.Component {
       licenses,
       attractionsInfo,
     } = this.context;
-    const { attraction, attractionType, loading } = this.state;
+    const { attraction, attractionType, loading, park } = this.state;
     const { match, location } = this.props;
 
     let user;
@@ -227,6 +243,12 @@ class AttractionRender extends React.Component {
               css={attractionBigImageStyle}
               alt={attraction.id}
             />
+            <div css={parkBoxStyle}>
+              Park:{' '}
+              <Link css={parkLinkStyle} to={`/park/${park.id}`}>
+                {park.name}
+              </Link>
+            </div>
             <div css={creditBox}>
               Foto door:{' '}
               <a
