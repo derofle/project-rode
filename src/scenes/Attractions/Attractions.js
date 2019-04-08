@@ -43,6 +43,7 @@ class AttractionList extends React.Component {
 
   render() {
     const { filteredArray } = this.state;
+    console.log('hi');
     const { media } = this.context;
     const { history } = this.props;
     return (

@@ -1,33 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { css, jsx } from '@emotion/core';
 import Category from '../../../../components/Category';
 import { Consumer } from '../../../../services/context';
-import { idToName } from '../../../../services/utilities';
+import {
+  idToName,
+  idToSlug,
+  getCategoryIdByTypeId,
+} from '../../../../services/utilities';
+/** @jsx jsx */
+
+const tableStyle = css`
+  border-radius: 6px;
+`;
+const chipStyle = css`
+  height: 24px !important;
+  line-height: 24px !important;
+`;
+
+const tableBottomStyle = css`
+  background-color: #f2f5f7;
+  border-radius: 0 0 8px 8px;
+`;
 
 class TableRender extends React.Component {
-  // eslint-disable-next-line class-methods-use-this
-  renderSwitch(param) {
-    switch (param) {
-      case 'roller-coaster':
-        return 'Achtbaan';
-      case 'gentle-ride':
-        return 'Familie Attractie';
-      case 'thrill-ride':
-        return 'Spannende Attractie';
-      case 'water-ride':
-        return 'Water Attractie';
-      default:
-        return 'Onbekend';
-    }
-  }
-
   render() {
-    const { attractions, name, history, media } = this.props;
+    const { attractions, media } = this.props;
     const { parks, loading, attractionsInfo } = this.context;
-    const { attractionTypes } = attractionsInfo;
+    const { attractionTypes, attractionCategories } = attractionsInfo;
     if (!loading) {
       return (
-        <table className="z-depth-1 highlight" style={{ borderRadius: '6px' }}>
+        <table className="z-depth-1 highlight" css={tableStyle}>
           <thead
             style={{
               backgroundColor: '#f2f5f7',
@@ -57,11 +61,6 @@ class TableRender extends React.Component {
                   }}
                   className="table-item"
                   key={attraction.uid}
-                  onClick={() => {
-                    history.push(
-                      `/park/${attraction.parkId}/attractie/${attraction.id}`
-                    );
-                  }}
                 >
                   <td style={{ padding: '10px' }}>
                     <img
@@ -79,28 +78,37 @@ class TableRender extends React.Component {
                   </td>
                   <td>
                     <div>
-                      <p
+                      <Link
                         style={{
                           fontSize: '1.5em',
                           lineHeight: '100%',
                           color: '#030e18',
                           margin: 0,
                         }}
+                        to={`/park/${attraction.parkId}/attractie/${
+                          attraction.id
+                        }`}
                       >
                         {attraction.name}
-                      </p>
-
+                      </Link>
+                      <br />
                       {attraction &&
                         attraction.typeIds.map(type => (
-                          <p
-                            style={{
-                              color: '#586878',
-                              margin: 0,
-                              paddingTop: '4px',
-                            }}
+                          <Link
+                            to={`/categorie/${idToSlug(
+                              getCategoryIdByTypeId(
+                                type,
+                                attractionTypes,
+                                attractionCategories
+                              ),
+                              attractionCategories
+                            )}/type/${idToSlug(type, attractionTypes)}`}
+                            key={`${attraction.uid}:${type}`}
                           >
-                            {idToName(type, attractionTypes)}
-                          </p>
+                            <div className="chip" css={chipStyle}>
+                              {idToName(type, attractionTypes)}
+                            </div>
+                          </Link>
                         ))}
                     </div>
                   </td>
@@ -112,15 +120,11 @@ class TableRender extends React.Component {
                   </td>
                 </tr>
               ))}
-            <tr
-              style={{
-                backgroundColor: '#f2f5f7',
-                borderRadius: '0 0 6px 6px',
-              }}
-            >
-              <td style={{ borderRadius: '0 0 0 6px' }} />
+            <tr css={tableBottomStyle}>
+              <td css={tableBottomStyle} />
               <td />
-              <td style={{ borderRadius: '0 0 6px 0' }} />
+              <td />
+              <td css={tableBottomStyle} />
             </tr>
           </tbody>
         </table>
