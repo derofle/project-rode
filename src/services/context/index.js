@@ -22,7 +22,6 @@ export class AppProvider extends Component {
   };
 
   async componentDidMount() {
-    console.log(await database.getCollectionData('mediaCreators'));
     firebase.auth.onAuthStateChanged(
       user =>
         user &&
@@ -46,7 +45,6 @@ export class AppProvider extends Component {
         users: await database.getCollectionData('users'),
       },
       () => {
-        console.log(this.state);
         this.setState({
           loading: false,
         });

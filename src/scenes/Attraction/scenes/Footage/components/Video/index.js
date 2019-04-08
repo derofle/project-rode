@@ -23,6 +23,7 @@ class VideoRender extends React.Component {
             src={`${videoFile.src}?rel=0`}
             frameBorder="0"
             allowFullScreen
+            title={videoFile.src}
           />
         </div>
         <div css={creditStyle}>

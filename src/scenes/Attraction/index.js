@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Consumer } from '../../services/context';
@@ -47,6 +47,7 @@ const textOverImageStyle = css`
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 4;
+  width: 80vw;
   text-align: center;
 `;
 
@@ -122,10 +123,26 @@ const creditUrl = css`
   text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
 `;
 
+const editButtonStyle = css`
+  position: absolute;
+  color: white;
+  z-index: 10;
+  right: 2%;
+  top: 3%;
+  cursor: pointer;
+  background-color: black;
+  padding: 6px;
+  border-radius: 50%;
+  transition: 0.2s;
+  &:hover {
+    color: black !important;
+    background-color: white !important;
+  }
+`;
+
 class AttractionRender extends React.Component {
   state = {
     loading: true,
-    editMode: false,
     attraction: {},
     attractionType: [],
     park: {},
@@ -146,63 +163,31 @@ class AttractionRender extends React.Component {
       attractions &&
       attractions.find(obj => obj.id === match.params.attractionId);
 
-    attraction.typeIds.forEach(type => {
-      const newType = attractionTypes.find(obj => obj.id === type);
-      this.setState(prevState => ({
-        attractionType: [...prevState.attractionType, newType],
-      }));
-    });
+    // eslint-disable-next-line no-unused-expressions
+    attraction &&
+      attraction.typeIds.forEach(type => {
+        const newType = attractionTypes.find(obj => obj.id === type);
+        this.setState(prevState => ({
+          attractionType: [...prevState.attractionType, newType],
+        }));
+      });
 
-    const park = parks.find(obj => obj.id === attraction.parkId);
+    const park = attraction && parks.find(obj => obj.id === attraction.parkId);
 
-    const manufacturer = manufacturers.find(
-      obj => obj.id === attraction.manufacturerId
-    );
+    const manufacturer =
+      attraction &&
+      manufacturers.find(obj => obj.id === attraction.manufacturerId);
+
     this.setState({
       attraction,
       park,
+      manufacturer,
       loading: false,
     });
-    console.log(this.state);
   }
-
-  handleChange = e => {
-    const { attraction } = this.state;
-    console.log(e.target.value);
-
-    this.setState({
-      attraction: {
-        ...attraction,
-        [e.target.id]: e.target.value,
-      },
-    });
-  };
-
-  toggleEditMode = () => {
-    const { editMode } = this.state;
-    if (editMode) {
-      this.updateAttraction();
-    }
-    this.setState({
-      editMode: !editMode,
-    });
-  };
-
-  updateAttraction = () => {
-    const { updateData, manufacturers } = this.context;
-    const { attraction } = this.state;
-    updateData(attraction, 'attractions');
-    const manufacturer = manufacturers.find(
-      obj => obj.id === attraction.manufacturer_id
-    );
-    this.setState({
-      manufacturer,
-    });
-  };
 
   render() {
     const {
-      manufacturers,
       currentUser,
       users,
       media,
@@ -210,16 +195,9 @@ class AttractionRender extends React.Component {
       licenses,
       attractionsInfo,
     } = this.context;
-    const { attractionCategories } = attractionsInfo;
-    const {
-      attraction,
-      attractionType,
-      park,
-      manufacturer,
-      loading,
-    } = this.state;
+    const { attraction, attractionType, loading } = this.state;
     const { match, location } = this.props;
-    const { editMode } = this.state;
+
     let user;
     if (currentUser && currentUser.uid) {
       user = users.find(obj => obj.uid === currentUser.uid);
@@ -228,17 +206,18 @@ class AttractionRender extends React.Component {
     const headerImageFile =
       media && media.find(med => med.uid === attraction.headerImage);
 
-    console.log('HeaderImage:', headerImageFile);
     const license =
       headerImageFile &&
       licenses.find(lic => lic.id === headerImageFile.licenseId);
-    console.log(license);
-    console.log(mediaProviders);
+
     const provider =
       headerImageFile &&
       mediaProviders.find(prov => prov.id === headerImageFile.providerId);
-    console.log(provider);
+
     if (!loading) {
+      if (attraction === undefined) return <Redirect to="/404" />;
+      if (attraction.parkId !== match.params.parkId)
+        return <Redirect to="/404" />;
       return (
         <div>
           <div css={bigPictureDivStyle}>
@@ -273,27 +252,34 @@ class AttractionRender extends React.Component {
               <p css={attractionTypeStyle}>
                 -
                 {attractionType &&
-                  attractionType.map(type => {
-                    const categoryInfo =
-                      attractionCategories &&
-                      attractionCategories.find(
-                        cat => cat.id === type.categoryId
-                      );
-                    return (
+                  attractionType.map(type => (
+                    <Fragment>
+                      {' '}
                       <Link
-                        to={`/categorie/${categoryInfo.slug}/type/${type.slug}`}
+                        to={`/categorie/${type.categoryId}/type/${type.id}`}
                         css={attractionTypeStyle}
                       >
-                        {' '}
-                        {type.name} -
-                      </Link>
-                    );
-                  })}
+                        {type.name}
+                      </Link>{' '}
+                      -
+                    </Fragment>
+                  ))}
               </p>
               <p css={attractionNameStyle}>{attraction.name}</p>
               <p css={attractionSubtitleStyle}>{attraction.subtitle}</p>
               <Category categoryIds={attraction.categoryIds} />
             </div>
+            {user && user.role === 'admin' ? (
+              <Link to={`/admin/edit/attraction/${attraction.uid}`}>
+                <i
+                  className="material-icons small z-depth-1"
+                  css={editButtonStyle}
+                  onClick={this.toggleEditMode}
+                >
+                  edit
+                </i>
+              </Link>
+            ) : null}
             <div css={attractionMenuStyle}>
               <div className="card-content">
                 <ul className="tabs">

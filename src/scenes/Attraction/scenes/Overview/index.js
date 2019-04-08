@@ -1,5 +1,4 @@
 import React from 'react';
-import { Slider, Slide } from 'react-materialize';
 import PropTypes from 'prop-types';
 
 const AttractionOverview = props => {
