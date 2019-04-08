@@ -208,7 +208,9 @@ class AttractionRender extends React.Component {
       media,
       mediaProviders,
       licenses,
+      attractionsInfo,
     } = this.context;
+    const { attractionCategories } = attractionsInfo;
     const {
       attraction,
       attractionType,
@@ -271,15 +273,22 @@ class AttractionRender extends React.Component {
               <p css={attractionTypeStyle}>
                 -
                 {attractionType &&
-                  attractionType.map(type => (
-                    <Link
-                      to={`/categorie/${type.categoryId}/type/${type.id}`}
-                      css={attractionTypeStyle}
-                    >
-                      {' '}
-                      {type.name} -
-                    </Link>
-                  ))}
+                  attractionType.map(type => {
+                    const categoryInfo =
+                      attractionCategories &&
+                      attractionCategories.find(
+                        cat => cat.id === type.categoryId
+                      );
+                    return (
+                      <Link
+                        to={`/categorie/${categoryInfo.slug}/type/${type.slug}`}
+                        css={attractionTypeStyle}
+                      >
+                        {' '}
+                        {type.name} -
+                      </Link>
+                    );
+                  })}
               </p>
               <p css={attractionNameStyle}>{attraction.name}</p>
               <p css={attractionSubtitleStyle}>{attraction.subtitle}</p>
