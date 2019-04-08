@@ -2,7 +2,6 @@ import React from 'react';
 import { Consumer } from '../../services/context';
 import Table from './components/Table';
 
-
 class AttractionList extends React.Component {
   state = {
     search: '',
@@ -47,7 +46,7 @@ class AttractionList extends React.Component {
     const { media } = this.context;
     const { history } = this.props;
     return (
-      <div className="container">
+      <div className="container" style={{ width: '100%' }}>
         <div className="row" />
         <div className="row" />
         <div className="row">
