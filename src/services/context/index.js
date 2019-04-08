@@ -22,6 +22,7 @@ export class AppProvider extends Component {
   };
 
   async componentDidMount() {
+    console.log(await database.getCollectionData('mediaCreators'));
     firebase.auth.onAuthStateChanged(
       user =>
         user &&
@@ -37,6 +38,9 @@ export class AppProvider extends Component {
           'attractionCategories'
         ),
         attractionTypes: await database.getCollectionData('attractionTypes'),
+        licenses: await database.getCollectionData('licenses'),
+        media: await database.getCollectionData('media'),
+        mediaCreators: await database.getCollectionData('mediaCreators'),
         shows: await database.getCollectionData('shows'),
         manufacturers: await database.getCollectionData('manufacturers'),
         users: await database.getCollectionData('users'),
@@ -131,6 +135,9 @@ export class AppProvider extends Component {
       manufacturers,
       users,
       currentUser,
+      media,
+      mediaCreators,
+      licenses,
     } = this.state;
     const { children } = this.props;
     return (
@@ -147,6 +154,9 @@ export class AppProvider extends Component {
           manufacturers,
           users,
           currentUser,
+          media,
+          mediaCreators,
+          licenses,
           addData: this.addData,
           updateData: this.updateData,
           destroySession: () =>

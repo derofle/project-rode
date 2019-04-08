@@ -216,3 +216,74 @@ DB7677
 F7585E
 CD283B
 323037
+
+
+
+
+<nav>
+        <div className="nav-wrapper container">
+          <NavLink to="/" className="nav-logo">
+            <img className="logo-image" src="/img/logo_pr.png" alt="logo" />
+          </NavLink>
+          <div className="row">
+            <div className="col s12">
+              <ul>
+                <li>
+                  <NavLink
+                    to="/parken"
+                    hash="/#"
+                    className="waves-effect waves-light btn right z-depth-0 nav-links bold-text"
+                  >
+                    <div className="marketing-icon">
+                      <img src="/img/parks.svg" alt="parks-icon" />
+                    </div>
+                    <p className="marketing-text">Parken</p>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/attracties"
+                    hash="/#"
+                    className="waves-effect waves-light btn right z-depth-0 nav-links bold-text"
+                  >
+                    <div className="marketing-icon">
+                      <img src="/img/attractions.svg" alt="attractions-icon" />
+                    </div>
+                    <p className="marketing-text">Attracties</p>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/shows"
+                    hash="/#"
+                    className="waves-effect waves-light btn right z-depth-0 nav-links bold-text"
+                  >
+                    <div className="marketing-icon">
+                      <img src="/img/shows.svg" alt="shows-icon" />
+                    </div>
+                    <p className="marketing-text">Shows</p>
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <ul className="right">
+            <li>
+              <Link
+                to={window.location.pathname}
+                id="logout-button"
+                hash="/#"
+                className="right sign-button z-depth-0 bold-text"
+                onClick={() => {
+                  // this.handleLogout();
+                }}
+              >
+                <p className="nav-button-paragraph">
+                  <i className="material-icons sign-icon left">person</i>
+                  UITLOGGEN
+                </p>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>

@@ -9,6 +9,7 @@ import { css, jsx } from '@emotion/core';
 import { Consumer } from '../../services/context';
 
 import Overview from './scenes/Overview';
+import Footage from './scenes/Footage';
 
 import Category from './components/Category';
 
@@ -136,6 +137,7 @@ class AttractionRender extends React.Component {
   };
 
   componentDidMount() {
+    // TODO: Add park check, otherwise redirect to NotFound page
     const { parks, manufacturers, attractionsInfo } = this.context;
     const { attractions, attractionTypes } = attractionsInfo;
     const { match } = this.props;
@@ -199,7 +201,14 @@ class AttractionRender extends React.Component {
   };
 
   render() {
-    const { manufacturers, currentUser, users } = this.context;
+    const {
+      manufacturers,
+      currentUser,
+      users,
+      media,
+      mediaCreators,
+      licenses,
+    } = this.context;
     const {
       attraction,
       attractionType,
@@ -213,35 +222,49 @@ class AttractionRender extends React.Component {
     if (currentUser && currentUser.uid) {
       user = users.find(obj => obj.uid === currentUser.uid);
     }
+
+    const headerImageFile =
+      media && media.find(med => med.uid === attraction.headerImage);
+
+    console.log(headerImageFile);
+    const license =
+      headerImageFile &&
+      licenses.find(lic => (lic.id = headerImageFile.licenseId));
+    console.log(license);
+    console.log(mediaCreators);
+    const provider =
+      headerImageFile &&
+      mediaProviders.find(prov => (prov.id = headerImageFile.providerId));
+    console.log(provider);
     if (!loading) {
       return (
         <div>
           <div css={bigPictureDivStyle}>
             <div css={overlayStyle} />
             <img
-              src={attraction.headerImage.src}
+              src={headerImageFile.src}
               css={attractionBigImageStyle}
               alt={attraction.id}
             />
             <div css={creditBox}>
               Foto door:{' '}
               <a
-                href={attraction.headerImage.credUrl}
+                href={provider.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 css={creditUrl}
               >
-                {attraction.headerImage.credName}
+                {provider.name}
               </a>
               <br />
               Gedistribueerd onder:{' '}
               <a
-                href={attraction.headerImage.credTypeUrl}
+                href={license.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 css={creditUrl}
               >
-                {attraction.headerImage.credType}
+                {license.abbreviated}
               </a>
             </div>
             <div css={textOverImageStyle}>
@@ -289,10 +312,10 @@ class AttractionRender extends React.Component {
                     <Link
                       to={`/park/${match.params.parkId}/attractie/${
                         match.params.attractionId
-                      }/statistieken`}
+                      }/beeldmateriaal`}
                       css={menuLinkStyle}
                     >
-                      Statistieken
+                      Beeldmateriaal
                     </Link>
                   </li>
                   <li className="tab col s3 collection-item">
@@ -309,11 +332,15 @@ class AttractionRender extends React.Component {
               </div>
             </div>
           </div>
-          <div className="row" style={{ height: '1px' }} />
+          <div className="row" style={{ height: '1px', marginBottom: 0 }} />
           <div className="container">
             {match.path === '/park/:parkId/attractie/:attractionId' &&
             match.isExact === true ? (
               <Overview attraction={attraction} />
+            ) : null}
+            {match.path === '/park/:parkId/attractie/:attractionId' &&
+            location.pathname.includes('beeldmateriaal') ? (
+              <Footage attraction={attraction} />
             ) : null}
           </div>
         </div>
