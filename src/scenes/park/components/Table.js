@@ -115,7 +115,7 @@ class ParkTable extends React.Component {
 }
 
 ParkTable.propTypes = {
-  attractions: PropTypes.array,
+  parks: PropTypes.array,
   name: PropTypes.string,
   history: PropTypes.object,
 };

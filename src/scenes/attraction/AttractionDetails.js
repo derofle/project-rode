@@ -272,7 +272,7 @@ class AttractionRender extends React.Component {
                 -
                 {attractionType &&
                   attractionType.map(type => (
-                    <Fragment>
+                    <Fragment key={type.id}>
                       {' '}
                       <Link
                         to={`/categorie/${type.categoryId}/type/${type.id}`}
@@ -294,6 +294,9 @@ class AttractionRender extends React.Component {
                   className="material-icons small z-depth-1"
                   css={editButtonStyle}
                   onClick={this.toggleEditMode}
+                  role="button"
+                  onKeyPress={this.toggleEditMode}
+                  tabIndex="-1"
                 >
                   edit
                 </i>

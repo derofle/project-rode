@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
 import ParkTable from './components/Table';
 
@@ -60,13 +61,15 @@ class ParkList extends React.Component {
                 <div className="row">
                   <form onSubmit={this.handleSubmit}>
                     <div className="input-field col">
-                      <input
-                        id="search"
-                        type="text"
-                        className="validate"
-                        onChange={this.handleChange}
-                      />
-                      <label htmlFor="search">Zoek park...</label>
+                      <label htmlFor="search">
+                        <input
+                          id="search"
+                          type="text"
+                          className="validate"
+                          onChange={this.handleChange}
+                        />
+                        Zoek park...
+                      </label>
                       <button
                         type="button"
                         className="waves-effect waves-light btn"
@@ -88,6 +91,10 @@ class ParkList extends React.Component {
     );
   }
 }
+
+ParkList.propTypes = {
+  history: PropTypes.object,
+};
 
 ParkList.contextType = Consumer;
 export default props => <Consumer>{() => <ParkList {...props} />}</Consumer>;

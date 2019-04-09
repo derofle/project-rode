@@ -1,33 +1,24 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { AppProvider, Consumer } from './services/context';
+import { AppProvider, Consumer } from 'services/context';
 
-import NavBar from './components/Header';
-import Footer from './components/Footer';
-import Sidebar from './components/Sidebar';
+// Components
+import Header from 'components/Header';
+import Footer from 'components/Footer';
+import Sidebar from 'components/Sidebar';
+import NotFound from 'components/NotFound';
 
-import AttractionDetails from './scenes/attraction/AttractionDetails';
-import Attractions from './scenes/attraction/Attractions';
+// Auth
+import Login from 'scenes/auth/Login';
+import Signup from 'scenes/auth/Signup';
 
-import Login from './scenes/auth/Login';
-import NotFound from './components/NotFound';
-import ParkDetails from './scenes/park/ParkDetails';
-import Parks from './scenes/park/Parks';
-/*
-import Signup from './auth/Signup';
-import Admin from './admin/Admin';
+// Attraction
+import AttractionDetails from 'scenes/attraction/AttractionDetails';
+import Attractions from 'scenes/attraction/Attractions';
 
-
-
-
-
-
-import AddAttraction from './admin/add/AddAttraction';
-
-
-import Manufacturer from './manufacturer/Manufacturer';
-
-*/
+// Parks
+import ParkDetails from 'scenes/park/ParkDetails';
+import Parks from 'scenes/park/Parks';
 
 class AppRender extends React.Component {
   render() {
@@ -40,7 +31,7 @@ class AppRender extends React.Component {
         <BrowserRouter>
           <div className="root-app">
             <header>
-              <NavBar />
+              <Header />
               <Sidebar />
             </header>
             <main>
@@ -52,46 +43,9 @@ class AppRender extends React.Component {
                 />
                 <Route path="/attracties" component={Attractions} />
                 <Route exact path="/login" component={() => <Login />} />
-                <Route path="/attracties" component={Attractions} />
                 <Route path="/park/:parkId" component={ParkDetails} />
                 <Route path="/parken" component={Parks} />
-                {/*
-                <Route exact path="/admin" component={Admin} />
-               
-                
-                
-                <Route
-                  path="/admin/toevoegen/attractie"
-                  component={AddAttraction}
-                />
-                 }
-                
-                
-                
-                
-                <Route path="/fabrikant/:Id" component={Manufacturer} />
-                
-                
-                
-                <Route exact path="/aanmelden" component={() => <Signup />} />
-                <Route
-                  exact
-                  path="/signedOut"
-                  component={() => (
-                    <h1 className="content">You're now signed out.</h1>
-                  )}
-                />
-                <Route
-                  exact
-                  path="/accountCreated"
-                  component={() => (
-                    <h1 className="content">
-                      Account created.{' '}
-                      <Link to="/login">Proceed to Dashboard</Link>
-                    </h1>
-                  )}
-                />
-                */}
+                <Route path="/aanmelden" component={Signup} />
                 <Route path="/404" component={NotFound} />
                 <Route component={NotFound} />
               </Switch>

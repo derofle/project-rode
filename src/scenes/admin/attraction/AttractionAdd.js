@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import Select from 'react-select';
 import { Consumer } from '../../../context/AppProvider';
@@ -70,10 +68,7 @@ class AddAttraction extends React.Component {
       parkId,
       categoryId,
       typeId,
-      img,
-      description,
       manufacturerId,
-      selectedOption,
       coasterMaterial,
       status,
     } = this.state;
@@ -153,15 +148,17 @@ class AddAttraction extends React.Component {
                     Naam:
                   </p>
                   <div className="input-field" style={{ marginBottom: 0 }}>
-                    <label htmlFor="name">Naam attractie</label>
-                    <input
-                      id="name"
-                      type="text"
-                      className="validate"
-                      onChange={this.handleChange}
-                      required
-                      value={name}
-                    />
+                    <label htmlFor="name">
+                      Naam attractie
+                      <input
+                        id="name"
+                        type="text"
+                        className="validate"
+                        onChange={this.handleChange}
+                        required
+                        value={name}
+                      />
+                    </label>
                   </div>
                 </div>
               </div>
@@ -301,7 +298,9 @@ class AddAttraction extends React.Component {
               <div className="row">
                 <div className="col s12 m8" />
                 <div className="col s12 m4">
-                  <button className="btn right">Toevoegen</button>
+                  <button className="btn right" type="button">
+                    Toevoegen
+                  </button>
                 </div>
               </div>
             </div>
