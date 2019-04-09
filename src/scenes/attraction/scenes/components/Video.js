@@ -1,7 +1,7 @@
 import React from 'react';
 import { css, jsx } from '@emotion/core';
 /** @jsx jsx */
-import { Consumer } from '../../../../../../services/context';
+import { Consumer } from '../../../../services/context';
 
 const creditStyle = css`
   text-align: center;

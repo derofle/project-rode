@@ -6,14 +6,13 @@ import NavBar from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 
-import Home from './scenes/Home';
-import AttractionDetails from './scenes/AttractionDetails/AttractionDetails';
-import Attractions from './scenes/Attractions/Attractions';
+import AttractionDetails from './scenes/attraction/AttractionDetails';
+import Attractions from './scenes/attraction/Attractions';
 
-import Login from './scenes/Sign/scenes/Login';
+import Login from './scenes/auth/Login';
 import NotFound from './components/NotFound';
-import ParkDetails from './scenes/ParkDetails/ParkDetails';
-import Parks from './scenes/Parks/Parks';
+import ParkDetails from './scenes/park/ParkDetails';
+import Parks from './scenes/park/Parks';
 /*
 import Signup from './auth/Signup';
 import Admin from './admin/Admin';
@@ -46,7 +45,7 @@ class AppRender extends React.Component {
             </header>
             <main>
               <Switch>
-                <Route exact path="/" component={Home} />
+                <Route exact path="/" component={NotFound} />
                 <Route
                   path="/park/:parkId/attractie/:attractionId"
                   component={AttractionDetails}
