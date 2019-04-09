@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { NavLink, Link } from 'react-router-dom';
-import { auth } from '../../services/firebase';
+import { auth } from '../services/firebase';
 import 'materialize-css/dist/css/materialize.min.css';
 
 class Sidebar extends Component {

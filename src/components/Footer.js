@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Consumer } from '../../services/context';
+import { Consumer } from '../services/context';
 
 const FooterRender = props => {
   const { context } = props;
