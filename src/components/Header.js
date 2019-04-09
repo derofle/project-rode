@@ -56,10 +56,20 @@ const labelIconStyle = css`
   height: 100% !important;
   line-height: 44px !important;
   display: inline !important;
+  position: absolute;
+  padding-left: 0.5rem !important;
 `;
 
 const searchFieldStyle = css`
   background-color: transparent !important;
+  padding-left: 3rem !important;
+`;
+
+const labelSearchStyle = css`
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  height: 3rem !important;
 `;
 
 class HeaderRender extends React.Component {
@@ -116,15 +126,11 @@ class HeaderRender extends React.Component {
                     className="input-field"
                     style={{ backgroundColor: '#f8f8f8' }}
                   >
-                    <label className="label-icon" htmlFor="search">
-                      <input
-                        id="search"
-                        className="search-field"
-                        type="search"
-                        placeholder="Zoeken"
-                        css={searchFieldStyle}
-                      />
-
+                    <label
+                      className="label-icon"
+                      htmlFor="search"
+                      css={labelSearchStyle}
+                    >
                       <i
                         className="material-icons label-icon"
                         style={{ color: '#4c1971' }}
@@ -132,13 +138,14 @@ class HeaderRender extends React.Component {
                       >
                         search
                       </i>
+                      <input
+                        id="search"
+                        className="search-field"
+                        type="search"
+                        placeholder="Zoeken..."
+                        css={searchFieldStyle}
+                      />
                     </label>
-                    <i
-                      className="material-icons label-icon"
-                      css={labelIconStyle}
-                    >
-                      close
-                    </i>
                   </div>
                 </form>
               </li>
