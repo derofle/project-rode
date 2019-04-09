@@ -1,6 +1,6 @@
 import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
-import { firebase, database } from '../firebase';
+import { firebase, database } from './firebase';
 
 export const { Provider, Consumer } = createContext();
 

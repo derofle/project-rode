@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { Consumer } from '../../context/AppProvider';
+import { Consumer } from '../../services/context';
 
 class AdminRender extends Component {
   render() {

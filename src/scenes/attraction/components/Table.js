@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { css, jsx } from '@emotion/core';
-import Category from '../../../../components/Category';
-import { Consumer } from '../../../../services/context';
+import Category from '../../../components/Category';
+import { Consumer } from '../../../services/context';
 import {
   idToName,
   idToSlug,
   getCategoryIdByTypeId,
-} from '../../../../services/utilities';
+} from '../../../services/utilities';
 /** @jsx jsx */
 
 const tableStyle = css`
