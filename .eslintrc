@@ -1,6 +1,7 @@
 {
 	"extends": [ "wesbos" ],
 	"rules": {
-		"react/display-name": 0
+		"react/display-name": 0,
+		"import/no-unresolved": 0
 	}
 }

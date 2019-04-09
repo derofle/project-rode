@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Consumer } from '../../services/context';
+import { Consumer } from 'services/context';
 
 const bigPictureDivStyle = css`
   position: relative;

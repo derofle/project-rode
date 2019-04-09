@@ -1,17 +1,13 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Consumer } from '../../services/context';
+import Category from 'components/Category';
+import { Consumer } from 'services/context';
 
 import Overview from './scenes/Overview';
 import Footage from './scenes/Footage';
-
-import Category from '../../components/Category';
 
 const bigPictureDivStyle = css`
   position: relative;

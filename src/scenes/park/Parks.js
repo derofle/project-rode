@@ -1,5 +1,5 @@
 import React from 'react';
-import { Consumer } from '../../services/context';
+import { Consumer } from 'services/context';
 import ParkTable from './components/Table';
 
 class ParkList extends React.Component {
