@@ -8,8 +8,8 @@ import { Link, Redirect } from 'react-router-dom';
 import { css, jsx } from '@emotion/core';
 import { Consumer } from '../../services/context';
 
-import Overview from '../AttractionDetails/scenes/Overview';
-import Footage from '../AttractionDetails/scenes/Footage';
+import Overview from './scenes/Overview';
+import Footage from './scenes/Footage';
 
 import Category from '../../components/Category';
 
