@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -28,13 +28,6 @@ const brandLogoStyle = css`
   box-shadow: 0 4px 1px -3px rgba(0, 0, 0, 0.5);
 `;
 
-const navLinksStyle = css`
-  background-color: transparent !important;
-  transition: width 0.5s ease, background-color 0.5s ease;
-  color: #4c1971 !important;
-  display: inline-block;
-`;
-
 const liNavStyle = css`
   border-bottom: 5px solid transparent;
   height: 45px;
@@ -56,6 +49,7 @@ const sidebarTriggerStyle = css`
   display: inline !important;
   width: 54px;
   color: #4c1971;
+  background-color: transparent !important;
 `;
 
 const labelIconStyle = css`
@@ -68,7 +62,7 @@ const searchFieldStyle = css`
   background-color: transparent !important;
 `;
 
-class NavBarRender extends Component {
+class HeaderRender extends React.Component {
   handleLogout = () => {
     const { context } = this.props;
     const { destroySession } = context;
@@ -99,11 +93,12 @@ class NavBarRender extends Component {
             </NavLink>
             <ul id="nav-mobile" className="left">
               <li>
-                <a
+                <button
                   href="#"
                   data-target="slide-out"
                   className="sidenav-trigger sidebar-trigger btn z-depth-0 nav-links bold-text "
                   css={sidebarTriggerStyle}
+                  type="button"
                 >
                   <i
                     className="material-icons nav-sidebar-button"
@@ -111,7 +106,7 @@ class NavBarRender extends Component {
                   >
                     menu
                   </i>
-                </a>
+                </button>
               </li>
             </ul>
             <ul id="nav-mobile" className="right">
@@ -121,14 +116,15 @@ class NavBarRender extends Component {
                     className="input-field"
                     style={{ backgroundColor: '#f8f8f8' }}
                   >
-                    <input
-                      id="search"
-                      className="search-field"
-                      type="search"
-                      placeholder="Zoeken"
-                      css={searchFieldStyle}
-                    />
                     <label className="label-icon" htmlFor="search">
+                      <input
+                        id="search"
+                        className="search-field"
+                        type="search"
+                        placeholder="Zoeken"
+                        css={searchFieldStyle}
+                      />
+
                       <i
                         className="material-icons label-icon"
                         style={{ color: '#4c1971' }}
@@ -154,13 +150,13 @@ class NavBarRender extends Component {
   }
 }
 
-NavBarRender.propTypes = {
+HeaderRender.propTypes = {
   context: PropTypes.object,
 };
 
 const NavBar = props => (
   <Consumer>
-    {context => <NavBarRender {...props} context={context} />}
+    {context => <HeaderRender {...props} context={context} />}
   </Consumer>
 );
 

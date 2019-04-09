@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Consumer } from 'services/context';
@@ -66,16 +66,6 @@ const attractionSubtitleStyle = css`
   font-style: oblique;
 `;
 
-const attractionTypeStyle = css`
-  color: white;
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  margin: 0;
-  font-weight: bold;
-  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
-  line-height: normal !important;
-`;
-
 const attractionMenuStyle = css`
   position: absolute;
   z-index: 5;
@@ -118,23 +108,6 @@ const creditUrl = css`
   text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
 `;
 
-const parkBoxStyle = css`
-  position: absolute;
-  z-index: 9;
-  bottom: 2%;
-  left: 1%;
-  padding: 6px 10px 6px 10px;
-  color: white;
-  text-align: right;
-  font-size: 0.9rem;
-  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
-`;
-const parkLinkStyle = css`
-  color: white;
-  font-style: italic;
-  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
-`;
-
 const editButtonStyle = css`
   position: absolute;
   color: white;
@@ -166,8 +139,7 @@ class ParkDetailsRender extends React.Component {
   };
 
   componentDidMount() {
-    const { parks, manufacturers, attractionsInfo } = this.context;
-    const { attractions, attractionTypes } = attractionsInfo;
+    const { parks } = this.context;
     const { match } = this.props;
     const park = parks && parks.find(obj => obj.id === match.params.parkId);
     this.setState({
@@ -184,9 +156,9 @@ class ParkDetailsRender extends React.Component {
       mediaProviders,
       licenses,
     } = this.context;
-    const { attraction, attractionType, loading, park } = this.state;
+    const { attraction, loading, park } = this.state;
 
-    const { match, location } = this.props;
+    const { match } = this.props;
 
     let user;
     if (currentUser && currentUser.uid) {

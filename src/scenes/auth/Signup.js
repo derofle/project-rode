@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { signUp } from '../../firebase/auth';
-import { Consumer } from '../../context/AppProvider';
+import { Consumer } from 'services/context';
+import { signUp } from 'services/firebase/components/auth';
 
 class SignupRender extends Component {
   state = {
