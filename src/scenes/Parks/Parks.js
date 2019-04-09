@@ -1,6 +1,6 @@
 import React from 'react';
-import { Consumer } from '../../context/AppProvider';
-import ParkTable from './ParkTable';
+import { Consumer } from '../../services/context';
+import ParkTable from './components/Table';
 
 class ParkList extends React.Component {
   state = {

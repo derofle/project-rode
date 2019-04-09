@@ -7,20 +7,22 @@ import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 
 import Home from './scenes/Home';
-import AttractionDetails from './scenes/AttractionDetails';
+import AttractionDetails from './scenes/AttractionDetails/AttractionDetails';
 import Attractions from './scenes/Attractions/Attractions';
 
 import Login from './scenes/Sign/scenes/Login';
 import NotFound from './components/NotFound';
+import ParkDetails from './scenes/ParkDetails/ParkDetails';
+import Parks from './scenes/Parks/Parks';
 /*
 import Signup from './auth/Signup';
 import Admin from './admin/Admin';
 
-import Park from './park/Park';
 
 
 
-import ParkList from './park/ParkList';
+
+
 import AddAttraction from './admin/add/AddAttraction';
 
 
@@ -52,11 +54,13 @@ class AppRender extends React.Component {
                 <Route path="/attracties" component={Attractions} />
                 <Route exact path="/login" component={() => <Login />} />
                 <Route path="/attracties" component={Attractions} />
+                <Route path="/park/:parkId" component={ParkDetails} />
+                <Route path="/parken" component={Parks} />
                 {/*
                 <Route exact path="/admin" component={Admin} />
-                <Route path="/park/:Id" component={Park} />
+               
                 
-                <Route path="/parken" component={ParkList} />
+                
                 <Route
                   path="/admin/toevoegen/attractie"
                   component={AddAttraction}

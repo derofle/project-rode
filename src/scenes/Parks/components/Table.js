@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Consumer } from '../../../services/context';
 
 class ParkTable extends React.Component {
   // eslint-disable-next-line class-methods-use-this
@@ -20,6 +21,7 @@ class ParkTable extends React.Component {
 
   render() {
     const { parks, name, history } = this.props;
+    const { media } = this.context;
     return (
       <table className="z-depth-1 highlight" style={{ borderRadius: '6px' }}>
         <thead
@@ -51,12 +53,15 @@ class ParkTable extends React.Component {
                 className="table-item"
                 key={park.uid}
                 onClick={() => {
-                  history.push(`/park/${park.uid}`);
+                  history.push(`/park/${park.id}`);
                 }}
               >
                 <td style={{ padding: '10px' }}>
                   <img
-                    src={park.img}
+                    src={
+                      media &&
+                      media.find(med => med.uid === park.headerImage).src
+                    }
                     alt={park.id}
                     style={{
                       display: 'block',
@@ -115,4 +120,5 @@ ParkTable.propTypes = {
   history: PropTypes.object,
 };
 
-export default ParkTable;
+ParkTable.contextType = Consumer;
+export default props => <Consumer>{() => <ParkTable {...props} />}</Consumer>;
