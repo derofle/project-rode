@@ -64,14 +64,13 @@ class AttractionList extends React.Component {
                   <form onSubmit={this.handleSubmit}>
                     <div className="input-field col">
                       <label htmlFor="search">
-                        Z
                         <input
                           id="search"
                           type="text"
                           className="validate"
                           onChange={this.handleChange}
                         />
-                        oek attractie...
+                        Zoek attractie...
                       </label>
                       <button
                         type="button"

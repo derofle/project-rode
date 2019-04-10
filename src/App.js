@@ -8,6 +8,9 @@ import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import NotFound from 'components/NotFound';
 
+// Admin
+import Admin from 'scenes/admin/Admin';
+
 // Auth
 import Login from 'scenes/auth/Login';
 import Signup from 'scenes/auth/Signup';
@@ -20,6 +23,42 @@ import Attractions from 'scenes/attraction/Attractions';
 import ParkDetails from 'scenes/park/ParkDetails';
 import Parks from 'scenes/park/Parks';
 
+const AdminContainer = () => (
+  <div className="root-app">
+    <Switch>
+      <Route path="/admin" component={Admin} />
+    </Switch>
+  </div>
+);
+
+const DefaultContainer = () => (
+  <div className="root-app">
+    <header>
+      <Header />
+      <Sidebar />
+    </header>
+    <main>
+      <Switch>
+        <Route exact path="/" component={NotFound} />
+        <Route
+          path="/park/:parkId/attractie/:attractionId"
+          component={AttractionDetails}
+        />
+        <Route path="/attracties" component={Attractions} />
+        <Route exact path="/login" component={() => <Login />} />
+        <Route path="/park/:parkId" component={ParkDetails} />
+        <Route path="/parken" component={Parks} />
+        <Route path="/aanmelden" component={Signup} />
+        <Route path="/404" component={NotFound} />
+        <Route component={NotFound} />
+      </Switch>
+    </main>
+    <footer>
+      <Footer />
+    </footer>
+  </div>
+);
+
 class AppRender extends React.Component {
   render() {
     const { loading } = this.context;
@@ -29,30 +68,9 @@ class AppRender extends React.Component {
     if (!loading) {
       return (
         <BrowserRouter>
-          <div className="root-app">
-            <header>
-              <Header />
-              <Sidebar />
-            </header>
-            <main>
-              <Switch>
-                <Route exact path="/" component={NotFound} />
-                <Route
-                  path="/park/:parkId/attractie/:attractionId"
-                  component={AttractionDetails}
-                />
-                <Route path="/attracties" component={Attractions} />
-                <Route exact path="/login" component={() => <Login />} />
-                <Route path="/park/:parkId" component={ParkDetails} />
-                <Route path="/parken" component={Parks} />
-                <Route path="/aanmelden" component={Signup} />
-                <Route path="/404" component={NotFound} />
-                <Route component={NotFound} />
-              </Switch>
-            </main>
-            <footer>
-              <Footer />
-            </footer>
+          <div>
+            <Route exact path="/(admin)" component={AdminContainer} />
+            <Route component={DefaultContainer} />
           </div>
         </BrowserRouter>
       );
