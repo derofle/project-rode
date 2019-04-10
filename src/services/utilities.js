@@ -1,6 +1,6 @@
 export const idToName = (param, collection) => {
-  const string = collection.find(item => item.id === param).name;
-  return string;
+  const string = collection.find(item => item.id === param);
+  return string.name;
 };
 
 export const idToSlug = (param, collection) => {

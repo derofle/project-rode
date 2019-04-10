@@ -69,8 +69,10 @@ class AppRender extends React.Component {
       return (
         <BrowserRouter>
           <div>
-            <Route exact path="/(admin)" component={AdminContainer} />
-            <Route component={DefaultContainer} />
+            <Switch>
+              <Route path="/(admin)" component={AdminContainer} />
+              <Route component={DefaultContainer} />
+            </Switch>
           </div>
         </BrowserRouter>
       );

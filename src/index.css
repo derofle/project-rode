@@ -268,3 +268,8 @@ html {
 	font-family: 'Roboto', sans-serif;
 	text-shadow: 0 1px 1px black;
 }
+
+.ReactTable .rt-th,
+.ReactTable .rt-td {
+	white-space: normal !important;
+}
