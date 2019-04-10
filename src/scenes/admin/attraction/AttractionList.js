@@ -3,7 +3,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
-import { idToName } from 'services/utilities';
+import { idToName, uidToName } from 'services/utilities';
 import { css, jsx } from '@emotion/core';
 /** @jsx jsx */
 
@@ -42,7 +42,7 @@ class AttractionListRender extends React.Component {
       {
         Header: 'Park',
         id: 'parkId',
-        accessor: d => idToName(d.parkId, parks),
+        accessor: d => uidToName(d.parkId, parks),
       },
       {
         Header: 'Categorie',

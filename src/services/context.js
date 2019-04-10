@@ -50,13 +50,6 @@ export class AppProvider extends Component {
         });
       }
     );
-    /*
-    const prevState = this.state;
-
-    prevState.collections.forEach(collection => {
-      this.loadData(collection);
-    });
-    */
   }
 
   updateContext = async () => {
@@ -84,69 +77,6 @@ export class AppProvider extends Component {
     );
   };
 
-  /*
-  loadData = collection => {
-    database.collection(collection).onSnapshot(snapshot => {
-      const changes = snapshot.docChanges();
-      let itemsProcessed = 0;
-      changes.forEach(change => {
-        const prevState = this.state;
-        itemsProcessed += 1;
-        if (change.type === 'added') {
-          const newDoc = { ...change.doc.data(), uid: change.doc.id };
-          this.setState({
-            [collection]: [...prevState[collection], newDoc],
-          });
-        } else if (change.type === 'removed') {
-          const filteredArray = prevState[collection].filter(function(obj) {
-            return obj.uid !== change.doc.id;
-          });
-          this.setState({
-            [collection]: filteredArray,
-          });
-        } else if (change.type === 'modified') {
-          const modArray = prevState[collection];
-          const modDoc = prevState[collection].findIndex(
-            obj => obj.uid === change.doc.id
-          );
-          modArray[modDoc] = change.doc.data();
-          this.setState({
-            [collection]: modArray,
-          });
-        }
-        if (itemsProcessed === changes.length) {
-          this.setState({
-            collectionsProcessed: prevState.collectionsProcessed + 1,
-          });
-          const newState = this.state;
-          if (newState.collectionsProcessed === prevState.collections.length) {
-            this.setState({
-              loading: false,
-            });
-          }
-        }
-      });
-    });
-  };
-
-  addData = (object, collection) => {
-    database.collection(collection).add({
-      ...object,
-      AddedAt: new Date(),
-    });
-  };
-
-  updateData = (object, collection) => {
-    delete object.uid;
-    database
-      .collection(collection)
-      .doc(object.uid)
-      .update({
-        ...object,
-      });
-  };
-
- */
   render() {
     const {
       loading,

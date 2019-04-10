@@ -185,7 +185,7 @@ class AttractionRender extends React.Component {
         }));
       });
 
-    const park = attraction && parks.find(obj => obj.id === attraction.parkId);
+    const park = attraction && parks.find(obj => obj.uid === attraction.parkId);
 
     const manufacturer =
       attraction &&
@@ -229,7 +229,7 @@ class AttractionRender extends React.Component {
 
     if (!loading) {
       if (attraction === undefined) return <Redirect to="/404" />;
-      if (attraction.parkId !== match.params.parkId)
+      if (attraction.parkId !== park.uid)
         return <Redirect to="/404" />;
       return (
         <div>

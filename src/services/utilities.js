@@ -1,7 +1,12 @@
-import { firebase, database } from './firebase';
+import { firebase } from './firebase';
 
 export const idToName = (param, collection) => {
   const string = collection.find(item => item.id === param);
+  return string.name;
+};
+
+export const uidToName = (param, collection) => {
+  const string = collection.find(item => item.uid === param);
   return string.name;
 };
 

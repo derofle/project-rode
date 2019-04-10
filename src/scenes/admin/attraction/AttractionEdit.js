@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { Consumer } from 'services/context';
-import { idToName } from 'services/utilities';
+import { idToName, uidToName } from 'services/utilities';
 
 class EditAttraction extends React.Component {
   state = {
@@ -45,7 +45,7 @@ class EditAttraction extends React.Component {
     this.setState({
       name: attraction.name,
       parkId: {
-        label: idToName(attraction.parkId, parks),
+        label: uidToName(attraction.parkId, parks),
         value: attraction.parkId,
       },
       categoryIds,

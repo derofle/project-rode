@@ -6,6 +6,7 @@ import Category from '../../../components/Category';
 import { Consumer } from '../../../services/context';
 import {
   idToName,
+  uidToName,
   idToSlug,
   getCategoryIdByTypeId,
 } from '../../../services/utilities';
@@ -116,7 +117,7 @@ class TableRender extends React.Component {
                     <Category categoryIds={attraction.categoryIds} />
                   </td>
                   <td>
-                    <p>{idToName(attraction.parkId, parks)}</p>
+                    <p>{uidToName(attraction.parkId, parks)}</p>
                   </td>
                 </tr>
               ))}
