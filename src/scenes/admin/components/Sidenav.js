@@ -38,9 +38,9 @@ class Sidenav extends Component {
             <div className="divider" />
           </li>
           <li>
-            <a className="waves-effect" href="#!" css={linkStyle}>
+            <Link className="waves-effect" to="/admin/parks" css={linkStyle}>
               Parken
-            </a>
+            </Link>
           </li>
           <li>
             <Link

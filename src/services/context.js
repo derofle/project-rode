@@ -59,6 +59,31 @@ export class AppProvider extends Component {
     */
   }
 
+  updateContext = async () => {
+    console.log('Context Updated!');
+    this.setState(
+      {
+        parks: await database.getCollectionData('parks'),
+        attractions: await database.getCollectionData('attractions'),
+        attractionCategories: await database.getCollectionData(
+          'attractionCategories'
+        ),
+        attractionTypes: await database.getCollectionData('attractionTypes'),
+        licenses: await database.getCollectionData('licenses'),
+        media: await database.getCollectionData('media'),
+        mediaProviders: await database.getCollectionData('mediaProviders'),
+        shows: await database.getCollectionData('shows'),
+        manufacturers: await database.getCollectionData('manufacturers'),
+        users: await database.getCollectionData('users'),
+      },
+      () => {
+        this.setState({
+          loading: false,
+        });
+      }
+    );
+  };
+
   /*
   loadData = collection => {
     database.collection(collection).onSnapshot(snapshot => {
@@ -161,6 +186,7 @@ export class AppProvider extends Component {
             this.setState({
               currentUser: null,
             }),
+          updateContext: this.updateContext,
         }}
       >
         {children}

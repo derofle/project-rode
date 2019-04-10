@@ -12,6 +12,9 @@ import AttractionAdd from './attraction/AttractionAdd';
 import AttractionEdit from './attraction/AttractionEdit';
 import AttractionList from './attraction/AttractionList';
 
+import ParkList from './park/ParkList';
+import ParkEdit from './park/ParkEdit';
+
 const adminPageStyle = css`
   padding-left: 300px;
 `;
@@ -30,6 +33,8 @@ class AdminRender extends Component {
         <Sidenav />
         <div css={adminPageStyle}>
           <Switch>
+            <Route exact path="/admin/parks" component={ParkList} />
+            <Route path="/admin/parks/edit/:Id" component={ParkEdit} />
             <Route exact path="/admin/attractions" component={AttractionList} />
             <Route path="/admin/attractions/add" component={AttractionAdd} />
             <Route

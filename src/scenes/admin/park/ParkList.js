@@ -12,7 +12,7 @@ const chipStyle = css`
   line-height: 24px !important;
 `;
 
-class AttractionListRender extends React.Component {
+class ParkListRender extends React.Component {
   render() {
     const { attractionsInfo, parks } = this.context;
     const {
@@ -22,15 +22,13 @@ class AttractionListRender extends React.Component {
     } = attractionsInfo;
     const editLink = ({ original }) => (
       <span>
-        <Link to={`/admin/attractions/edit/${original.uid}`}>Edit</Link>
+        <Link to={`/admin/parks/edit/${original.uid}`}>Edit</Link>
       </span>
     );
 
     const viewLink = ({ original }) => (
       <span>
-        <Link to={`/park/${original.parkId}/attractie/${original.id}`}>
-          View
-        </Link>
+        <Link to={`/park/${original.id}`}>View</Link>
       </span>
     );
 
@@ -38,37 +36,6 @@ class AttractionListRender extends React.Component {
       {
         Header: 'Naam',
         accessor: 'name', // String-based value accessors!
-      },
-      {
-        Header: 'Park',
-        id: 'parkId',
-        accessor: d => idToName(d.parkId, parks),
-      },
-      {
-        Header: 'Categorie',
-        accessor: 'categoryIds',
-        Cell: props => (
-          <div>
-            {props.value.map(val => (
-              <div className="chip" css={chipStyle}>
-                {idToName(val, attractionCategories)}
-              </div>
-            ))}
-          </div>
-        ),
-      },
-      {
-        Header: 'Type',
-        accessor: 'typeIds',
-        Cell: props => (
-          <div>
-            {props.value.map(val => (
-              <div className="chip" css={chipStyle}>
-                {idToName(val, attractionTypes)}
-              </div>
-            ))}
-          </div>
-        ),
       },
       {
         Header: 'Opties',
@@ -82,15 +49,15 @@ class AttractionListRender extends React.Component {
     ];
     return (
       <div className="container" style={{ width: '95%' }}>
-        <ReactTable data={attractions} columns={columns} />
+        <ReactTable data={parks} columns={columns} />
       </div>
     );
   }
 }
 
-AttractionListRender.contextType = Consumer;
+ParkListRender.contextType = Consumer;
 const AttractionList = props => (
-  <Consumer>{() => <AttractionListRender {...props} />}</Consumer>
+  <Consumer>{() => <ParkListRender {...props} />}</Consumer>
 );
 
 export default AttractionList;
