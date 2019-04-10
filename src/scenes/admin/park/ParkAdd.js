@@ -2,7 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import { Consumer } from 'services/context';
 
-class AddAttraction extends React.Component {
+class ParkAdd extends React.Component {
   state = {
     id: '',
     name: '',
@@ -301,9 +301,7 @@ class AddAttraction extends React.Component {
   }
 }
 
-AddAttraction.propTypes = {};
+ParkAdd.propTypes = {};
 
-AddAttraction.contextType = Consumer;
-export default props => (
-  <Consumer>{() => <AddAttraction {...props} />}</Consumer>
-);
+ParkAdd.contextType = Consumer;
+export default props => <Consumer>{() => <ParkAdd {...props} />}</Consumer>;

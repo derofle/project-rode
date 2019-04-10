@@ -1,21 +1,57 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { Consumer } from 'services/context';
+import { idToName } from 'services/utilities';
 
-class AddAttraction extends React.Component {
+class EditAttraction extends React.Component {
   state = {
     id: '',
     name: '',
     parkId: '',
-    categoryId: '',
+    categoryIds: '',
     manufacturerId: '',
-    typeId: '',
+    typeIds: '',
     img: '',
     description: '',
     selectedOption: null,
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { attractionsInfo, parks } = this.context;
+    const {
+      attractions,
+      attractionCategories,
+      attractionTypes,
+    } = attractionsInfo;
+    const { match } = this.props;
+
+    const attraction =
+      attractions && attractions.find(attr => attr.uid === match.params.Id);
+
+    const categoryIds =
+      attraction &&
+      attraction.categoryIds.map(cat => ({
+        label: idToName(cat, attractionCategories),
+        value: cat,
+      }));
+
+    const typeIds =
+      attraction &&
+      attraction.typeIds.map(type => ({
+        label: idToName(type, attractionTypes),
+        value: type,
+      }));
+    this.setState({
+      name: attraction.name,
+      parkId: {
+        label: idToName(attraction.parkId, parks),
+        value: attraction.parkId,
+      },
+      categoryIds,
+      typeIds,
+    });
+  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -33,7 +69,7 @@ class AddAttraction extends React.Component {
           name: '',
           typeId: '',
           parkId: '',
-          categoryId: '',
+          categoryIds: '',
           img: '',
           description: '',
           manufacturerId: '',
@@ -66,8 +102,8 @@ class AddAttraction extends React.Component {
     const {
       name,
       parkId,
-      categoryId,
-      typeId,
+      categoryIds,
+      typeIds,
       manufacturerId,
       coasterMaterial,
       status,
@@ -88,13 +124,14 @@ class AddAttraction extends React.Component {
 
     const typeSelection = attractionTypes
       .filter(
-        el => categoryId && categoryId.some(f => f.value === el.categoryId)
+        el => categoryIds && categoryIds.some(f => f.value === el.categoryId)
       )
       .map(el => ({
         value: el.id,
         label: el.name,
       }))
       .sort((a, b) => (a.label > b.label ? 1 : -1));
+
     const statusSelection = [
       { value: 'operating', label: 'Geopend' },
       { value: 'constructing', label: 'In opbouw' },
@@ -125,7 +162,7 @@ class AddAttraction extends React.Component {
             className="center bold-text grey-text text-darken-2"
             style={{ fontSize: '1.5em' }}
           >
-            Voeg Attractie toe aan database
+            Bewerk: {name}
           </p>
         </div>
         <div
@@ -133,11 +170,11 @@ class AddAttraction extends React.Component {
           style={{ borderBottom: '2px solid #f3f5f8' }}
         >
           <div className="row">
-            <div className="col s12 m4">
+            <div className="col s12 m2">
               <p className="bold-text grey-text text-darken-2">Algemeen</p>
               <p>(verplicht)</p>
             </div>
-            <div className="col s12 m8">
+            <div className="col s12 m10">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
@@ -145,25 +182,22 @@ class AddAttraction extends React.Component {
                 Naam:
               </p>
               <div className="input-field" style={{ marginBottom: 0 }}>
-                <label htmlFor="name">
-                  Naam attractie
-                  <input
-                    id="name"
-                    type="text"
-                    className="validate"
-                    onChange={this.handleChange}
-                    required
-                    value={name}
-                  />
-                </label>
+                <input
+                  id="name"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={name}
+                />
               </div>
             </div>
           </div>
           <div className="row">
-            <div className="col s12 m4">
+            <div className="col s12 m2">
               <p className="bold-text grey-text text-darken-2" />
             </div>
-            <div className="col s12 m4">
+            <div className="col s12 m5">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
@@ -174,10 +208,9 @@ class AddAttraction extends React.Component {
                 value={parkId}
                 onChange={e => this.handleSelectChange(e, 'parkId')}
                 options={parkSelection}
-                placeholder="Kies een park"
               />
             </div>
-            <div className="col s12 m4">
+            <div className="col s12 m5">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
@@ -193,10 +226,10 @@ class AddAttraction extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col s12 m4">
+            <div className="col s12 m2">
               <p className="bold-text grey-text text-darken-2" />
             </div>
-            <div className="col s12 m8">
+            <div className="col s12 m10">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
@@ -204,8 +237,8 @@ class AddAttraction extends React.Component {
                 Categorie:
               </p>
               <Select
-                value={categoryId}
-                onChange={e => this.handleSelectChange(e, 'categoryId')}
+                value={categoryIds}
+                onChange={e => this.handleSelectChange(e, 'categoryIds')}
                 options={categorySelection}
                 isMulti
                 placeholder="Kies een of meerdere categoriën"
@@ -213,10 +246,10 @@ class AddAttraction extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col s12 m4">
+            <div className="col s12 m2">
               <p className="bold-text grey-text text-darken-2" />
             </div>
-            <div className="col s12 m8">
+            <div className="col s12 m10">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
@@ -224,23 +257,22 @@ class AddAttraction extends React.Component {
                 Type:
               </p>
               <Select
-                value={typeId}
-                onChange={e => this.handleSelectChange(e, 'typeId')}
+                value={typeIds}
+                onChange={e => this.handleSelectChange(e, 'typeIds')}
                 options={typeSelection}
                 isMulti
-                placeholder="Kies een of meerdere types"
               />
             </div>
           </div>
         </div>
         <div className="card-content">
           <div className="row">
-            <div className="col s12 m4">
+            <div className="col s12 m2">
               <p className="bold-text grey-text text-darken-2">
                 Bouweigenschappen
               </p>
             </div>
-            <div className="col s12 m8">
+            <div className="col s12 m10">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
@@ -259,7 +291,7 @@ class AddAttraction extends React.Component {
             </div>
           </div>
         </div>
-        {categoryId && categoryId.some(e => e.value === 'roller-coaster') ? (
+        {categoryIds && categoryIds.some(e => e.value === 'roller-coaster') ? (
           <div className="card-content">
             <div className="row">
               <div className="col s12 m4">
@@ -291,7 +323,7 @@ class AddAttraction extends React.Component {
             <div className="col s12 m8" />
             <div className="col s12 m4">
               <button className="btn right" type="button">
-                Toevoegen
+                Bewerken
               </button>
             </div>
           </div>
@@ -301,9 +333,11 @@ class AddAttraction extends React.Component {
   }
 }
 
-AddAttraction.propTypes = {};
+EditAttraction.propTypes = {
+  match: PropTypes.object,
+};
 
-AddAttraction.contextType = Consumer;
+EditAttraction.contextType = Consumer;
 export default props => (
-  <Consumer>{() => <AddAttraction {...props} />}</Consumer>
+  <Consumer>{() => <EditAttraction {...props} />}</Consumer>
 );

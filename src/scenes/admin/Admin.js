@@ -1,8 +1,23 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
-import { Consumer } from '../../services/context';
+import { Redirect, Link, Switch, Route } from 'react-router-dom';
+import { Consumer } from 'services/context';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import Sidenav from './components/Sidenav';
+import Header from './components/Header';
+
+import AttractionAdd from './attraction/AttractionAdd';
+import AttractionEdit from './attraction/AttractionEdit';
+import AttractionList from './attraction/AttractionList';
+
+import ParkList from './park/ParkList';
+import ParkEdit from './park/ParkEdit';
+
+const adminPageStyle = css`
+  padding-left: 300px;
+`;
 
 class AdminRender extends Component {
   render() {
@@ -13,102 +28,20 @@ class AdminRender extends Component {
     }
     if (user && user.role !== 'admin') return <Redirect to="/" />;
     return (
-      <div className="container">
-        <div className="row" />
-        <div className="container">
-          <div className="container">
-            <div className="card" style={{ borderRadius: '6px' }}>
-              <div
-                className="card-content"
-                style={{
-                  backgroundColor: '#596a79',
-                  borderRadius: '6px 6px 0 0',
-                  height: '12px',
-                  padding: 0,
-                }}
-              />
-              <div className="card-content">
-                <h5
-                  className="grey-text text-darken-3 bold-text"
-                  style={{ display: 'flex', justifyContent: 'center' }}
-                >
-                  Admin Paneel
-                </h5>
-                <p style={{ display: 'flex', justifyContent: 'center' }}>
-                  Kies hier wat je wil toevoegen
-                </p>
-                <div
-                  className="input-field"
-                  style={{ display: 'flex', justifyContent: 'center' }}
-                >
-                  <Link
-                    className="btn z-depth-0 center"
-                    to="/admin/toevoegen/park"
-                    style={{
-                      backgroundColor: '#596a79',
-                      width: '85%',
-                    }}
-                  >
-                    Nieuw Park
-                  </Link>
-                </div>
-                <div
-                  className="input-field"
-                  style={{ display: 'flex', justifyContent: 'center' }}
-                >
-                  <Link
-                    className="btn z-depth-0 center"
-                    to="/admin/toevoegen/attractie"
-                    style={{
-                      backgroundColor: '#596a79',
-                      width: '85%',
-                    }}
-                  >
-                    Nieuwe Attractie
-                  </Link>
-                </div>
-                <div
-                  className="input-field"
-                  style={{ display: 'flex', justifyContent: 'center' }}
-                >
-                  <Link
-                    className="btn z-depth-0 center"
-                    to="/admin/toevoegen/show"
-                    style={{
-                      backgroundColor: '#596a79',
-                      width: '85%',
-                    }}
-                  >
-                    Nieuwe Show
-                  </Link>
-                </div>
-                <div
-                  className="input-field"
-                  style={{ display: 'flex', justifyContent: 'center' }}
-                >
-                  <Link
-                    className="btn z-depth-0 center"
-                    to="/admin/toevoegen/fabrikant"
-                    style={{
-                      backgroundColor: '#596a79',
-                      width: '85%',
-                    }}
-                  >
-                    Nieuwe Fabrikant
-                  </Link>
-                </div>
-              </div>
-              <div
-                className="card-content"
-                style={{
-                  backgroundColor: '#f1ebe9',
-                  borderRadius: '0 0 6px 6px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              />
-            </div>
-          </div>
+      <div>
+        <Header />
+        <Sidenav />
+        <div css={adminPageStyle}>
+          <Switch>
+            <Route exact path="/admin/parks" component={ParkList} />
+            <Route path="/admin/parks/edit/:Id" component={ParkEdit} />
+            <Route exact path="/admin/attractions" component={AttractionList} />
+            <Route path="/admin/attractions/add" component={AttractionAdd} />
+            <Route
+              path="/admin/attractions/edit/:Id"
+              component={AttractionEdit}
+            />
+          </Switch>
         </div>
       </div>
     );
