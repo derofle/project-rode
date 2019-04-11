@@ -174,7 +174,7 @@ class ParkDetailsRender extends React.Component {
     if (currentUser && currentUser.uid) {
       user = users.find(obj => obj.uid === currentUser.uid);
     }
-
+    console.log(park);
     const headerImageFile =
       media && media.find(med => med.uid === park.headerImage);
     console.log(headerImageFile);

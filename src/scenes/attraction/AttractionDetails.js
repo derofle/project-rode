@@ -235,7 +235,7 @@ class AttractionRender extends React.Component {
           <div css={bigPictureDivStyle}>
             <div css={overlayStyle} />
             <img
-              src={headerImageFile.src}
+              src={headerImageFile && headerImageFile.src}
               css={attractionBigImageStyle}
               alt={attraction.id}
             />
@@ -248,22 +248,22 @@ class AttractionRender extends React.Component {
             <div css={creditBox}>
               Foto door:{' '}
               <a
-                href={provider.url}
+                href={provider && provider.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 css={creditUrl}
               >
-                {provider.name}
+                {provider && provider.name}
               </a>
               <br />
               Gedistribueerd onder:{' '}
               <a
-                href={license.url}
+                href={license && license.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 css={creditUrl}
               >
-                {license.abbreviated}
+                {license && license.abbreviated}
               </a>
             </div>
             <div css={textOverImageStyle}>

@@ -4,6 +4,7 @@ import { Consumer } from 'services/context';
 import { updateDocInFirebase } from 'services/utilities';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import MediaUpload from '../components/MediaUpload';
 
 const headerImageStyle = css`
   width: 100%;
@@ -15,13 +16,16 @@ class ParkEdit extends React.Component {
     name: '',
     subtitle: '',
     headerImage: '',
+    previewImage: '',
   };
 
   componentDidMount() {
-    const { parks } = this.context;
+    const { parks, media } = this.context;
     const { match } = this.props;
 
     const park = parks && parks.find(attr => attr.uid === match.params.Id);
+    const headerImageFile =
+      media && media.find(med => med.uid === park.headerImage);
 
     this.setState({
       uid: park.uid,
@@ -30,6 +34,7 @@ class ParkEdit extends React.Component {
       headerImage: park.headerImage,
       city: park.city,
       country: park.country,
+      previewImage: headerImageFile && headerImageFile.src,
     });
   }
 
@@ -53,11 +58,26 @@ class ParkEdit extends React.Component {
     });
   };
 
-  render() {
-    const { name, subtitle, headerImage, country, city } = this.state;
+  passImage = (uid, url) => {
+    this.setState(
+      {
+        headerImage: uid,
+      },
+      () => {
+        this.renderImage(url);
+      }
+    );
+  };
 
-    const { media } = this.context;
-    const headerImageFile = media && media.find(med => med.uid === headerImage);
+  renderImage = url => {
+    this.setState({
+      previewImage: url,
+    });
+  };
+
+  render() {
+    const { name, subtitle, country, city, previewImage } = this.state;
+
     return (
       <div className="container" style={{ width: '95%' }}>
         <div
@@ -153,27 +173,14 @@ class ParkEdit extends React.Component {
               >
                 Header Image:
               </p>
-              <img
-                src={headerImageFile && headerImageFile.src}
-                alt="headerFile"
-                css={headerImageStyle}
-              />
+              <img src={previewImage} alt="headerFile" css={headerImageStyle} />
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
               >
                 Header Image File UID:
               </p>
-              <div className="input-field" style={{ marginBottom: 0 }}>
-                <input
-                  id="headerImage"
-                  type="text"
-                  className="validate"
-                  onChange={this.handleChange}
-                  required
-                  value={headerImage}
-                />
-              </div>
+              <MediaUpload passImage={this.passImage} />
             </div>
           </div>
         </div>
