@@ -60,6 +60,7 @@ class ParkTable extends React.Component {
                   <img
                     src={
                       media &&
+                      park.headerImage &&
                       media.find(med => med.uid === park.headerImage).src
                     }
                     alt={park.id}

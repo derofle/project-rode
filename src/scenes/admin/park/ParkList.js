@@ -21,11 +21,19 @@ class ParkListRender extends React.Component {
 
     const columns = [
       {
-        Header: 'Naam',
+        Header: 'Name',
         accessor: 'name', // String-based value accessors!
       },
       {
-        Header: 'Opties',
+        Header: 'City',
+        accessor: 'city', // String-based value accessors!
+      },
+      {
+        Header: 'Country',
+        accessor: 'country', // String-based value accessors!
+      },
+      {
+        Header: 'Options',
         maxWidth: 100,
         Cell: props => (
           <div>
@@ -36,6 +44,7 @@ class ParkListRender extends React.Component {
     ];
     return (
       <div className="container" style={{ width: '95%' }}>
+        <Link to="/admin/parks/add">Add Park</Link>
         <ReactTable data={parks} columns={columns} />
       </div>
     );

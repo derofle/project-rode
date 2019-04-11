@@ -96,6 +96,7 @@ class AttractionListRender extends React.Component {
     ];
     return (
       <div className="container" style={{ width: '95%' }}>
+        <Link to="/admin/attractions/add">Add Attraction</Link>
         <ReactTable data={attractions} columns={columns} />
       </div>
     );

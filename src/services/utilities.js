@@ -48,3 +48,24 @@ export const updatePropertyInFirebase = (collection, uid, property, value) => {
       console.log(collection, uid, property, value);
     });
 };
+
+export const updateDocInFirebase = (collection, uid, object) => {
+  console.log(collection, uid, object);
+  firebase.db
+    .collection(collection)
+    .doc(uid)
+    .update(object)
+    .then(() => {
+      console.log(collection, uid);
+    });
+};
+
+export const createDocInFirebase = (collection, object) => {
+  console.log(collection, object);
+  firebase.db
+    .collection(collection)
+    .add(object)
+    .then(() => {
+      console.log(collection, object);
+    });
+};

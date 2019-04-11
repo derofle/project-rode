@@ -1,13 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
 import { Consumer } from 'services/context';
-import { idToName, updatePropertyInFirebase } from 'services/utilities';
+import { updateDocInFirebase } from 'services/utilities';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+
+const headerImageStyle = css`
+  width: 100%;
+`;
 
 class ParkEdit extends React.Component {
   state = {
     uid: '',
     name: '',
+    subtitle: '',
+    headerImage: '',
   };
 
   componentDidMount() {
@@ -17,8 +24,12 @@ class ParkEdit extends React.Component {
     const park = parks && parks.find(attr => attr.uid === match.params.Id);
 
     this.setState({
-      name: park.name,
       uid: park.uid,
+      name: park.name,
+      subtitle: park.subtitle,
+      headerImage: park.headerImage,
+      city: park.city,
+      country: park.country,
     });
   }
 
@@ -26,7 +37,7 @@ class ParkEdit extends React.Component {
     const { name, uid } = this.state;
     const { updateContext } = this.context;
     e.preventDefault();
-    updatePropertyInFirebase('parks', uid, 'name', name, this.context);
+    updateDocInFirebase('parks', uid, this.state);
     updateContext();
   };
 
@@ -42,15 +53,11 @@ class ParkEdit extends React.Component {
     });
   };
 
-  handleRadio = e => {
-    this.setState({
-      status: e.target.value,
-    });
-  };
-
   render() {
-    const { name } = this.state;
+    const { name, subtitle, headerImage, country, city } = this.state;
 
+    const { media } = this.context;
+    const headerImageFile = media && media.find(med => med.uid === headerImage);
     return (
       <div className="container" style={{ width: '95%' }}>
         <div
@@ -61,23 +68,24 @@ class ParkEdit extends React.Component {
             className="center bold-text grey-text text-darken-2"
             style={{ fontSize: '1.5em' }}
           >
-            Bewerk: {name}
+            Edit: {name}
           </p>
         </div>
         <div
           className="card-action"
           style={{ borderBottom: '2px solid #f3f5f8' }}
         >
+          <div className="row" />
           <div className="row">
             <div className="col s12 m2">
-              <p className="bold-text grey-text text-darken-2">Algemeen</p>
+              <p className="bold-text grey-text text-darken-2">General</p>
             </div>
-            <div className="col s12 m10">
+            <div className="col s12 m4">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
               >
-                Naam:
+                Name:
               </p>
               <div className="input-field" style={{ marginBottom: 0 }}>
                 <input
@@ -89,9 +97,87 @@ class ParkEdit extends React.Component {
                   value={name}
                 />
               </div>
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ marginTop: 0 }}
+              >
+                Subtitle:
+              </p>
+              <div className="input-field" style={{ marginBottom: 0 }}>
+                <input
+                  id="subtitle"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={subtitle}
+                />
+              </div>
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ marginTop: 0 }}
+              >
+                Country:
+              </p>
+              <div className="input-field" style={{ marginBottom: 0 }}>
+                <input
+                  id="country"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={country}
+                />
+              </div>
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ marginTop: 0 }}
+              >
+                City:
+              </p>
+              <div className="input-field" style={{ marginBottom: 0 }}>
+                <input
+                  id="city"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={city}
+                />
+              </div>
+            </div>
+            <div className="col s12 m4">
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ marginTop: 0 }}
+              >
+                Header Image:
+              </p>
+              <img
+                src={headerImageFile && headerImageFile.src}
+                alt="headerFile"
+                css={headerImageStyle}
+              />
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ marginTop: 0 }}
+              >
+                Header Image File UID:
+              </p>
+              <div className="input-field" style={{ marginBottom: 0 }}>
+                <input
+                  id="headerImage"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={headerImage}
+                />
+              </div>
             </div>
           </div>
         </div>
+
         <div className="card-action">
           <div className="row">
             <div className="col s12 m8" />
@@ -101,7 +187,7 @@ class ParkEdit extends React.Component {
                 type="button"
                 onClick={this.handleSubmit}
               >
-                Bewerken
+                Update
               </button>
             </div>
           </div>

@@ -125,6 +125,16 @@ const editButtonStyle = css`
   }
 `;
 
+const attractionTypeStyle = css`
+  color: white;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: bold;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
+  line-height: normal !important;
+`;
+
 class ParkDetailsRender extends React.Component {
   state = {
     loading: true,
@@ -183,37 +193,40 @@ class ParkDetailsRender extends React.Component {
           <div css={bigPictureDivStyle}>
             <div css={overlayStyle} />
             <img
-              src={headerImageFile.src}
+              src={headerImageFile && headerImageFile.src}
               css={attractionBigImageStyle}
               alt={attraction.id}
             />
             <div css={creditBox}>
               Foto door:{' '}
               <a
-                href={provider.url}
+                href={provider && provider.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 css={creditUrl}
               >
-                {provider.name}
+                {provider && provider.name}
               </a>
               <br />
               Gedistribueerd onder:{' '}
               <a
-                href={license.url}
+                href={license && license.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 css={creditUrl}
               >
-                {license.abbreviated}
+                {license && license.abbreviated}
               </a>
             </div>
             <div css={textOverImageStyle}>
+              <p css={attractionTypeStyle}>
+                {park.city}, {park.country}
+              </p>
               <p css={attractionNameStyle}>{park.name}</p>
               <p css={attractionSubtitleStyle}>{park.subtitle}</p>
             </div>
             {user && user.role === 'admin' ? (
-              <Link to={`/admin/edit/park/${park.uid}`}>
+              <Link to={`/admin/parks/edit/${park.uid}`}>
                 <i
                   className="material-icons small z-depth-1"
                   css={editButtonStyle}

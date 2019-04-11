@@ -1,45 +1,31 @@
 import React from 'react';
-import Select from 'react-select';
+import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
+import { createDocInFirebase } from 'services/utilities';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
-class ParkAdd extends React.Component {
+const headerImageStyle = css`
+  width: 100%;
+`;
+
+class ParkEdit extends React.Component {
   state = {
-    id: '',
     name: '',
-    parkId: '',
-    categoryId: '',
-    manufacturerId: '',
-    typeId: '',
-    img: '',
-    description: '',
-    selectedOption: null,
+    subtitle: '',
+    headerImage: '',
+    city: '',
+    country: '',
   };
 
-  componentDidMount() {}
-
   handleSubmit = e => {
-    e.preventDefault();
-    const { addData } = this.context;
+    const { updateContext } = this.context;
     const { name } = this.state;
     const objId = name.toLowerCase().replace(/ /g, '-');
-    this.setState(
-      {
-        id: objId,
-      },
-      () => {
-        addData(this.state, 'attractions');
-        this.setState({
-          id: '',
-          name: '',
-          typeId: '',
-          parkId: '',
-          categoryId: '',
-          img: '',
-          description: '',
-          manufacturerId: '',
-        });
-      }
-    );
+    const newPark = { ...this.state, id: objId };
+    e.preventDefault();
+    createDocInFirebase('parks', newPark);
+    updateContext();
   };
 
   handleChange = e => {
@@ -54,67 +40,11 @@ class ParkAdd extends React.Component {
     });
   };
 
-  handleRadio = e => {
-    this.setState({
-      status: e.target.value,
-    });
-  };
-
   render() {
-    const { parks, attractionsInfo, manufacturers } = this.context;
-    const { attractionCategories, attractionTypes } = attractionsInfo;
-    const {
-      name,
-      parkId,
-      categoryId,
-      typeId,
-      manufacturerId,
-      coasterMaterial,
-      status,
-    } = this.state;
-    const parkSelection = parks
-      .map(park => ({
-        value: park.id,
-        label: park.name,
-      }))
-      .sort((a, b) => (a.label > b.label ? 1 : -1));
+    const { name, subtitle, headerImage, country, city } = this.state;
 
-    const categorySelection = attractionCategories
-      .map(category => ({
-        value: category.id,
-        label: category.name,
-      }))
-      .sort((a, b) => (a.label > b.label ? 1 : -1));
-
-    const typeSelection = attractionTypes
-      .filter(
-        el => categoryId && categoryId.some(f => f.value === el.categoryId)
-      )
-      .map(el => ({
-        value: el.id,
-        label: el.name,
-      }))
-      .sort((a, b) => (a.label > b.label ? 1 : -1));
-    const statusSelection = [
-      { value: 'operating', label: 'Geopend' },
-      { value: 'constructing', label: 'In opbouw' },
-      { value: 'defunct', label: 'Afgebroken' },
-      { value: 'in-storage', label: 'In opslag' },
-      { value: 'moved', label: 'Verhuisd' },
-    ];
-
-    const materialSelection = [
-      { value: 'wood', label: 'Hout' },
-      { value: 'steel', label: 'Staal' },
-      { value: 'hybrid', label: 'Hybride' },
-    ];
-
-    const manufacturersSelection = manufacturers
-      .map(manu => ({
-        value: manu.id,
-        label: manu.name,
-      }))
-      .sort((a, b) => (a.label > b.label ? 1 : -1));
+    const { media } = this.context;
+    const headerImageFile = media && media.find(med => med.uid === headerImage);
     return (
       <div className="container" style={{ width: '95%' }}>
         <div
@@ -125,173 +55,126 @@ class ParkAdd extends React.Component {
             className="center bold-text grey-text text-darken-2"
             style={{ fontSize: '1.5em' }}
           >
-            Voeg Attractie toe aan database
+            Edit: {name}
           </p>
         </div>
         <div
           className="card-action"
           style={{ borderBottom: '2px solid #f3f5f8' }}
         >
+          <div className="row" />
           <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2">Algemeen</p>
-              <p>(verplicht)</p>
+            <div className="col s12 m2">
+              <p className="bold-text grey-text text-darken-2">General</p>
             </div>
-            <div className="col s12 m8">
+            <div className="col s12 m4">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
               >
-                Naam:
+                Name:
               </p>
               <div className="input-field" style={{ marginBottom: 0 }}>
-                <label htmlFor="name">
-                  Naam attractie
-                  <input
-                    id="name"
-                    type="text"
-                    className="validate"
-                    onChange={this.handleChange}
-                    required
-                    value={name}
-                  />
-                </label>
+                <input
+                  id="name"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={name}
+                />
+              </div>
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ marginTop: 0 }}
+              >
+                Subtitle:
+              </p>
+              <div className="input-field" style={{ marginBottom: 0 }}>
+                <input
+                  id="subtitle"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={subtitle}
+                />
+              </div>
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ marginTop: 0 }}
+              >
+                Country:
+              </p>
+              <div className="input-field" style={{ marginBottom: 0 }}>
+                <input
+                  id="country"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={country}
+                />
+              </div>
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ marginTop: 0 }}
+              >
+                City:
+              </p>
+              <div className="input-field" style={{ marginBottom: 0 }}>
+                <input
+                  id="city"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={city}
+                />
               </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2" />
-            </div>
             <div className="col s12 m4">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
               >
-                Park:
+                Header Image:
               </p>
-              <Select
-                value={parkId}
-                onChange={e => this.handleSelectChange(e, 'parkId')}
-                options={parkSelection}
-                placeholder="Kies een park"
+              <img
+                src={headerImageFile && headerImageFile.src}
+                alt="headerFile"
+                css={headerImageStyle}
               />
-            </div>
-            <div className="col s12 m4">
               <p
                 className="bold-text grey-text text-darken-2"
                 style={{ marginTop: 0 }}
               >
-                Status:
-              </p>
-              <Select
-                value={status}
-                onChange={e => this.handleSelectChange(e, 'status')}
-                options={statusSelection}
-                placeholder="Kies de status"
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2" />
-            </div>
-            <div className="col s12 m8">
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Categorie:
-              </p>
-              <Select
-                value={categoryId}
-                onChange={e => this.handleSelectChange(e, 'categoryId')}
-                options={categorySelection}
-                isMulti
-                placeholder="Kies een of meerdere categoriën"
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2" />
-            </div>
-            <div className="col s12 m8">
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Type:
-              </p>
-              <Select
-                value={typeId}
-                onChange={e => this.handleSelectChange(e, 'typeId')}
-                options={typeSelection}
-                isMulti
-                placeholder="Kies een of meerdere types"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="card-content">
-          <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2">
-                Bouweigenschappen
-              </p>
-            </div>
-            <div className="col s12 m8">
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Fabrikant:
+                Header Image File UID:
               </p>
               <div className="input-field" style={{ marginBottom: 0 }}>
-                <Select
-                  value={manufacturerId}
-                  onChange={e => this.handleSelectChange(e, 'manufacturerId')}
-                  isMulti
-                  options={manufacturersSelection}
-                  placeholder="Kies een of meerdere fabrikanten"
+                <input
+                  id="headerImage"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={headerImage}
                 />
               </div>
             </div>
           </div>
         </div>
-        {categoryId && categoryId.some(e => e.value === 'roller-coaster') ? (
-          <div className="card-content">
-            <div className="row">
-              <div className="col s12 m4">
-                <p className="bold-text grey-text text-darken-2">Achtbaan</p>
-              </div>
-              <div className="col s12 m8">
-                <p
-                  className="bold-text grey-text text-darken-2"
-                  style={{ marginTop: 0 }}
-                >
-                  Materiaal:
-                </p>
-                <div className="input-field" style={{ marginBottom: 0 }}>
-                  <Select
-                    value={coasterMaterial}
-                    onChange={e =>
-                      this.handleSelectChange(e, 'coasterMaterial')
-                    }
-                    options={materialSelection}
-                    placeholder="Kies het materiaal"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
+
         <div className="card-action">
           <div className="row">
             <div className="col s12 m8" />
             <div className="col s12 m4">
-              <button className="btn right" type="button">
-                Toevoegen
+              <button
+                className="btn right"
+                type="button"
+                onClick={this.handleSubmit}
+              >
+                Update
               </button>
             </div>
           </div>
@@ -301,7 +184,9 @@ class ParkAdd extends React.Component {
   }
 }
 
-ParkAdd.propTypes = {};
+ParkEdit.propTypes = {
+  match: PropTypes.object,
+};
 
-ParkAdd.contextType = Consumer;
-export default props => <Consumer>{() => <ParkAdd {...props} />}</Consumer>;
+ParkEdit.contextType = Consumer;
+export default props => <Consumer>{() => <ParkEdit {...props} />}</Consumer>;
