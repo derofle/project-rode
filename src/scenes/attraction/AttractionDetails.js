@@ -178,8 +178,8 @@ class AttractionRender extends React.Component {
 
     // eslint-disable-next-line no-unused-expressions
     attraction &&
-      attraction.typeIds.forEach(type => {
-        const newType = attractionTypes.find(obj => obj.id === type);
+      attraction.type.forEach(type => {
+        const newType = attractionTypes.find(obj => obj.uid === type);
         this.setState(prevState => ({
           attractionType: [...prevState.attractionType, newType],
         }));
@@ -285,7 +285,7 @@ class AttractionRender extends React.Component {
               </p>
               <p css={attractionNameStyle}>{attraction.name}</p>
               <p css={attractionSubtitleStyle}>{attraction.subtitle}</p>
-              <Category categoryIds={attraction.categoryIds} />
+              <Category category={attraction.category} />
             </div>
             {user && user.role === 'admin' ? (
               <Link to={`/admin/attractions/edit/${attraction.uid}`}>

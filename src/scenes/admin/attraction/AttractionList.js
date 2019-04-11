@@ -3,12 +3,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
-import {
-  idToName,
-  uidToName,
-  uidToId,
-  getPropertyById,
-} from 'services/utilities';
+import { uidToName, uidToId, getPropertyByUid } from 'services/utilities';
 import { css, jsx } from '@emotion/core';
 /** @jsx jsx */
 
@@ -53,15 +48,16 @@ class AttractionListRender extends React.Component {
       },
       {
         Header: 'Categorie',
-        accessor: 'categoryIds',
+        accessor: 'category',
         Cell: props => (
           <div>
             {props.value.map(val => (
               <div
                 className="chip"
                 css={chipStyle}
+                key={val}
                 style={{
-                  backgroundColor: getPropertyById(
+                  backgroundColor: getPropertyByUid(
                     val,
                     attractionCategories,
                     'color'
@@ -69,7 +65,7 @@ class AttractionListRender extends React.Component {
                   color: 'white',
                 }}
               >
-                {idToName(val, attractionCategories)}
+                {uidToName(val, attractionCategories)}
               </div>
             ))}
           </div>
@@ -77,12 +73,12 @@ class AttractionListRender extends React.Component {
       },
       {
         Header: 'Type',
-        accessor: 'typeIds',
+        accessor: 'type',
         Cell: props => (
           <div>
             {props.value.map(val => (
-              <div className="chip" css={chipStyle}>
-                {idToName(val, attractionTypes)}
+              <div className="chip" css={chipStyle} key={val}>
+                {uidToName(val, attractionTypes)}
               </div>
             ))}
           </div>

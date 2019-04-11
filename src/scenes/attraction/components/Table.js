@@ -9,7 +9,8 @@ import {
   uidToName,
   uidToId,
   idToSlug,
-  getCategoryIdByTypeId,
+  getCategoryUidByTypeId,
+  uidToSlug,
 } from '../../../services/utilities';
 /** @jsx jsx */
 
@@ -96,27 +97,27 @@ class TableRender extends React.Component {
                       </Link>
                       <br />
                       {attraction &&
-                        attraction.typeIds.map(type => (
+                        attraction.type.map(type => (
                           <Link
-                            to={`/categorie/${idToSlug(
-                              getCategoryIdByTypeId(
+                            to={`/categorie/${uidToSlug(
+                              getCategoryUidByTypeId(
                                 type,
                                 attractionTypes,
                                 attractionCategories
                               ),
                               attractionCategories
-                            )}/type/${idToSlug(type, attractionTypes)}`}
+                            )}/type/${uidToSlug(type, attractionTypes)}`}
                             key={`${attraction.uid}:${type}`}
                           >
                             <div className="chip" css={chipStyle}>
-                              {idToName(type, attractionTypes)}
+                              {uidToName(type, attractionTypes)}
                             </div>
                           </Link>
                         ))}
                     </div>
                   </td>
                   <td>
-                    <Category categoryIds={attraction.categoryIds} />
+                    <Category category={attraction.category} />
                   </td>
                   <td>
                     <p>{uidToName(attraction.park, parks)}</p>

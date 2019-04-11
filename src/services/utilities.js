@@ -6,6 +6,7 @@ export const idToName = (param, collection) => {
 };
 
 export const uidToName = (param, collection) => {
+  console.log(param, collection);
   const string = collection.find(item => item.uid === param);
   return string.name;
 };
@@ -20,14 +21,20 @@ export const idToSlug = (param, collection) => {
   return string;
 };
 
-export const getCategoryIdByTypeId = (param, types, categories) => {
-  const type = types.find(obj => obj.id === param);
-  const category = categories.find(obj => type.categoryId === obj.id);
-  return category.id;
+export const uidToSlug = (param, collection) => {
+  console.log(param, collection);
+  const string = collection.find(item => item.uid === param).slug;
+  return string;
 };
 
-export const getPropertyById = (param, collection, property) => {
-  const string = collection.find(item => item.id === param);
+export const getCategoryUidByTypeId = (param, types, categories) => {
+  const type = types.find(obj => obj.uid === param);
+  const category = categories.find(obj => type.category === obj.uid);
+  return category.uid;
+};
+
+export const getPropertyByUid = (param, collection, property) => {
+  const string = collection.find(item => item.uid === param);
   return string[property];
 };
 
