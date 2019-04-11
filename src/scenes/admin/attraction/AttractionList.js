@@ -3,7 +3,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
-import { idToName } from 'services/utilities';
+import { uidToName, uidToId, getPropertyByUid } from 'services/utilities';
 import { css, jsx } from '@emotion/core';
 /** @jsx jsx */
 
@@ -28,7 +28,9 @@ class AttractionListRender extends React.Component {
 
     const viewLink = ({ original }) => (
       <span>
-        <Link to={`/park/${original.parkId}/attractie/${original.id}`}>
+        <Link
+          to={`/park/${uidToId(original.park, parks)}/attractie/${original.id}`}
+        >
           View
         </Link>
       </span>
@@ -41,17 +43,29 @@ class AttractionListRender extends React.Component {
       },
       {
         Header: 'Park',
-        id: 'parkId',
-        accessor: d => idToName(d.parkId, parks),
+        id: 'park',
+        accessor: d => uidToName(d.park, parks),
       },
       {
         Header: 'Categorie',
-        accessor: 'categoryIds',
+        accessor: 'category',
         Cell: props => (
           <div>
             {props.value.map(val => (
-              <div className="chip" css={chipStyle}>
-                {idToName(val, attractionCategories)}
+              <div
+                className="chip"
+                css={chipStyle}
+                key={val}
+                style={{
+                  backgroundColor: getPropertyByUid(
+                    val,
+                    attractionCategories,
+                    'color'
+                  ),
+                  color: 'white',
+                }}
+              >
+                {uidToName(val, attractionCategories)}
               </div>
             ))}
           </div>
@@ -59,12 +73,12 @@ class AttractionListRender extends React.Component {
       },
       {
         Header: 'Type',
-        accessor: 'typeIds',
+        accessor: 'type',
         Cell: props => (
           <div>
             {props.value.map(val => (
-              <div className="chip" css={chipStyle}>
-                {idToName(val, attractionTypes)}
+              <div className="chip" css={chipStyle} key={val}>
+                {uidToName(val, attractionTypes)}
               </div>
             ))}
           </div>

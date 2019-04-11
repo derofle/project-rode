@@ -178,14 +178,14 @@ class AttractionRender extends React.Component {
 
     // eslint-disable-next-line no-unused-expressions
     attraction &&
-      attraction.typeIds.forEach(type => {
-        const newType = attractionTypes.find(obj => obj.id === type);
+      attraction.type.forEach(type => {
+        const newType = attractionTypes.find(obj => obj.uid === type);
         this.setState(prevState => ({
           attractionType: [...prevState.attractionType, newType],
         }));
       });
 
-    const park = attraction && parks.find(obj => obj.id === attraction.parkId);
+    const park = attraction && parks.find(obj => obj.uid === attraction.park);
 
     const manufacturer =
       attraction &&
@@ -229,8 +229,7 @@ class AttractionRender extends React.Component {
 
     if (!loading) {
       if (attraction === undefined) return <Redirect to="/404" />;
-      if (attraction.parkId !== match.params.parkId)
-        return <Redirect to="/404" />;
+      if (attraction.park !== park.uid) return <Redirect to="/404" />;
       return (
         <div>
           <div css={bigPictureDivStyle}>
@@ -286,10 +285,10 @@ class AttractionRender extends React.Component {
               </p>
               <p css={attractionNameStyle}>{attraction.name}</p>
               <p css={attractionSubtitleStyle}>{attraction.subtitle}</p>
-              <Category categoryIds={attraction.categoryIds} />
+              <Category category={attraction.category} />
             </div>
             {user && user.role === 'admin' ? (
-              <Link to={`/admin/edit/attraction/${attraction.uid}`}>
+              <Link to={`/admin/attractions/edit/${attraction.uid}`}>
                 <i
                   className="material-icons small z-depth-1"
                   css={editButtonStyle}

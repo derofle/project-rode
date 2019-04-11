@@ -38,24 +38,25 @@ class CategoryRender extends React.Component {
   render() {
     const { attractionsInfo } = this.context;
     const { attractionCategories } = attractionsInfo;
-    const { categoryIds } = this.props;
+    const { category } = this.props;
+    console.log(category);
     return (
       <div>
-        {categoryIds &&
-          categoryIds.map(category => {
+        {category &&
+          category.map(cat => {
             const categoryInfo =
               attractionCategories &&
-              attractionCategories.find(cat => category === cat.id);
+              attractionCategories.find(obj => cat === obj.uid);
             return (
               <div
                 className="category-icon"
                 css={categoryDivStyle}
-                style={{ backgroundColor: this.findColor(category) }}
-                key={category}
+                style={{ backgroundColor: categoryInfo.color }}
+                key={cat}
               >
                 <Link to={`/categorie/${categoryInfo.slug}`}>
                   <img
-                    src={`/img/category-icons/${category}.svg`}
+                    src={categoryInfo.icon}
                     alt="category-icon"
                     css={iconStyle}
                   />

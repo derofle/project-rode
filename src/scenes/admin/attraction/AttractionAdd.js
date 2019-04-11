@@ -74,7 +74,7 @@ class AddAttraction extends React.Component {
     } = this.state;
     const parkSelection = parks
       .map(park => ({
-        value: park.id,
+        value: park.uid,
         label: park.name,
       }))
       .sort((a, b) => (a.label > b.label ? 1 : -1));

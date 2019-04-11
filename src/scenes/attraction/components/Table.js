@@ -6,8 +6,11 @@ import Category from '../../../components/Category';
 import { Consumer } from '../../../services/context';
 import {
   idToName,
+  uidToName,
+  uidToId,
   idToSlug,
-  getCategoryIdByTypeId,
+  getCategoryUidByTypeId,
+  uidToSlug,
 } from '../../../services/utilities';
 /** @jsx jsx */
 
@@ -85,38 +88,39 @@ class TableRender extends React.Component {
                           color: '#030e18',
                           margin: 0,
                         }}
-                        to={`/park/${attraction.parkId}/attractie/${
-                          attraction.id
-                        }`}
+                        to={`/park/${uidToId(
+                          attraction.park,
+                          parks
+                        )}/attractie/${attraction.id}`}
                       >
                         {attraction.name}
                       </Link>
                       <br />
                       {attraction &&
-                        attraction.typeIds.map(type => (
+                        attraction.type.map(type => (
                           <Link
-                            to={`/categorie/${idToSlug(
-                              getCategoryIdByTypeId(
+                            to={`/categorie/${uidToSlug(
+                              getCategoryUidByTypeId(
                                 type,
                                 attractionTypes,
                                 attractionCategories
                               ),
                               attractionCategories
-                            )}/type/${idToSlug(type, attractionTypes)}`}
+                            )}/type/${uidToSlug(type, attractionTypes)}`}
                             key={`${attraction.uid}:${type}`}
                           >
                             <div className="chip" css={chipStyle}>
-                              {idToName(type, attractionTypes)}
+                              {uidToName(type, attractionTypes)}
                             </div>
                           </Link>
                         ))}
                     </div>
                   </td>
                   <td>
-                    <Category categoryIds={attraction.categoryIds} />
+                    <Category category={attraction.category} />
                   </td>
                   <td>
-                    <p>{idToName(attraction.parkId, parks)}</p>
+                    <p>{uidToName(attraction.park, parks)}</p>
                   </td>
                 </tr>
               ))}

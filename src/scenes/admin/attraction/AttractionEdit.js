@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { Consumer } from 'services/context';
-import { idToName } from 'services/utilities';
+import { idToName, uidToName } from 'services/utilities';
 
 class EditAttraction extends React.Component {
   state = {
     id: '',
     name: '',
-    parkId: '',
+    park: '',
     categoryIds: '',
     manufacturerId: '',
-    typeIds: '',
+    type: '',
     img: '',
     description: '',
     selectedOption: null,
@@ -29,27 +29,27 @@ class EditAttraction extends React.Component {
     const attraction =
       attractions && attractions.find(attr => attr.uid === match.params.Id);
 
-    const categoryIds =
+    const category =
       attraction &&
-      attraction.categoryIds.map(cat => ({
-        label: idToName(cat, attractionCategories),
+      attraction.category.map(cat => ({
+        label: uidToName(cat, attractionCategories),
         value: cat,
       }));
 
-    const typeIds =
+    const type =
       attraction &&
-      attraction.typeIds.map(type => ({
-        label: idToName(type, attractionTypes),
-        value: type,
+      attraction.type.map(obj => ({
+        label: uidToName(obj, attractionTypes),
+        value: obj,
       }));
     this.setState({
       name: attraction.name,
-      parkId: {
-        label: idToName(attraction.parkId, parks),
-        value: attraction.parkId,
+      park: {
+        label: uidToName(attraction.park, parks),
+        value: attraction.park,
       },
-      categoryIds,
-      typeIds,
+      category,
+      type,
     });
   }
 
@@ -67,9 +67,9 @@ class EditAttraction extends React.Component {
         this.setState({
           id: '',
           name: '',
-          typeId: '',
-          parkId: '',
-          categoryIds: '',
+          type: '',
+          park: '',
+          categorys: '',
           img: '',
           description: '',
           manufacturerId: '',
@@ -101,31 +101,29 @@ class EditAttraction extends React.Component {
     const { attractionCategories, attractionTypes } = attractionsInfo;
     const {
       name,
-      parkId,
-      categoryIds,
-      typeIds,
+      park,
+      category,
+      type,
       manufacturerId,
       coasterMaterial,
       status,
     } = this.state;
     const parkSelection = parks
-      .map(park => ({
-        value: park.id,
-        label: park.name,
+      .map(obj => ({
+        value: obj.id,
+        label: obj.name,
       }))
       .sort((a, b) => (a.label > b.label ? 1 : -1));
 
     const categorySelection = attractionCategories
-      .map(category => ({
-        value: category.id,
-        label: category.name,
+      .map(cat => ({
+        value: cat.uid,
+        label: cat.name,
       }))
       .sort((a, b) => (a.label > b.label ? 1 : -1));
 
     const typeSelection = attractionTypes
-      .filter(
-        el => categoryIds && categoryIds.some(f => f.value === el.categoryId)
-      )
+      .filter(el => category && category.some(f => f.value === el.category))
       .map(el => ({
         value: el.id,
         label: el.name,
@@ -205,8 +203,8 @@ class EditAttraction extends React.Component {
                 Park:
               </p>
               <Select
-                value={parkId}
-                onChange={e => this.handleSelectChange(e, 'parkId')}
+                value={park}
+                onChange={e => this.handleSelectChange(e, 'park')}
                 options={parkSelection}
               />
             </div>
@@ -237,8 +235,8 @@ class EditAttraction extends React.Component {
                 Categorie:
               </p>
               <Select
-                value={categoryIds}
-                onChange={e => this.handleSelectChange(e, 'categoryIds')}
+                value={category}
+                onChange={e => this.handleSelectChange(e, 'category')}
                 options={categorySelection}
                 isMulti
                 placeholder="Kies een of meerdere categoriën"
@@ -257,8 +255,8 @@ class EditAttraction extends React.Component {
                 Type:
               </p>
               <Select
-                value={typeIds}
-                onChange={e => this.handleSelectChange(e, 'typeIds')}
+                value={type}
+                onChange={e => this.handleSelectChange(e, 'type')}
                 options={typeSelection}
                 isMulti
               />
@@ -291,7 +289,7 @@ class EditAttraction extends React.Component {
             </div>
           </div>
         </div>
-        {categoryIds && categoryIds.some(e => e.value === 'roller-coaster') ? (
+        {category && category.some(e => e.value === 'roller-coaster') ? (
           <div className="card-content">
             <div className="row">
               <div className="col s12 m4">
