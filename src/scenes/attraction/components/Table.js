@@ -7,6 +7,7 @@ import { Consumer } from '../../../services/context';
 import {
   idToName,
   uidToName,
+  uidToId,
   idToSlug,
   getCategoryIdByTypeId,
 } from '../../../services/utilities';
@@ -86,9 +87,10 @@ class TableRender extends React.Component {
                           color: '#030e18',
                           margin: 0,
                         }}
-                        to={`/park/${attraction.parkId}/attractie/${
-                          attraction.id
-                        }`}
+                        to={`/park/${uidToId(
+                          attraction.park,
+                          parks
+                        )}/attractie/${attraction.id}`}
                       >
                         {attraction.name}
                       </Link>
@@ -117,7 +119,7 @@ class TableRender extends React.Component {
                     <Category categoryIds={attraction.categoryIds} />
                   </td>
                   <td>
-                    <p>{uidToName(attraction.parkId, parks)}</p>
+                    <p>{uidToName(attraction.park, parks)}</p>
                   </td>
                 </tr>
               ))}

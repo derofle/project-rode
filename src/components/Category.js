@@ -50,12 +50,12 @@ class CategoryRender extends React.Component {
               <div
                 className="category-icon"
                 css={categoryDivStyle}
-                style={{ backgroundColor: this.findColor(category) }}
+                style={{ backgroundColor: categoryInfo.color }}
                 key={category}
               >
                 <Link to={`/categorie/${categoryInfo.slug}`}>
                   <img
-                    src={`/img/category-icons/${category}.svg`}
+                    src={categoryInfo.icon}
                     alt="category-icon"
                     css={iconStyle}
                   />

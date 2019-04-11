@@ -3,7 +3,12 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
-import { idToName, uidToName } from 'services/utilities';
+import {
+  idToName,
+  uidToName,
+  uidToId,
+  getPropertyById,
+} from 'services/utilities';
 import { css, jsx } from '@emotion/core';
 /** @jsx jsx */
 
@@ -28,7 +33,9 @@ class AttractionListRender extends React.Component {
 
     const viewLink = ({ original }) => (
       <span>
-        <Link to={`/park/${original.parkId}/attractie/${original.id}`}>
+        <Link
+          to={`/park/${uidToId(original.park, parks)}/attractie/${original.id}`}
+        >
           View
         </Link>
       </span>
@@ -41,8 +48,8 @@ class AttractionListRender extends React.Component {
       },
       {
         Header: 'Park',
-        id: 'parkId',
-        accessor: d => uidToName(d.parkId, parks),
+        id: 'park',
+        accessor: d => uidToName(d.park, parks),
       },
       {
         Header: 'Categorie',
@@ -50,7 +57,18 @@ class AttractionListRender extends React.Component {
         Cell: props => (
           <div>
             {props.value.map(val => (
-              <div className="chip" css={chipStyle}>
+              <div
+                className="chip"
+                css={chipStyle}
+                style={{
+                  backgroundColor: getPropertyById(
+                    val,
+                    attractionCategories,
+                    'color'
+                  ),
+                  color: 'white',
+                }}
+              >
                 {idToName(val, attractionCategories)}
               </div>
             ))}

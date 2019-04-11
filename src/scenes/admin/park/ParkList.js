@@ -3,23 +3,10 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
-import { idToName } from 'services/utilities';
-import { css, jsx } from '@emotion/core';
-/** @jsx jsx */
-
-const chipStyle = css`
-  height: 24px !important;
-  line-height: 24px !important;
-`;
 
 class ParkListRender extends React.Component {
   render() {
-    const { attractionsInfo, parks } = this.context;
-    const {
-      attractions,
-      attractionTypes,
-      attractionCategories,
-    } = attractionsInfo;
+    const { parks } = this.context;
     const editLink = ({ original }) => (
       <span>
         <Link to={`/admin/parks/edit/${original.uid}`}>Edit</Link>

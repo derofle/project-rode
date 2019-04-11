@@ -185,7 +185,7 @@ class AttractionRender extends React.Component {
         }));
       });
 
-    const park = attraction && parks.find(obj => obj.uid === attraction.parkId);
+    const park = attraction && parks.find(obj => obj.uid === attraction.park);
 
     const manufacturer =
       attraction &&
@@ -229,8 +229,7 @@ class AttractionRender extends React.Component {
 
     if (!loading) {
       if (attraction === undefined) return <Redirect to="/404" />;
-      if (attraction.parkId !== park.uid)
-        return <Redirect to="/404" />;
+      if (attraction.park !== park.uid) return <Redirect to="/404" />;
       return (
         <div>
           <div css={bigPictureDivStyle}>
@@ -289,7 +288,7 @@ class AttractionRender extends React.Component {
               <Category categoryIds={attraction.categoryIds} />
             </div>
             {user && user.role === 'admin' ? (
-              <Link to={`/admin/edit/attraction/${attraction.uid}`}>
+              <Link to={`/admin/attractions/edit/${attraction.uid}`}>
                 <i
                   className="material-icons small z-depth-1"
                   css={editButtonStyle}

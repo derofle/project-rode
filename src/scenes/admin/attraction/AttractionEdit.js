@@ -8,7 +8,7 @@ class EditAttraction extends React.Component {
   state = {
     id: '',
     name: '',
-    parkId: '',
+    park: '',
     categoryIds: '',
     manufacturerId: '',
     typeIds: '',
@@ -44,9 +44,9 @@ class EditAttraction extends React.Component {
       }));
     this.setState({
       name: attraction.name,
-      parkId: {
-        label: uidToName(attraction.parkId, parks),
-        value: attraction.parkId,
+      park: {
+        label: uidToName(attraction.park, parks),
+        value: attraction.park,
       },
       categoryIds,
       typeIds,
@@ -68,7 +68,7 @@ class EditAttraction extends React.Component {
           id: '',
           name: '',
           typeId: '',
-          parkId: '',
+          park: '',
           categoryIds: '',
           img: '',
           description: '',
@@ -101,7 +101,7 @@ class EditAttraction extends React.Component {
     const { attractionCategories, attractionTypes } = attractionsInfo;
     const {
       name,
-      parkId,
+      park,
       categoryIds,
       typeIds,
       manufacturerId,
@@ -109,9 +109,9 @@ class EditAttraction extends React.Component {
       status,
     } = this.state;
     const parkSelection = parks
-      .map(park => ({
-        value: park.id,
-        label: park.name,
+      .map(obj => ({
+        value: obj.id,
+        label: obj.name,
       }))
       .sort((a, b) => (a.label > b.label ? 1 : -1));
 
@@ -205,8 +205,8 @@ class EditAttraction extends React.Component {
                 Park:
               </p>
               <Select
-                value={parkId}
-                onChange={e => this.handleSelectChange(e, 'parkId')}
+                value={park}
+                onChange={e => this.handleSelectChange(e, 'park')}
                 options={parkSelection}
               />
             </div>
