@@ -1,45 +1,34 @@
 import React from 'react';
 import Select from 'react-select';
 import { Consumer } from 'services/context';
+import { createDocInFirebase } from 'services/utilities';
 
 class AddAttraction extends React.Component {
   state = {
-    id: '',
     name: '',
-    parkId: '',
-    categoryId: '',
-    manufacturerId: '',
-    typeId: '',
-    img: '',
-    description: '',
-    selectedOption: null,
+    park: '',
+    category: '',
+    type: '',
   };
 
   componentDidMount() {}
 
   handleSubmit = e => {
     e.preventDefault();
-    const { addData } = this.context;
-    const { name } = this.state;
+    const { name, park, category, type } = this.state;
+    const { updateContext } = this.context;
     const objId = name.toLowerCase().replace(/ /g, '-');
-    this.setState(
-      {
-        id: objId,
-      },
-      () => {
-        addData(this.state, 'attractions');
-        this.setState({
-          id: '',
-          name: '',
-          typeId: '',
-          parkId: '',
-          categoryId: '',
-          img: '',
-          description: '',
-          manufacturerId: '',
-        });
-      }
-    );
+    const objCat = category.map(obj => obj.value);
+    const objTyp = type.map(obj => obj.value);
+    const newAttraction = {
+      id: objId,
+      name,
+      park: park.value,
+      category: objCat,
+      type: objTyp,
+    };
+    createDocInFirebase('attractions', newAttraction);
+    updateContext();
   };
 
   handleChange = e => {
@@ -63,38 +52,30 @@ class AddAttraction extends React.Component {
   render() {
     const { parks, attractionsInfo, manufacturers } = this.context;
     const { attractionCategories, attractionTypes } = attractionsInfo;
-    const {
-      name,
-      parkId,
-      categoryId,
-      typeId,
-      manufacturerId,
-      coasterMaterial,
-      status,
-    } = this.state;
+    const { name, park, category, type, status } = this.state;
+
     const parkSelection = parks
-      .map(park => ({
-        value: park.uid,
-        label: park.name,
+      .map(p => ({
+        value: p.uid,
+        label: p.name,
       }))
       .sort((a, b) => (a.label > b.label ? 1 : -1));
 
     const categorySelection = attractionCategories
-      .map(category => ({
-        value: category.id,
-        label: category.name,
+      .map(cat => ({
+        value: cat.uid,
+        label: cat.name,
       }))
       .sort((a, b) => (a.label > b.label ? 1 : -1));
 
     const typeSelection = attractionTypes
-      .filter(
-        el => categoryId && categoryId.some(f => f.value === el.categoryId)
-      )
+      .filter(el => category && category.some(f => f.value === el.category))
       .map(el => ({
-        value: el.id,
+        value: el.uid,
         label: el.name,
       }))
       .sort((a, b) => (a.label > b.label ? 1 : -1));
+
     const statusSelection = [
       { value: 'operating', label: 'Geopend' },
       { value: 'constructing', label: 'In opbouw' },
@@ -134,8 +115,8 @@ class AddAttraction extends React.Component {
         >
           <div className="row">
             <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2">Algemeen</p>
-              <p>(verplicht)</p>
+              <p className="bold-text grey-text text-darken-2">General</p>
+              <p>(required)</p>
             </div>
             <div className="col s12 m8">
               <p
@@ -145,17 +126,14 @@ class AddAttraction extends React.Component {
                 Naam:
               </p>
               <div className="input-field" style={{ marginBottom: 0 }}>
-                <label htmlFor="name">
-                  Naam attractie
-                  <input
-                    id="name"
-                    type="text"
-                    className="validate"
-                    onChange={this.handleChange}
-                    required
-                    value={name}
-                  />
-                </label>
+                <input
+                  id="name"
+                  type="text"
+                  className="validate"
+                  onChange={this.handleChange}
+                  required
+                  value={name}
+                />
               </div>
             </div>
           </div>
@@ -171,12 +149,13 @@ class AddAttraction extends React.Component {
                 Park:
               </p>
               <Select
-                value={parkId}
-                onChange={e => this.handleSelectChange(e, 'parkId')}
+                value={park}
+                onChange={e => this.handleSelectChange(e, 'park')}
                 options={parkSelection}
                 placeholder="Kies een park"
               />
             </div>
+            {/*
             <div className="col s12 m4">
               <p
                 className="bold-text grey-text text-darken-2"
@@ -191,6 +170,7 @@ class AddAttraction extends React.Component {
                 placeholder="Kies de status"
               />
             </div>
+            */}
           </div>
           <div className="row">
             <div className="col s12 m4">
@@ -204,8 +184,8 @@ class AddAttraction extends React.Component {
                 Categorie:
               </p>
               <Select
-                value={categoryId}
-                onChange={e => this.handleSelectChange(e, 'categoryId')}
+                value={category}
+                onChange={e => this.handleSelectChange(e, 'category')}
                 options={categorySelection}
                 isMulti
                 placeholder="Kies een of meerdere categoriën"
@@ -224,8 +204,8 @@ class AddAttraction extends React.Component {
                 Type:
               </p>
               <Select
-                value={typeId}
-                onChange={e => this.handleSelectChange(e, 'typeId')}
+                value={type}
+                onChange={e => this.handleSelectChange(e, 'type')}
                 options={typeSelection}
                 isMulti
                 placeholder="Kies een of meerdere types"
@@ -247,19 +227,10 @@ class AddAttraction extends React.Component {
               >
                 Fabrikant:
               </p>
-              <div className="input-field" style={{ marginBottom: 0 }}>
-                <Select
-                  value={manufacturerId}
-                  onChange={e => this.handleSelectChange(e, 'manufacturerId')}
-                  isMulti
-                  options={manufacturersSelection}
-                  placeholder="Kies een of meerdere fabrikanten"
-                />
-              </div>
             </div>
           </div>
         </div>
-        {categoryId && categoryId.some(e => e.value === 'roller-coaster') ? (
+        {category && category.some(e => e.value === 'roller-coaster') ? (
           <div className="card-content">
             <div className="row">
               <div className="col s12 m4">
@@ -274,7 +245,7 @@ class AddAttraction extends React.Component {
                 </p>
                 <div className="input-field" style={{ marginBottom: 0 }}>
                   <Select
-                    value={coasterMaterial}
+                    value="placeholder"
                     onChange={e =>
                       this.handleSelectChange(e, 'coasterMaterial')
                     }
@@ -290,7 +261,11 @@ class AddAttraction extends React.Component {
           <div className="row">
             <div className="col s12 m8" />
             <div className="col s12 m4">
-              <button className="btn right" type="button">
+              <button
+                className="btn right"
+                type="button"
+                onClick={this.handleSubmit}
+              >
                 Toevoegen
               </button>
             </div>

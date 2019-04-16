@@ -4,24 +4,26 @@ import { Consumer } from 'services/context';
 import { updateDocInFirebase } from 'services/utilities';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-
-const headerImageStyle = css`
-  width: 100%;
-`;
+import MediaCrop from '../components/MediaCrop';
 
 class ParkEdit extends React.Component {
   state = {
     uid: '',
     name: '',
+    country: '',
+    city: '',
     subtitle: '',
     headerImage: '',
+    previewImage: '',
   };
 
   componentDidMount() {
-    const { parks } = this.context;
+    const { parks, media } = this.context;
     const { match } = this.props;
 
     const park = parks && parks.find(attr => attr.uid === match.params.Id);
+    const headerImageFile =
+      media && media.find(med => med.uid === park.headerImage);
 
     this.setState({
       uid: park.uid,
@@ -30,10 +32,12 @@ class ParkEdit extends React.Component {
       headerImage: park.headerImage,
       city: park.city,
       country: park.country,
+      previewImage: headerImageFile && headerImageFile.src,
     });
   }
 
   handleSubmit = e => {
+    console.log('Data submitted');
     const { name, uid } = this.state;
     const { updateContext } = this.context;
     e.preventDefault();
@@ -53,11 +57,26 @@ class ParkEdit extends React.Component {
     });
   };
 
-  render() {
-    const { name, subtitle, headerImage, country, city } = this.state;
+  passImage = (uid, url) => {
+    this.setState(
+      {
+        headerImage: uid,
+      },
+      () => {
+        this.renderImage(url);
+      }
+    );
+  };
 
-    const { media } = this.context;
-    const headerImageFile = media && media.find(med => med.uid === headerImage);
+  renderImage = url => {
+    this.setState({
+      previewImage: url,
+    });
+  };
+
+  render() {
+    const { name, subtitle, country, city, previewImage, uid } = this.state;
+
     return (
       <div className="container" style={{ width: '95%' }}>
         <div
@@ -153,27 +172,13 @@ class ParkEdit extends React.Component {
               >
                 Header Image:
               </p>
-              <img
-                src={headerImageFile && headerImageFile.src}
-                alt="headerFile"
-                css={headerImageStyle}
+              <MediaCrop
+                passImage={this.passImage}
+                category="parks"
+                location={uid}
+                fileName="headerImage.jpeg"
+                previewImage={previewImage}
               />
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Header Image File UID:
-              </p>
-              <div className="input-field" style={{ marginBottom: 0 }}>
-                <input
-                  id="headerImage"
-                  type="text"
-                  className="validate"
-                  onChange={this.handleChange}
-                  required
-                  value={headerImage}
-                />
-              </div>
             </div>
           </div>
         </div>

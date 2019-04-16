@@ -61,11 +61,5 @@ export const updateDocInFirebase = (collection, uid, object) => {
 };
 
 export const createDocInFirebase = (collection, object) => {
-  console.log(collection, object);
-  firebase.db
-    .collection(collection)
-    .add(object)
-    .then(() => {
-      console.log(collection, object);
-    });
+  firebase.db.collection(collection).add(object);
 };

@@ -68,6 +68,7 @@ class TableRender extends React.Component {
                   <td style={{ padding: '10px' }}>
                     <img
                       src={
+                        attraction.headerImage &&
                         media.find(med => med.uid === attraction.headerImage)
                           .src
                       }
