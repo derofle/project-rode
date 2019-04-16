@@ -8,8 +8,12 @@ import { Consumer } from 'services/context';
 const uploaderStyle = css`
   -webkit-appearance: none;
   appearance: none;
-  width: 50%;
+  width: 100%;
   margin-bottom: 10px;
+`;
+const fileUploaderStyle = css`
+  text-align: center;
+  width: auto;
 `;
 class MediaUpload extends React.Component {
   state = {
@@ -20,9 +24,14 @@ class MediaUpload extends React.Component {
 
   handleChange = e => {
     const file = e.target.files[0];
-    const storageRef = storage.ref(`media/${file.name}`);
-    const task = storageRef.put(file);
     const component = this;
+    const storageRef = storage.ref(
+      `media/${component.props.category}/${component.props.location}/${
+        component.props.fileName
+      }`
+    );
+    const task = storageRef.put(file);
+
     // const imgRef = storage.ref.child(`/media/"${file.name}`);
 
     task.on(
@@ -68,9 +77,9 @@ class MediaUpload extends React.Component {
         </progress>
         <input
           type="file"
-          valye="upload"
           id="fileButton"
           onChange={this.handleChange}
+          css={fileUploaderStyle}
         />
       </div>
     );

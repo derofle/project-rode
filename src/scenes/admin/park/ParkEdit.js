@@ -4,16 +4,14 @@ import { Consumer } from 'services/context';
 import { updateDocInFirebase } from 'services/utilities';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import MediaUpload from '../components/MediaUpload';
-
-const headerImageStyle = css`
-  width: 100%;
-`;
+import MediaCrop from '../components/MediaCrop';
 
 class ParkEdit extends React.Component {
   state = {
     uid: '',
     name: '',
+    country: '',
+    city: '',
     subtitle: '',
     headerImage: '',
     previewImage: '',
@@ -39,6 +37,7 @@ class ParkEdit extends React.Component {
   }
 
   handleSubmit = e => {
+    console.log('Data submitted');
     const { name, uid } = this.state;
     const { updateContext } = this.context;
     e.preventDefault();
@@ -76,7 +75,7 @@ class ParkEdit extends React.Component {
   };
 
   render() {
-    const { name, subtitle, country, city, previewImage } = this.state;
+    const { name, subtitle, country, city, previewImage, uid } = this.state;
 
     return (
       <div className="container" style={{ width: '95%' }}>
@@ -173,14 +172,13 @@ class ParkEdit extends React.Component {
               >
                 Header Image:
               </p>
-              <img src={previewImage} alt="headerFile" css={headerImageStyle} />
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Header Image File UID:
-              </p>
-              <MediaUpload passImage={this.passImage} />
+              <MediaCrop
+                passImage={this.passImage}
+                category="parks"
+                location={uid}
+                fileName="headerImage.jpeg"
+                previewImage={previewImage}
+              />
             </div>
           </div>
         </div>
