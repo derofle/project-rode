@@ -38,10 +38,13 @@ class ParkEdit extends React.Component {
 
   handleSubmit = e => {
     console.log('Data submitted');
-    const { name, uid } = this.state;
+    const { uid } = this.state;
     const { updateContext } = this.context;
+    console.log(this.state);
+    const updatedPark = this.state;
+    delete updatedPark.previewImage;
     e.preventDefault();
-    updateDocInFirebase('parks', uid, this.state);
+    updateDocInFirebase('parks', uid, updatedPark);
     updateContext();
   };
 
@@ -58,6 +61,7 @@ class ParkEdit extends React.Component {
   };
 
   passImage = (uid, url) => {
+    console.log(uid);
     this.setState(
       {
         headerImage: uid,

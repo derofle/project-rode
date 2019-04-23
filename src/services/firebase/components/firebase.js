@@ -11,5 +11,6 @@ import { devConfig } from '../config/config';
 const db = firebase.firestore();
 const storage = firebase.storage();
 const auth = firebase.auth();
+const firebaseRoot = firebase;
 
-export { auth, db, storage };
+export { auth, db, storage, firebaseRoot };
