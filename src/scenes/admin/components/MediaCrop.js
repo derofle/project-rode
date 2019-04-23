@@ -4,7 +4,11 @@ import 'cropperjs/dist/cropper.css';
 import { css, jsx } from '@emotion/core';
 
 import Cropper from 'react-cropper';
-import { storage } from 'services/firebase/components/firebase';
+import {
+  storage,
+  db,
+  firebaseRoot,
+} from 'services/firebase/components/firebase';
 import { firebase } from 'services/firebase';
 import { Consumer } from 'services/context';
 
@@ -94,11 +98,18 @@ class MediaCrop extends Component {
           component.setState({
             url,
           });
-          const newMedia = { src: url, type: 'image' };
+          const newMedia = {
+            src: url,
+            type: 'image',
+            path: storageRef.fullPath,
+          };
           console.log(newMedia);
           firebase.db
             .collection('media')
-            .add(newMedia)
+            .add({
+              ...newMedia,
+              timestamp: firebaseRoot.firestore.Timestamp.fromDate(new Date()),
+            })
             .then(ref => {
               component.context.updateContext();
               component.props.passImage(ref.id, cropResult);

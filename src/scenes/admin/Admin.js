@@ -17,6 +17,7 @@ import ParkEdit from './park/ParkEdit';
 import ParkAdd from './park/ParkAdd';
 
 import MediaUpload from './media/MediaUpload';
+import MediaLibrary from './media/MediaLibrary';
 
 const adminPageStyle = css`
   padding-left: 300px;
@@ -46,6 +47,7 @@ class AdminRender extends Component {
               path="/admin/attractions/edit/:Id"
               component={AttractionEdit}
             />
+            <Route path="/admin/media" component={MediaLibrary} />
           </Switch>
         </div>
       </div>

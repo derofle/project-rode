@@ -50,10 +50,13 @@ class MediaUpload extends React.Component {
           component.setState({
             url,
           });
-          const newMedia = { src: url, type: 'image' };
+          const newMedia = { src: url, type: 'image', path: 'storageRef' };
           firebase.db
             .collection('media')
-            .add(newMedia)
+            .add({
+              ...newMedia,
+              createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+            })
             .then(ref => {
               component.context.updateContext();
               component.props.passImage(ref.id, component.state.url);
