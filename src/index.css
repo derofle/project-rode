@@ -273,3 +273,7 @@ html {
 .ReactTable .rt-td {
 	white-space: normal !important;
 }
+
+.sidenav-overlay {
+	display: none !important;
+}

@@ -4,21 +4,6 @@ import { Consumer } from '../../../services/context';
 
 class ParkTable extends React.Component {
   // eslint-disable-next-line class-methods-use-this
-  renderSwitch(param) {
-    switch (param) {
-      case 'roller-coaster':
-        return 'Achtbaan';
-      case 'gentle-ride':
-        return 'Familie Attractie';
-      case 'thrill-ride':
-        return 'Spannende Attractie';
-      case 'water-ride':
-        return 'Water Attractie';
-      default:
-        return 'Onbekend';
-    }
-  }
-
   render() {
     const { parks, name, history } = this.props;
     const { media } = this.context;
@@ -42,63 +27,64 @@ class ParkTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {parks
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map(park => (
-              <tr
-                style={{
-                  backgroundColor: 'white',
-                  borderBottom: '2px solid #edf1f3',
-                }}
-                className="table-item"
-                key={park.uid}
-                onClick={() => {
-                  history.push(`/park/${park.id}`);
-                }}
-              >
-                <td style={{ padding: '10px' }}>
-                  <img
-                    src={
-                      media &&
-                      park.headerImage &&
-                      media.find(med => med.uid === park.headerImage).src
-                    }
-                    alt={park.id}
-                    style={{
-                      display: 'block',
-                      width: '6vw',
-                      borderRadius: '6px',
-                    }}
-                  />
-                </td>
-                <td>
-                  <div>
-                    <p
+          {parks &&
+            parks
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map(park => (
+                <tr
+                  style={{
+                    backgroundColor: 'white',
+                    borderBottom: '2px solid #edf1f3',
+                  }}
+                  className="table-item"
+                  key={park.uid}
+                  onClick={() => {
+                    history.push(`/park/${park.id}`);
+                  }}
+                >
+                  <td style={{ padding: '10px' }}>
+                    <img
+                      src={
+                        media &&
+                        park.headerImage &&
+                        media.find(med => med.uid === park.headerImage).src
+                      }
+                      alt={park.id}
                       style={{
-                        fontSize: '1.5em',
-                        lineHeight: '100%',
-                        color: '#030e18',
-                        margin: 0,
+                        display: 'block',
+                        width: '6vw',
+                        borderRadius: '6px',
                       }}
-                    >
-                      {park.name}
-                    </p>
-                    <p
-                      style={{
-                        color: '#586878',
-                        margin: 0,
-                        paddingTop: '4px',
-                      }}
-                    >
-                      {park.type}
-                    </p>
-                  </div>
-                </td>
-                <td>
-                  <p>{park.location}</p>
-                </td>
-              </tr>
-            ))}
+                    />
+                  </td>
+                  <td>
+                    <div>
+                      <p
+                        style={{
+                          fontSize: '1.5em',
+                          lineHeight: '100%',
+                          color: '#030e18',
+                          margin: 0,
+                        }}
+                      >
+                        {park.name}
+                      </p>
+                      <p
+                        style={{
+                          color: '#586878',
+                          margin: 0,
+                          paddingTop: '4px',
+                        }}
+                      >
+                        {park.type}
+                      </p>
+                    </div>
+                  </td>
+                  <td>
+                    <p>{park.location}</p>
+                  </td>
+                </tr>
+              ))}
           <tr
             style={{
               backgroundColor: '#f2f5f7',

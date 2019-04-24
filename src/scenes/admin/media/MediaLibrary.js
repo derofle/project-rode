@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
@@ -8,11 +7,6 @@ import { css, jsx } from '@emotion/core';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import moment from 'moment';
 /** @jsx jsx */
-
-const chipStyle = css`
-  height: 24px !important;
-  line-height: 24px !important;
-`;
 
 class MediaLibraryRender extends React.Component {
   state = {
@@ -33,6 +27,7 @@ class MediaLibraryRender extends React.Component {
       if (park.headerImage === item.uid) {
         usedIn = { ...park, url: `/park/${park.id}` };
       }
+      return usedIn;
     });
 
     attractions.find(attr => {
@@ -42,6 +37,7 @@ class MediaLibraryRender extends React.Component {
           url: `/park/${uidToId(attr.park, parks)}/attractie/${attr.id}`,
         };
       }
+      return usedIn;
     });
 
     const modal = {
@@ -76,7 +72,11 @@ class MediaLibraryRender extends React.Component {
           <div className="modal-content">
             <div className="row">
               <div className="col s7">
-                <img src={modal && modal.src} style={{ width: '100%' }} />
+                <img
+                  src={modal && modal.src}
+                  style={{ width: '100%' }}
+                  alt="detailed"
+                />
               </div>
               <div className="col s5">
                 <p>
@@ -100,8 +100,12 @@ class MediaLibraryRender extends React.Component {
           </div>
           <div className="modal-footer">
             <a
+              href="#!"
               className="modal-close"
-              onClick={() => deleteDocInFirebase('media', modal.uid)}
+              onClick={() => {
+                deleteDocInFirebase('media', modal.uid);
+                updateContext();
+              }}
             >
               Delete Permanently
             </a>
@@ -122,11 +126,13 @@ class MediaLibraryRender extends React.Component {
                   if (park.headerImage === item.uid) {
                     found = park;
                   }
+                  return park;
                 });
                 attractions.find(attr => {
                   if (attr.headerImage === item.uid) {
                     found = attr;
                   }
+                  return attr;
                 });
                 let linkedIcon = false;
                 if (found) {
@@ -141,15 +147,20 @@ class MediaLibraryRender extends React.Component {
                     >
                       <div className="card">
                         <div className="card-image">
-                          <img src={item.src} style={{ height: '120px' }} />
+                          <img
+                            src={item.src}
+                            style={{ height: '120px' }}
+                            alt="thumbnail"
+                          />
                         </div>
                       </div>
                     </a>
                   </div>
                 );
               }
+              return item;
             })}
-          {media &&
+          {/* media &&
             media.map(item => {
               if (item.type === 'video') {
                 return (
@@ -159,13 +170,15 @@ class MediaLibraryRender extends React.Component {
                         <img
                           src="https://img.youtube.com/vi/ER32iVokq3k/0.jpg"
                           style={{ height: '120px' }}
+                          alt="video-thumbnail"
                         />
                       </div>
                     </div>
                   </div>
                 );
               }
-            })}
+              return item;
+            }) */}
         </div>
       </div>
     );

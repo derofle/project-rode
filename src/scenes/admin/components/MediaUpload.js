@@ -67,7 +67,7 @@ class MediaUpload extends React.Component {
   };
 
   render() {
-    const { percentage, url } = this.state;
+    const { percentage } = this.state;
     return (
       <div>
         <progress
