@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
-import React, { Component } from 'react';
-import { Redirect, Link, Switch, Route } from 'react-router-dom';
+import React from 'react';
+import { Redirect, Switch, Route } from 'react-router-dom';
 import { Consumer } from 'services/context';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import Sidenav from './components/Sidenav';
-import Header from './components/Header';
+import Sidebar from './layout/Sidebar';
+import Header from './layout/Header';
 
 import AttractionAdd from './attraction/AttractionAdd';
 import AttractionEdit from './attraction/AttractionEdit';
@@ -20,10 +20,12 @@ import MediaUpload from './media/MediaUpload';
 import MediaLibrary from './media/MediaLibrary';
 
 const adminPageStyle = css`
-  padding-left: 300px;
+  @media (min-width: 600px) {
+    padding-left: 200px;
+  }
 `;
 
-class AdminRender extends Component {
+class AdminRender extends React.Component {
   render() {
     const { currentUser, users } = this.context;
     let user;
@@ -34,7 +36,7 @@ class AdminRender extends Component {
     return (
       <div>
         <Header />
-        <Sidenav />
+        <Sidebar />
         <div css={adminPageStyle}>
           <Switch>
             <Route exact path="/admin/parks" component={ParkList} />

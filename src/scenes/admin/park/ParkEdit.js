@@ -34,6 +34,8 @@ class ParkEdit extends React.Component {
       country: park.country,
       previewImage: headerImageFile && headerImageFile.src,
     });
+
+    document.title = 'Edit Park < Project Rode';
   }
 
   handleSubmit = e => {

@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import 'cropperjs/dist/cropper.css';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 import Cropper from 'react-cropper';
-import {
-  storage,
-  db,
-  firebaseRoot,
-} from 'services/firebase/components/firebase';
+import { storage, firebaseRoot } from 'services/firebase/components/firebase';
 import { firebase } from 'services/firebase';
 import { Consumer } from 'services/context';
 
@@ -16,7 +12,7 @@ const headerImageStyle = css`
   width: 100%;
 `;
 
-class MediaCrop extends Component {
+class MediaCrop extends React.Component {
   state = {
     src: null,
     cropResult: null,
@@ -120,7 +116,7 @@ class MediaCrop extends Component {
   };
 
   render() {
-    const { src, cropResult, imageCropped } = this.state;
+    const { src, imageCropped } = this.state;
     const { previewImage } = this.props;
     return (
       <div>

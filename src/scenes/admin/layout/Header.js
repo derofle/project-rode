@@ -13,6 +13,7 @@ const navStyle = css`
 const linkStyle = css`
   color: black;
 `;
+
 const avatarStyle = css`
   height: 56px !important;
   padding: 8px;
@@ -22,20 +23,45 @@ const groupStyle = css`
   margin-right: 24px;
 `;
 
+const houseIcon = css`
+  float: left;
+  margin-right: 10px;
+  line-height: 56px !important;
+  @media (max-width: 600px) {
+    margin-left: 48px;
+  }
+`;
+
+const siteTitle = css`
+  display: inline-block;
+`;
+
+const navbarRoot = css`
+  z-index: 9;
+`;
+
 class HeaderRender extends React.Component {
   render() {
     const { currentUser } = this.context;
     return (
-      <div className="navbar-fixed">
+      <div className="navbar-fixed" css={navbarRoot}>
         <nav css={navStyle}>
           <div className="nav-wrapper">
-            <ul
-              id="nav-mobile"
-              className="right hide-on-med-and-down"
-              css={groupStyle}
-            >
+            <ul className="left">
               <li>
                 <Link to="/" css={linkStyle}>
+                  <i className="material-icons" css={houseIcon}>
+                    home
+                  </i>
+                  <div css={siteTitle} className="hide-on-small-and-down">
+                    Project Rode
+                  </div>
+                </Link>
+              </li>
+            </ul>
+            <ul className="right" css={groupStyle}>
+              <li>
+                <Link to="/" css={linkStyle} className="hide-on-small-and-down">
                   {currentUser.email}
                 </Link>
               </li>
