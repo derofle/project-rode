@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
-import { createDocInFirebase } from 'services/utilities';
+import { createLicense } from 'services/utilities';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
@@ -16,7 +16,9 @@ class LicenseAdd extends React.Component {
     document.title = 'Add License < Project Rode';
   }
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
+    e.preventDefault();
+
     const { updateContext } = this.context;
     const { abbreviated } = this.state;
     const objSlug = abbreviated
@@ -24,9 +26,11 @@ class LicenseAdd extends React.Component {
       .replace(/ /g, '-')
       .replace('.', '');
     const newDoc = { ...this.state, slug: objSlug };
-    e.preventDefault();
-    createDocInFirebase('mediaLicenses', newDoc);
-    updateContext();
+
+    createLicense(newDoc).then(resp => {
+      updateContext();
+      console.log(resp);
+    });
   };
 
   handleChange = e => {

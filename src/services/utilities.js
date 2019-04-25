@@ -70,3 +70,25 @@ export const deleteDocInFirebase = (collection, doc) => {
     .doc(doc)
     .delete();
 };
+
+export const createLicense = async doc =>
+  firebase.db
+    .collection('mediaLicenses')
+    .add(doc)
+    .then(ref => ref.id);
+
+export const updateLicense = async doc => {
+  const { uid } = doc;
+  delete doc.uid;
+  firebase.db
+    .collection('mediaLicenses')
+    .doc(uid)
+    .update(doc)
+    .then(error => {
+      if (error) {
+        alert('Data could not be saved');
+      } else {
+        return 'Data saved';
+      }
+    });
+};

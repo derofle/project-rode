@@ -76,7 +76,16 @@ class LicensesRender extends React.Component {
           </Link>
         </h4>
 
-        <ReactTable data={mediaLicenses} columns={columns} />
+        <ReactTable
+          data={mediaLicenses}
+          columns={columns}
+          defaultSorted={[
+            {
+              id: 'name',
+              asc: true,
+            },
+          ]}
+        />
       </div>
     );
   }
