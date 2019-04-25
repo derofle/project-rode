@@ -19,6 +19,10 @@ import ParkAdd from './park/ParkAdd';
 import MediaUpload from './media/MediaUpload';
 import MediaLibrary from './media/MediaLibrary';
 
+import Licenses from './media/licenses/Licenses';
+import LicenseAdd from './media/licenses/LicenseAdd';
+import LicenseEdit from './media/licenses/LicenseEdit';
+
 const adminPageStyle = css`
   @media (min-width: 600px) {
     padding-left: 200px;
@@ -49,7 +53,13 @@ class AdminRender extends React.Component {
               path="/admin/attractions/edit/:Id"
               component={AttractionEdit}
             />
-            <Route path="/admin/media" component={MediaLibrary} />
+            <Route exact path="/admin/media" component={MediaLibrary} />
+            <Route exact path="/admin/media/licenses" component={Licenses} />
+            <Route path="/admin/media/licenses/add" component={LicenseAdd} />
+            <Route
+              path="/admin/media/licenses/edit/:Id"
+              component={LicenseEdit}
+            />
           </Switch>
         </div>
       </div>

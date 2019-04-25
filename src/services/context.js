@@ -37,9 +37,9 @@ export class AppProvider extends Component {
           'attractionCategories'
         ),
         attractionTypes: await database.getCollectionData('attractionTypes'),
-        licenses: await database.getCollectionData('licenses'),
         media: await database.getCollectionData('media'),
         mediaProviders: await database.getCollectionData('mediaProviders'),
+        mediaLicenses: await database.getCollectionData('mediaLicenses'),
         shows: await database.getCollectionData('shows'),
         manufacturers: await database.getCollectionData('manufacturers'),
         users: await database.getCollectionData('users'),
@@ -62,9 +62,9 @@ export class AppProvider extends Component {
           'attractionCategories'
         ),
         attractionTypes: await database.getCollectionData('attractionTypes'),
-        licenses: await database.getCollectionData('licenses'),
         media: await database.getCollectionData('media'),
         mediaProviders: await database.getCollectionData('mediaProviders'),
+        mediaLicenses: await database.getCollectionData('mediaLicenses'),
         shows: await database.getCollectionData('shows'),
         manufacturers: await database.getCollectionData('manufacturers'),
         users: await database.getCollectionData('users'),
@@ -90,7 +90,7 @@ export class AppProvider extends Component {
       currentUser,
       media,
       mediaProviders,
-      licenses,
+      mediaLicenses,
     } = this.state;
     const { children } = this.props;
     return (
@@ -109,7 +109,7 @@ export class AppProvider extends Component {
           currentUser,
           media,
           mediaProviders,
-          licenses,
+          mediaLicenses,
           addData: this.addData,
           updateData: this.updateData,
           destroySession: () =>

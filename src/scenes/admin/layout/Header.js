@@ -61,17 +61,26 @@ class HeaderRender extends React.Component {
             </ul>
             <ul className="right" css={groupStyle}>
               <li>
-                <Link to="/" css={linkStyle} className="hide-on-small-and-down">
+                <Link
+                  to={`/gebruiker/${currentUser.uid}`}
+                  css={linkStyle}
+                  className="hide-on-small-and-down"
+                >
                   {currentUser.email}
                 </Link>
               </li>
               <li>
-                <img
-                  src="http://www.avatarmeher.org/wp-content/uploads/2018/04/Toka-1928-head-274x300.jpg"
-                  alt=""
-                  css={avatarStyle}
-                  className="circle responsive-img"
-                />
+                <Link
+                  to={`/gebruiker/${currentUser.uid}`}
+                  style={{ height: '56px', padding: 0 }}
+                >
+                  <img
+                    src="http://www.avatarmeher.org/wp-content/uploads/2018/04/Toka-1928-head-274x300.jpg"
+                    alt=""
+                    css={avatarStyle}
+                    className="circle responsive-img"
+                  />
+                </Link>
               </li>
             </ul>
           </div>
