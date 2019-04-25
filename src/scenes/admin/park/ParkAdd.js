@@ -18,6 +18,10 @@ class ParkEdit extends React.Component {
     country: '',
   };
 
+  componentDidMount() {
+    document.title = 'Add Park < Project Rode';
+  }
+
   handleSubmit = e => {
     const { updateContext } = this.context;
     const { name } = this.state;

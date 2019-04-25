@@ -9,6 +9,7 @@ const sidebarStyle = css`
   padding-top: 56px;
   z-index: 8;
   transform: translateX(0%) !important;
+  width: 200px;
 `;
 
 const linkStyle = css`

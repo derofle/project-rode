@@ -20,7 +20,9 @@ import MediaUpload from './media/MediaUpload';
 import MediaLibrary from './media/MediaLibrary';
 
 const adminPageStyle = css`
-  padding-left: 300px;
+  @media (min-width: 600px) {
+    padding-left: 200px;
+  }
 `;
 
 class AdminRender extends React.Component {

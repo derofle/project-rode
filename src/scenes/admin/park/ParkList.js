@@ -5,6 +5,10 @@ import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
 
 class ParkListRender extends React.Component {
+  componentDidMount() {
+    document.title = 'Parks < Project Rode';
+  }
+
   render() {
     const { parks } = this.context;
     const editLink = ({ original }) => (
