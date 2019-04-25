@@ -175,7 +175,7 @@ class AttractionRender extends React.Component {
     const attraction =
       attractions &&
       attractions.find(obj => obj.id === match.params.attractionId);
-
+    document.title = `${attraction.name} < Project Rode`;
     // eslint-disable-next-line no-unused-expressions
     attraction &&
       attraction.type.forEach(type => {

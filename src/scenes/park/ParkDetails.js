@@ -152,6 +152,7 @@ class ParkDetailsRender extends React.Component {
     const { parks } = this.context;
     const { match } = this.props;
     const park = parks && parks.find(obj => obj.id === match.params.parkId);
+    document.title = `${park.name} < Project Rode`;
     this.setState({
       park,
       loading: false,

@@ -16,6 +16,7 @@ class MediaLibraryRender extends React.Component {
   componentDidMount() {
     const elems = document.querySelectorAll('.modal');
     M.Modal.init(elems, {});
+    document.title = 'Media Library < Project Rode';
   }
 
   renderModal = item => {
