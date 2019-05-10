@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
 import { updateLicense } from 'services/utilities';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
 
 class LicenseAdd extends React.Component {
   state = {
@@ -34,6 +32,7 @@ class LicenseAdd extends React.Component {
 
     const { updateContext } = this.context;
     const { abbreviated } = this.state;
+    const { history } = this.props;
     const objSlug = abbreviated
       .toLowerCase()
       .replace(/ /g, '-')
@@ -42,7 +41,11 @@ class LicenseAdd extends React.Component {
 
     updateLicense(updatedDoc).then(resp => {
       updateContext();
-      console.log(resp);
+      if (resp === true) {
+        history.push('/admin/media/licenses');
+      } else if (resp === false) {
+        alert('Something went wrong, try again!');
+      }
     });
   };
 

@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
-import { updateDocInFirebase } from 'services/utilities';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { updatePark } from 'services/utilities';
 import MediaCrop from '../components/MediaCrop';
 
 class ParkEdit extends React.Component {
@@ -39,15 +37,16 @@ class ParkEdit extends React.Component {
   }
 
   handleSubmit = e => {
-    console.log('Data submitted');
-    const { uid } = this.state;
     const { updateContext } = this.context;
-    console.log(this.state);
-    const updatedPark = this.state;
+    const { name } = this.state;
+    const { history } = this.props;
+    const objSlug = name.toLowerCase().replace(/ /g, '-');
+    const updatedPark = { ...this.state, slug: objSlug };
     delete updatedPark.previewImage;
     e.preventDefault();
-    updateDocInFirebase('parks', uid, updatedPark);
+    updatePark(updatedPark);
     updateContext();
+    history.push('/admin/parks');
   };
 
   handleChange = e => {
@@ -182,7 +181,7 @@ class ParkEdit extends React.Component {
                 passImage={this.passImage}
                 category="parks"
                 location={uid}
-                fileName="headerImage.jpeg"
+                fileName="headerImage"
                 previewImage={previewImage}
               />
             </div>

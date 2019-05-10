@@ -12,6 +12,11 @@ import AttractionAdd from './attraction/AttractionAdd';
 import AttractionEdit from './attraction/AttractionEdit';
 import AttractionList from './attraction/AttractionList';
 
+import Categories from './attraction/categories/Categories';
+import CategoryEdit from './attraction/categories/CategoryEdit';
+
+import Types from './attraction/types/Types';
+
 import ParkList from './park/ParkList';
 import ParkEdit from './park/ParkEdit';
 import ParkAdd from './park/ParkAdd';
@@ -53,6 +58,16 @@ class AdminRender extends React.Component {
               path="/admin/attractions/edit/:Id"
               component={AttractionEdit}
             />
+            <Route
+              exact
+              path="/admin/attractions/categories"
+              component={Categories}
+            />
+            <Route
+              path="/admin/attractions/categories/edit/:Id"
+              component={CategoryEdit}
+            />
+            <Route exact path="/admin/attractions/types" component={Types} />
             <Route exact path="/admin/media" component={MediaLibrary} />
             <Route exact path="/admin/media/licenses" component={Licenses} />
             <Route path="/admin/media/licenses/add" component={LicenseAdd} />

@@ -4,27 +4,20 @@ import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
 import { deleteDoc } from 'services/utilities';
-import ReactCountryFlag from 'react-country-flag';
+import Category from 'components/Category';
 
-class ParkListRender extends React.Component {
+class TypesRender extends React.Component {
   componentDidMount() {
-    document.title = 'Parks | Admin Panel | Project Rode';
+    document.title = 'Types | Admin Panel | Project Rode';
   }
 
   render() {
-    const { parks, updateContext } = this.context;
+    const { attractionsInfo, updateContext } = this.context;
+    const { attractionTypes } = attractionsInfo;
     const editLink = ({ original }) => (
       <span>
-        <Link to={`/admin/parks/edit/${original.uid}`}>
+        <Link to={`/admin/attractions/types/edit/${original.uid}`}>
           <i className="material-icons">edit</i>
-        </Link>
-      </span>
-    );
-
-    const viewLink = ({ original }) => (
-      <span>
-        <Link to={`/park/${original.slug}`}>
-          <i className="material-icons">visibility</i>
         </Link>
       </span>
     );
@@ -33,7 +26,7 @@ class ParkListRender extends React.Component {
       <span>
         <a
           onClick={() => {
-            deleteDoc('parks', original.uid);
+            deleteDoc('attractionTypes', original.uid);
             updateContext();
           }}
           style={{ cursor: 'pointer' }}
@@ -48,20 +41,15 @@ class ParkListRender extends React.Component {
     const columns = [
       {
         Header: 'Name',
-        accessor: 'name', // String-based value accessors!
+        accessor: 'name',
       },
       {
-        Header: 'City',
-        accessor: 'city', // String-based value accessors!
-        maxWidth: 150,
-      },
-      {
-        Header: 'Country',
-        accessor: 'country',
+        Header: 'Category',
+        accessor: 'category',
         maxWidth: 75,
-        Cell: row => (
-          <div style={{ textAlign: 'center' }}>
-            <ReactCountryFlag code={row.value} svg />
+        Cell: props => (
+          <div>
+            <Category category={[props.value]} height={40} margin={0} />
           </div>
         ),
       },
@@ -69,8 +57,8 @@ class ParkListRender extends React.Component {
         Header: '',
         maxWidth: 100,
         Cell: props => (
-          <div style={{ textAlign: 'center' }}>
-            {viewLink(props)} {editLink(props)} {deleteLink(props)}
+          <div>
+            {editLink(props)} {deleteLink(props)}
           </div>
         ),
       },
@@ -78,20 +66,21 @@ class ParkListRender extends React.Component {
     return (
       <div className="container" style={{ width: '95%' }}>
         <h4>
-          Parks{' '}
+          Types{' '}
           <Link
-            to="/admin/parks/add"
+            to="/admin/media/licenses/add"
             className="btn-small grey"
             style={{ padding: '0 8px' }}
           >
             <i className="material-icons left" style={{ margin: 0 }}>
               add
             </i>
-            Add Park
+            Add Type
           </Link>
         </h4>
+
         <ReactTable
-          data={parks}
+          data={attractionTypes}
           columns={columns}
           defaultSorted={[
             {
@@ -105,9 +94,7 @@ class ParkListRender extends React.Component {
   }
 }
 
-ParkListRender.contextType = Consumer;
-const AttractionList = props => (
-  <Consumer>{() => <ParkListRender {...props} />}</Consumer>
-);
+TypesRender.contextType = Consumer;
+const Types = props => <Consumer>{() => <TypesRender {...props} />}</Consumer>;
 
-export default AttractionList;
+export default Types;

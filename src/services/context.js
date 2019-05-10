@@ -31,6 +31,7 @@ export class AppProvider extends Component {
     );
     this.setState(
       {
+        countries: await database.getCollectionData('countries'),
         parks: await database.getCollectionData('parks'),
         attractions: await database.getCollectionData('attractions'),
         attractionCategories: await database.getCollectionData(
@@ -56,6 +57,7 @@ export class AppProvider extends Component {
     console.log('Context Updated!');
     this.setState(
       {
+        countries: await database.getCollectionData('countries'),
         parks: await database.getCollectionData('parks'),
         attractions: await database.getCollectionData('attractions'),
         attractionCategories: await database.getCollectionData(
@@ -91,12 +93,14 @@ export class AppProvider extends Component {
       media,
       mediaProviders,
       mediaLicenses,
+      countries,
     } = this.state;
     const { children } = this.props;
     return (
       <Provider
         value={{
           loading,
+          countries,
           parks,
           attractionsInfo: {
             attractions,
@@ -112,6 +116,7 @@ export class AppProvider extends Component {
           mediaLicenses,
           addData: this.addData,
           updateData: this.updateData,
+          updateSingleCollection: this.updateSingleCollection,
           destroySession: () =>
             this.setState({
               currentUser: null,

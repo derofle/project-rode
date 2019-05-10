@@ -4,27 +4,19 @@ import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
 import { deleteDoc } from 'services/utilities';
-import ReactCountryFlag from 'react-country-flag';
 
-class ParkListRender extends React.Component {
+class CategoriesRender extends React.Component {
   componentDidMount() {
-    document.title = 'Parks | Admin Panel | Project Rode';
+    document.title = 'Categories | Admin Panel | Project Rode';
   }
 
   render() {
-    const { parks, updateContext } = this.context;
+    const { attractionsInfo, updateContext } = this.context;
+    const { attractionCategories } = attractionsInfo;
     const editLink = ({ original }) => (
       <span>
-        <Link to={`/admin/parks/edit/${original.uid}`}>
+        <Link to={`/admin/attractions/categories/edit/${original.uid}`}>
           <i className="material-icons">edit</i>
-        </Link>
-      </span>
-    );
-
-    const viewLink = ({ original }) => (
-      <span>
-        <Link to={`/park/${original.slug}`}>
-          <i className="material-icons">visibility</i>
         </Link>
       </span>
     );
@@ -33,7 +25,7 @@ class ParkListRender extends React.Component {
       <span>
         <a
           onClick={() => {
-            deleteDoc('parks', original.uid);
+            deleteDoc('attractionCategories', original.uid);
             updateContext();
           }}
           style={{ cursor: 'pointer' }}
@@ -47,30 +39,37 @@ class ParkListRender extends React.Component {
 
     const columns = [
       {
-        Header: 'Name',
-        accessor: 'name', // String-based value accessors!
-      },
-      {
-        Header: 'City',
-        accessor: 'city', // String-based value accessors!
-        maxWidth: 150,
-      },
-      {
-        Header: 'Country',
-        accessor: 'country',
-        maxWidth: 75,
-        Cell: row => (
-          <div style={{ textAlign: 'center' }}>
-            <ReactCountryFlag code={row.value} svg />
+        Header: 'Icon',
+        accessor: 'icon',
+        maxWidth: 55,
+        Cell: props => (
+          <div
+            className="category-icon"
+            style={{
+              backgroundColor: props.original.color,
+              height: '44px',
+              margin: '0',
+            }}
+            onClick={console.log(props)}
+          >
+            <img
+              src={props.value}
+              alt="category-icon"
+              style={{ height: '24px' }}
+            />
           </div>
         ),
+      },
+      {
+        Header: 'Name',
+        accessor: 'name',
       },
       {
         Header: '',
         maxWidth: 100,
         Cell: props => (
-          <div style={{ textAlign: 'center' }}>
-            {viewLink(props)} {editLink(props)} {deleteLink(props)}
+          <div>
+            {editLink(props)} {deleteLink(props)}
           </div>
         ),
       },
@@ -78,20 +77,21 @@ class ParkListRender extends React.Component {
     return (
       <div className="container" style={{ width: '95%' }}>
         <h4>
-          Parks{' '}
+          Categories{' '}
           <Link
-            to="/admin/parks/add"
+            to="/admin/media/licenses/add"
             className="btn-small grey"
             style={{ padding: '0 8px' }}
           >
             <i className="material-icons left" style={{ margin: 0 }}>
               add
             </i>
-            Add Park
+            Add Category
           </Link>
         </h4>
+
         <ReactTable
-          data={parks}
+          data={attractionCategories}
           columns={columns}
           defaultSorted={[
             {
@@ -105,9 +105,9 @@ class ParkListRender extends React.Component {
   }
 }
 
-ParkListRender.contextType = Consumer;
-const AttractionList = props => (
-  <Consumer>{() => <ParkListRender {...props} />}</Consumer>
+CategoriesRender.contextType = Consumer;
+const Categories = props => (
+  <Consumer>{() => <CategoriesRender {...props} />}</Consumer>
 );
 
-export default AttractionList;
+export default Categories;

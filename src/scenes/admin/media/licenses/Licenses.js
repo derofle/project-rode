@@ -3,7 +3,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
-import { deleteDocInFirebase } from 'services/utilities';
+import { deleteDoc } from 'services/utilities';
 
 class LicensesRender extends React.Component {
   componentDidMount() {
@@ -24,7 +24,7 @@ class LicensesRender extends React.Component {
       <span>
         <a
           onClick={() => {
-            deleteDocInFirebase('mediaLicenses', original.uid);
+            deleteDoc('mediaLicenses', original.uid);
             updateContext();
           }}
           style={{ cursor: 'pointer' }}

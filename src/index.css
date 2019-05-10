@@ -277,3 +277,24 @@ html {
 .sidenav-overlay {
 	opacity: 0;
 }
+
+.ql-editor {
+	min-height: 300px !important;
+	background-color: white;
+}
+
+strong {
+	font-weight: 600 !important;
+}
+
+.ReactTable .rt-thead.-filters input {
+	height: auto !important;
+	margin: 0 !important;
+	box-sizing: border-box !important;
+}
+
+.ReactTable .rt-thead.-filters select {
+	display: inline-block !important;
+	height: auto !important;
+	box-sizing: border-box !important;
+}

@@ -39,7 +39,7 @@ class ParkTable extends React.Component {
                   className="table-item"
                   key={park.uid}
                   onClick={() => {
-                    history.push(`/park/${park.id}`);
+                    history.push(`/park/${park.slug}`);
                   }}
                 >
                   <td style={{ padding: '10px' }}>

@@ -1,17 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
-import { addLicense } from 'services/utilities';
+import { updateLicense } from 'services/utilities';
+import { SketchPicker } from 'react-color';
 
-class LicenseAdd extends React.Component {
+class CategoryEdit extends React.Component {
   state = {
+    uid: '',
     name: '',
-    abbreviated: '',
-    url: '',
   };
 
   componentDidMount() {
-    document.title = 'Add License < Project Rode';
+    document.title = 'Edit Category | Admin Panel | Project Rode';
+    const { attractionsInfo } = this.context;
+    const { attractionCategories } = attractionsInfo;
+    const { match } = this.props;
+    const category =
+      attractionCategories &&
+      attractionCategories.find(cat => cat.uid === match.params.Id);
+
+    this.setState({
+      uid: category.uid,
+      name: category.name,
+      color: category.color,
+    });
   }
 
   handleSubmit = async e => {
@@ -19,15 +31,20 @@ class LicenseAdd extends React.Component {
 
     const { updateContext } = this.context;
     const { abbreviated } = this.state;
+    const { history } = this.props;
     const objSlug = abbreviated
       .toLowerCase()
       .replace(/ /g, '-')
       .replace('.', '');
-    const newDoc = { ...this.state, slug: objSlug };
+    const updatedDoc = { ...this.state, slug: objSlug };
 
-    addLicense(newDoc).then(resp => {
+    updateLicense(updatedDoc).then(resp => {
       updateContext();
-      console.log(resp);
+      if (resp === true) {
+        history.push('/admin/media/licenses');
+      } else if (resp === false) {
+        alert('Something went wrong, try again!');
+      }
     });
   };
 
@@ -44,7 +61,7 @@ class LicenseAdd extends React.Component {
   };
 
   render() {
-    const { name, abbreviated, url } = this.state;
+    const { name, color } = this.state;
     return (
       <div className="container" style={{ width: '95%' }}>
         <div
@@ -55,7 +72,7 @@ class LicenseAdd extends React.Component {
             className="center bold-text grey-text text-darken-2"
             style={{ fontSize: '1.5em' }}
           >
-            Add a new License
+            Edit Category
           </p>
         </div>
         <div
@@ -84,38 +101,10 @@ class LicenseAdd extends React.Component {
                   value={name}
                 />
               </div>
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Abbreviated:
-              </p>
-              <div className="input-field" style={{ marginBottom: 0 }}>
-                <input
-                  id="abbreviated"
-                  type="text"
-                  className="validate"
-                  onChange={this.handleChange}
-                  required
-                  value={abbreviated}
-                />
-              </div>
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Url:
-              </p>
-              <div className="input-field" style={{ marginBottom: 0 }}>
-                <input
-                  id="url"
-                  type="text"
-                  className="validate"
-                  onChange={this.handleChange}
-                  required
-                  value={url}
-                />
-              </div>
+              <SketchPicker
+                color={color || '#000000'}
+                onChangeComplete={this.handleChangeComplete}
+              />
             </div>
             <div className="col s12 m4" />
           </div>
@@ -130,7 +119,7 @@ class LicenseAdd extends React.Component {
                 type="button"
                 onClick={this.handleSubmit}
               >
-                Add License
+                Update Category
               </button>
             </div>
           </div>
@@ -140,9 +129,11 @@ class LicenseAdd extends React.Component {
   }
 }
 
-LicenseAdd.propTypes = {
+CategoryEdit.propTypes = {
   match: PropTypes.object,
 };
 
-LicenseAdd.contextType = Consumer;
-export default props => <Consumer>{() => <LicenseAdd {...props} />}</Consumer>;
+CategoryEdit.contextType = Consumer;
+export default props => (
+  <Consumer>{() => <CategoryEdit {...props} />}</Consumer>
+);
