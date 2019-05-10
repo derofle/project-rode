@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactHtmlParser from 'react-html-parser';
 
 const AttractionOverview = props => {
   const { attraction } = props;
-  return (
-    <div>
-      <p>{attraction.description}</p>
-    </div>
-  );
+  return <div>{ReactHtmlParser(attraction.description)}</div>;
 };
 
 AttractionOverview.propTypes = {

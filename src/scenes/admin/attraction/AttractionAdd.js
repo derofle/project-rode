@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { Consumer } from 'services/context';
-import { createDocInFirebase } from 'services/utilities';
+import { addAttraction } from 'services/utilities';
+import ReactQuill from 'react-quill';
+import MediaCrop from '../components/MediaCrop';
 
 class AddAttraction extends React.Component {
   state = {
@@ -9,26 +12,40 @@ class AddAttraction extends React.Component {
     park: '',
     category: '',
     type: '',
+    status: '',
+    description: '',
   };
 
-  componentDidMount() {}
+  static propTypes = {
+    history: PropTypes.object,
+  };
 
-  handleSubmit = e => {
+  componentDidMount() {
+    document.title = 'Add Attraction | Admin Panel | Project Rode';
+  }
+
+  handleSubmit = async e => {
     e.preventDefault();
-    const { name, park, category, type } = this.state;
+    const { name, park, category, type, status } = this.state;
+    const { history } = this.props;
     const { updateContext } = this.context;
-    const objId = name.toLowerCase().replace(/ /g, '-');
+
+    const objSlug = name.toLowerCase().replace(/ /g, '-');
     const objCat = category.map(obj => obj.value);
     const objTyp = type.map(obj => obj.value);
-    const newAttraction = {
-      id: objId,
+
+    const newDoc = {
       name,
+      status: status.value,
+      slug: objSlug,
       park: park.value,
       category: objCat,
       type: objTyp,
     };
-    createDocInFirebase('attractions', newAttraction);
+
+    addAttraction(newDoc);
     updateContext();
+    history.push('/admin/attractions');
   };
 
   handleChange = e => {
@@ -43,16 +60,10 @@ class AddAttraction extends React.Component {
     });
   };
 
-  handleRadio = e => {
-    this.setState({
-      status: e.target.value,
-    });
-  };
-
   render() {
-    const { parks, attractionsInfo, manufacturers } = this.context;
+    const { parks, attractionsInfo } = this.context;
     const { attractionCategories, attractionTypes } = attractionsInfo;
-    const { name, park, category, type, status } = this.state;
+    const { name, park, category, type, status, description } = this.state;
 
     const parkSelection = parks
       .map(p => ({
@@ -90,193 +101,201 @@ class AddAttraction extends React.Component {
       { value: 'hybrid', label: 'Hybride' },
     ];
 
-    const manufacturersSelection = manufacturers
+    /* const manufacturersSelection = manufacturers
       .map(manu => ({
         value: manu.id,
         label: manu.name,
       }))
       .sort((a, b) => (a.label > b.label ? 1 : -1));
+      */
+
     return (
       <div className="container" style={{ width: '95%' }}>
-        <div
-          className="card-content"
-          style={{ borderBottom: '2px solid #f3f5f8' }}
-        >
-          <p
-            className="center bold-text grey-text text-darken-2"
-            style={{ fontSize: '1.5em' }}
-          >
-            Voeg Attractie toe aan database
-          </p>
+        <div className="row">
+          <div className="col s12">
+            <div
+              className="card-content"
+              style={{ borderBottom: '2px solid #f3f5f8' }}
+            >
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ fontSize: '1.5em' }}
+              >
+                Add Attraction
+              </p>
+            </div>
+          </div>
         </div>
         <div
           className="card-action"
           style={{ borderBottom: '2px solid #f3f5f8' }}
         >
           <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2">General</p>
-              <p>(required)</p>
-            </div>
             <div className="col s12 m8">
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Naam:
-              </p>
-              <div className="input-field" style={{ marginBottom: 0 }}>
+              <div className="input-field" style={{ margin: 0 }}>
                 <input
                   id="name"
                   type="text"
-                  className="validate"
                   onChange={this.handleChange}
                   required
                   value={name}
+                  style={{
+                    backgroundColor: 'hsl(0,0%,100%)',
+                    borderColor: 'hsl(0,0%,80%)',
+                    borderRadius: '4px',
+                    borderStyle: 'solid',
+                    borderWidth: '1px',
+                    outline: 0,
+                    padding: '4px 10px 4px 10px',
+                    fontSize: '1.5em',
+                    boxSizing: 'border-box',
+                  }}
                 />
               </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2" />
-            </div>
-            <div className="col s12 m4">
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Park:
-              </p>
-              <Select
-                value={park}
-                onChange={e => this.handleSelectChange(e, 'park')}
-                options={parkSelection}
-                placeholder="Kies een park"
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={this.handleEditor}
               />
             </div>
-            {/*
             <div className="col s12 m4">
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Status:
-              </p>
-              <Select
-                value={status}
-                onChange={e => this.handleSelectChange(e, 'status')}
-                options={statusSelection}
-                placeholder="Kies de status"
-              />
-            </div>
-            */}
-          </div>
-          <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2" />
-            </div>
-            <div className="col s12 m8">
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Categorie:
-              </p>
-              <Select
-                value={category}
-                onChange={e => this.handleSelectChange(e, 'category')}
-                options={categorySelection}
-                isMulti
-                placeholder="Kies een of meerdere categoriën"
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2" />
-            </div>
-            <div className="col s12 m8">
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Type:
-              </p>
-              <Select
-                value={type}
-                onChange={e => this.handleSelectChange(e, 'type')}
-                options={typeSelection}
-                isMulti
-                placeholder="Kies een of meerdere types"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="card-content">
-          <div className="row">
-            <div className="col s12 m4">
-              <p className="bold-text grey-text text-darken-2">
-                Bouweigenschappen
-              </p>
-            </div>
-            <div className="col s12 m8">
-              <p
-                className="bold-text grey-text text-darken-2"
-                style={{ marginTop: 0 }}
-              >
-                Fabrikant:
-              </p>
-            </div>
-          </div>
-        </div>
-        {category && category.some(e => e.value === 'roller-coaster') ? (
-          <div className="card-content">
-            <div className="row">
-              <div className="col s12 m4">
-                <p className="bold-text grey-text text-darken-2">Achtbaan</p>
-              </div>
-              <div className="col s12 m8">
-                <p
-                  className="bold-text grey-text text-darken-2"
-                  style={{ marginTop: 0 }}
-                >
-                  Materiaal:
-                </p>
-                <div className="input-field" style={{ marginBottom: 0 }}>
+              <div className="card z-depth-1" style={{ marginTop: 0 }}>
+                <div className="card-content" style={{ padding: 0 }}>
+                  <p
+                    style={{
+                      fontSize: '18px',
+                      padding: '8px 20px',
+                      lineHeight: '1.4',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Publish
+                  </p>
+                </div>
+                <div className="card-action" style={{ padding: '0px 20px' }}>
+                  <p>Status: </p>
                   <Select
-                    value="placeholder"
-                    onChange={e =>
-                      this.handleSelectChange(e, 'coasterMaterial')
-                    }
-                    options={materialSelection}
-                    placeholder="Kies het materiaal"
+                    value={status}
+                    onChange={e => this.handleSelectChange(e, 'status')}
+                    options={statusSelection}
+                    placeholder="Kies de status"
+                  />
+                  <p>Park:</p>
+                  <Select
+                    value={park}
+                    onChange={e => this.handleSelectChange(e, 'park')}
+                    options={parkSelection}
+                  />
+                </div>
+                <div
+                  className="card-action"
+                  style={{ backgroundColor: '#f5f5f5', padding: '24px 20px' }}
+                >
+                  <button
+                    className="btn right"
+                    type="button"
+                    onClick={this.handleSubmit}
+                    style={{ marginTop: '-8px' }}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-content" style={{ padding: 0 }}>
+                  <p
+                    style={{
+                      fontSize: '18px',
+                      padding: '8px 20px',
+                      lineHeight: '1.4',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Featured Image
+                  </p>
+                </div>
+                <div className="card-action">
+                  <p>Adding pictures in the add component not yet possible</p>
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-content" style={{ padding: 0 }}>
+                  <p
+                    style={{
+                      fontSize: '18px',
+                      padding: '8px 20px',
+                      lineHeight: '1.4',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Categories
+                  </p>
+                </div>
+                <div className="card-action">
+                  <Select
+                    value={category}
+                    onChange={e => this.handleSelectChange(e, 'category')}
+                    options={categorySelection}
+                    isMulti
+                    placeholder="Kies een of meerdere categoriën"
+                  />
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-content" style={{ padding: 0 }}>
+                  <p
+                    style={{
+                      fontSize: '18px',
+                      padding: '8px 20px',
+                      lineHeight: '1.4',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Types
+                  </p>
+                </div>
+                <div className="card-action">
+                  <Select
+                    value={type}
+                    onChange={e => this.handleSelectChange(e, 'type')}
+                    options={typeSelection}
+                    isMulti
                   />
                 </div>
               </div>
             </div>
           </div>
-        ) : null}
-        <div className="card-action">
-          <div className="row">
-            <div className="col s12 m8" />
-            <div className="col s12 m4">
-              <button
-                className="btn right"
-                type="button"
-                onClick={this.handleSubmit}
-              >
-                Toevoegen
-              </button>
-            </div>
-          </div>
         </div>
+        {/* <div className="card-content">
+            <div className="row">
+              <div className="col s12 m2">
+                <p className="bold-text grey-text text-darken-2">
+                  Bouweigenschappen
+                </p>
+              </div>
+              <div className="col s12 m10">
+                <p
+                  className="bold-text grey-text text-darken-2"
+                  style={{ marginTop: 0 }}
+                >
+                  Fabrikant:
+                </p>
+                <div className="input-field" style={{ marginBottom: 0 }}>
+                  <Select
+                    value={manufacturerId}
+                    onChange={e => this.handleSelectChange(e, 'manufacturerId')}
+                    isMulti
+                    options={manufacturersSelection}
+                    placeholder="Kies een of meerdere fabrikanten"
+                  />
+                </div>
+              </div>
+            </div>
+          </div> */}
       </div>
     );
   }
 }
-
-AddAttraction.propTypes = {};
 
 AddAttraction.contextType = Consumer;
 export default props => (

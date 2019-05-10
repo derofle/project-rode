@@ -1,5 +1,12 @@
 import { firebase } from './firebase';
 
+// Functions used only in this file.
+const removeUID = doc => {
+  delete doc.uid;
+  return doc;
+};
+
+// Helper Functions
 export const idToName = (param, collection) => {
   const string = collection.find(item => item.id === param);
   return string.name;
@@ -22,7 +29,6 @@ export const idToSlug = (param, collection) => {
 };
 
 export const uidToSlug = (param, collection) => {
-  console.log(param, collection);
   const string = collection.find(item => item.uid === param).slug;
   return string;
 };
@@ -38,35 +44,83 @@ export const getPropertyByUid = (param, collection, property) => {
   return string[property];
 };
 
-export const updatePropertyInFirebase = (collection, uid, property, value) => {
-  console.log(collection, uid, property, value);
-  firebase.db
-    .collection(collection)
-    .doc(uid)
-    .update({ [property]: value })
-    .then(() => {
-      console.log(collection, uid, property, value);
-    });
-};
+// Data Handling
+// TODO: Add errortrappers to add functions
+// TODO: Make add and update global
 
-export const updateDocInFirebase = (collection, uid, object) => {
-  console.log(collection, uid, object);
-  firebase.db
-    .collection(collection)
-    .doc(uid)
-    .update(object)
-    .then(() => {
-      console.log(collection, uid);
-    });
-};
-
-export const createDocInFirebase = (collection, object) => {
-  firebase.db.collection(collection).add(object);
-};
-
-export const deleteDocInFirebase = (collection, doc) => {
+// General Handling
+export const deleteDoc = (collection, doc) =>
   firebase.db
     .collection(collection)
     .doc(doc)
-    .delete();
+    .delete()
+    .then(error => {
+      if (error) {
+        return false;
+      }
+      return true;
+    });
+
+// Park Handling
+export const addPark = async doc =>
+  firebase.db
+    .collection('parks')
+    .add(doc)
+    .then(ref => ref.id);
+
+export const updatePark = async doc =>
+  firebase.db
+    .collection('parks')
+    .doc(doc.uid)
+    .update(removeUID(doc))
+    .then(error => {
+      if (error) {
+        return false;
+      }
+      return true;
+    });
+
+// Attraction Handling
+export const addAttraction = async doc =>
+  firebase.db
+    .collection('attractions')
+    .add(doc)
+    .then(ref => ref.id);
+
+export const updateAttraction = async doc =>
+  firebase.db
+    .collection('attractions')
+    .doc(doc.uid)
+    .update(removeUID(doc))
+    .then(error => {
+      if (error) {
+        return false;
+      }
+      return true;
+    });
+
+// License Handling
+export const addLicense = async doc =>
+  firebase.db
+    .collection('mediaLicenses')
+    .add(doc)
+    .then(ref => ref.id);
+
+export const updateLicense = async doc =>
+  firebase.db
+    .collection('mediaLicenses')
+    .doc(doc.uid)
+    .update(removeUID(doc))
+    .then(error => {
+      if (error) {
+        return false;
+      }
+      return true;
+    });
+
+// Property retrieving
+
+export const getCountryId = (param, collection) => {
+  const string = collection.find(item => item.uid === param);
+  return string.country;
 };

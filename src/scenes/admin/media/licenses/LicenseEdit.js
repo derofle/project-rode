@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
-import { updateDocInFirebase } from 'services/utilities';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { updateLicense } from 'services/utilities';
 
 class LicenseAdd extends React.Component {
   state = {
@@ -29,18 +27,26 @@ class LicenseAdd extends React.Component {
     });
   }
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
+    e.preventDefault();
+
     const { updateContext } = this.context;
-    const { abbreviated, uid } = this.state;
+    const { abbreviated } = this.state;
+    const { history } = this.props;
     const objSlug = abbreviated
       .toLowerCase()
       .replace(/ /g, '-')
       .replace('.', '');
     const updatedDoc = { ...this.state, slug: objSlug };
-    delete updatedDoc.uid;
-    e.preventDefault();
-    updateDocInFirebase('mediaLicenses', uid, updatedDoc);
-    updateContext();
+
+    updateLicense(updatedDoc).then(resp => {
+      updateContext();
+      if (resp === true) {
+        history.push('/admin/media/licenses');
+      } else if (resp === false) {
+        alert('Something went wrong, try again!');
+      }
+    });
   };
 
   handleChange = e => {

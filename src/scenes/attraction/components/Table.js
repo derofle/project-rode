@@ -2,16 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { css, jsx } from '@emotion/core';
-import Category from '../../../components/Category';
-import { Consumer } from '../../../services/context';
 import {
-  idToName,
   uidToName,
   uidToId,
-  idToSlug,
   getCategoryUidByTypeId,
   uidToSlug,
-} from '../../../services/utilities';
+} from 'services/utilities';
+import Category from 'components/Category';
+import { Consumer } from 'services/context';
+import ReactCountryFlag from 'react-country-flag';
 /** @jsx jsx */
 
 const tableStyle = css`
@@ -28,6 +27,16 @@ const tableBottomStyle = css`
 `;
 
 class TableRender extends React.Component {
+  findImage = (attraction, media) => {
+    const headerMedia =
+      attraction.headerImage &&
+      media.find(med => med.uid === attraction.headerImage);
+    if (headerMedia !== undefined) {
+      return headerMedia.src;
+    }
+    return 'https://dwsinc.co/wp-content/uploads/2018/05/image-not-found.jpg';
+  };
+
   render() {
     const { attractions, media } = this.props;
     const { parks, loading, attractionsInfo } = this.context;
@@ -67,11 +76,7 @@ class TableRender extends React.Component {
                 >
                   <td style={{ padding: '10px' }}>
                     <img
-                      src={
-                        attraction.headerImage &&
-                        media.find(med => med.uid === attraction.headerImage)
-                          .src
-                      }
+                      src={this.findImage(attraction, media)}
                       alt={attraction.id}
                       style={{
                         display: 'block',
@@ -92,7 +97,7 @@ class TableRender extends React.Component {
                         to={`/park/${uidToId(
                           attraction.park,
                           parks
-                        )}/attractie/${attraction.id}`}
+                        )}/attractie/${attraction.slug}`}
                       >
                         {attraction.name}
                       </Link>
@@ -118,10 +123,13 @@ class TableRender extends React.Component {
                     </div>
                   </td>
                   <td>
-                    <Category category={attraction.category} />
+                    <Category category={attraction.category} height={40} />
                   </td>
                   <td>
-                    <p>{uidToName(attraction.park, parks)}</p>
+                    <p>
+                      <ReactCountryFlag code="nl" svg />{' '}
+                      {uidToName(attraction.park, parks)}
+                    </p>
                   </td>
                 </tr>
               ))}

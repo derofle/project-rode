@@ -174,8 +174,8 @@ class AttractionRender extends React.Component {
 
     const attraction =
       attractions &&
-      attractions.find(obj => obj.id === match.params.attractionId);
-    document.title = `${attraction.name} < Project Rode`;
+      attractions.find(obj => obj.slug === match.params.attractionId);
+
     // eslint-disable-next-line no-unused-expressions
     attraction &&
       attraction.type.forEach(type => {
@@ -186,7 +186,7 @@ class AttractionRender extends React.Component {
       });
 
     const park = attraction && parks.find(obj => obj.uid === attraction.park);
-
+    document.title = `${attraction.name} | ${park.name} | Project Rode`;
     const manufacturer =
       attraction &&
       manufacturers.find(obj => obj.id === attraction.manufacturerId);
@@ -205,7 +205,7 @@ class AttractionRender extends React.Component {
       users,
       media,
       mediaProviders,
-      licenses,
+      mediaLicenses,
     } = this.context;
     const { attraction, attractionType, loading, park } = this.state;
 
@@ -221,7 +221,8 @@ class AttractionRender extends React.Component {
 
     const license =
       headerImageFile &&
-      licenses.find(lic => lic.id === headerImageFile.licenseId);
+      headerImageFile.licenseId &&
+      mediaLicenses.find(lic => lic.id === headerImageFile.licenseId);
 
     const provider =
       headerImageFile &&
@@ -241,7 +242,7 @@ class AttractionRender extends React.Component {
             />
             <div css={parkBoxStyle}>
               Park:{' '}
-              <Link css={parkLinkStyle} to={`/park/${park.id}`}>
+              <Link css={parkLinkStyle} to={`/park/${park.slug}`}>
                 {park.name}
               </Link>
             </div>
@@ -263,7 +264,7 @@ class AttractionRender extends React.Component {
                 rel="noopener noreferrer"
                 css={creditUrl}
               >
-                {license && license.abbreviated}
+                {license ? license.abbreviated : null}
               </a>
             </div>
             <div css={textOverImageStyle}>
@@ -285,7 +286,7 @@ class AttractionRender extends React.Component {
               </p>
               <p css={attractionNameStyle}>{attraction.name}</p>
               <p css={attractionSubtitleStyle}>{attraction.subtitle}</p>
-              <Category category={attraction.category} />
+              <Category category={attraction.category} height={56} />
             </div>
             {user && user.role === 'admin' ? (
               <Link to={`/admin/attractions/edit/${attraction.uid}`}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
-import { createDocInFirebase } from 'services/utilities';
+import { addPark } from 'services/utilities';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
@@ -19,17 +19,19 @@ class ParkEdit extends React.Component {
   };
 
   componentDidMount() {
-    document.title = 'Add Park < Project Rode';
+    document.title = 'Add Park | Admin Panel | Project Rode';
   }
 
   handleSubmit = e => {
     const { updateContext } = this.context;
     const { name } = this.state;
-    const objId = name.toLowerCase().replace(/ /g, '-');
-    const newPark = { ...this.state, id: objId };
+    const { history } = this.props;
+    const objSlug = name.toLowerCase().replace(/ /g, '-');
+    const newPark = { ...this.state, slug: objSlug };
     e.preventDefault();
-    createDocInFirebase('parks', newPark);
+    addPark(newPark);
     updateContext();
+    history.push('/admin/parks');
   };
 
   handleChange = e => {

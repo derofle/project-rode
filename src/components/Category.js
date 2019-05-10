@@ -8,38 +8,17 @@ const categoryDivStyle = css`
   cursor: pointer;
   box-shadow: 0 7px 9px -7px rgba(0, 0, 0, 1);
   margin: 10px;
-  height: 56px;
   z-index: 10;
   &:hover {
     opacity: 0.7 !important;
   }
 `;
 
-const iconStyle = css`
-  width: 36px !important;
-`;
-
 class CategoryRender extends React.Component {
-  findColor = category => {
-    switch (category) {
-      case 'roller-coaster':
-        return 'crimson';
-      case 'water-ride':
-        return 'darkcyan';
-      case 'dark-ride':
-        return 'dimgray';
-      case 'exhibition':
-        return 'goldenrod';
-      default:
-        return '';
-    }
-  };
-
   render() {
     const { attractionsInfo } = this.context;
     const { attractionCategories } = attractionsInfo;
-    const { category } = this.props;
-    console.log(category);
+    const { category, height, margin } = this.props;
     return (
       <div>
         {category &&
@@ -51,14 +30,19 @@ class CategoryRender extends React.Component {
               <div
                 className="category-icon"
                 css={categoryDivStyle}
-                style={{ backgroundColor: categoryInfo.color }}
+                style={{
+                  backgroundColor: categoryInfo.color,
+                  height,
+                  margin,
+                  marginRight: '6px',
+                }}
                 key={cat}
               >
                 <Link to={`/categorie/${categoryInfo.slug}`}>
                   <img
                     src={categoryInfo.icon}
                     alt="category-icon"
-                    css={iconStyle}
+                    style={{ width: height - 20 }}
                   />
                 </Link>
               </div>

@@ -121,10 +121,10 @@ class Sidebar extends React.Component {
                       <Link to="/admin/attractions/add">Add New</Link>
                     </li>
                     <li>
-                      <Link to="/#">Categories</Link>
+                      <Link to="/admin/attractions/categories">Categories</Link>
                     </li>
                     <li>
-                      <Link to="/#">Types</Link>
+                      <Link to="/admin/attractions/types">Types</Link>
                     </li>
                   </ul>
                 </div>

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Consumer } from 'services/context';
+import { uidToName } from 'services/utilities';
 
 const bigPictureDivStyle = css`
   position: relative;
@@ -151,7 +152,7 @@ class ParkDetailsRender extends React.Component {
   componentDidMount() {
     const { parks } = this.context;
     const { match } = this.props;
-    const park = parks && parks.find(obj => obj.id === match.params.parkId);
+    const park = parks && parks.find(obj => obj.slug === match.params.parkId);
     document.title = `${park.name} < Project Rode`;
     this.setState({
       park,
@@ -165,7 +166,8 @@ class ParkDetailsRender extends React.Component {
       users,
       media,
       mediaProviders,
-      licenses,
+      mediaLicenses,
+      countries,
     } = this.context;
     const { attraction, loading, park } = this.state;
 
@@ -175,13 +177,13 @@ class ParkDetailsRender extends React.Component {
     if (currentUser && currentUser.uid) {
       user = users.find(obj => obj.uid === currentUser.uid);
     }
-    console.log(park);
+
     const headerImageFile =
       media && media.find(med => med.uid === park.headerImage);
-    console.log(headerImageFile);
+
     const license =
       headerImageFile &&
-      licenses.find(lic => lic.id === headerImageFile.licenseId);
+      mediaLicenses.find(lic => lic.id === headerImageFile.licenseId);
 
     const provider =
       headerImageFile &&
@@ -221,7 +223,7 @@ class ParkDetailsRender extends React.Component {
             </div>
             <div css={textOverImageStyle}>
               <p css={attractionTypeStyle}>
-                {park.city}, {park.country}
+                {park.city}, {uidToName(park.country, countries)}
               </p>
               <p css={attractionNameStyle}>{park.name}</p>
               <p css={attractionSubtitleStyle}>{park.subtitle}</p>

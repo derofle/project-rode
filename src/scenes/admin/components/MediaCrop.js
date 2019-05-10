@@ -7,6 +7,7 @@ import Cropper from 'react-cropper';
 import { storage, firebaseRoot } from 'services/firebase/components/firebase';
 import { firebase } from 'services/firebase';
 import { Consumer } from 'services/context';
+import { getDate } from 'services/utilities';
 
 const headerImageStyle = css`
   width: 100%;
@@ -80,7 +81,7 @@ class MediaCrop extends React.Component {
     const storageRef = storage.ref(
       `media/${component.props.category}/${component.props.location}/${
         component.props.fileName
-      }`
+      }-${Date.now()}.jpeg`
     );
     const task = storageRef.put(blob);
 

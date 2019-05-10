@@ -1,12 +1,11 @@
 import React from 'react';
 import 'react-table/react-table.css';
+import { storage, firebaseRoot } from 'services/firebase/components/firebase';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
-import { deleteDocInFirebase, uidToId } from 'services/utilities';
-import { css, jsx } from '@emotion/core';
+import { deleteDoc, uidToSlug } from 'services/utilities';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import moment from 'moment';
-/** @jsx jsx */
 
 class MediaLibraryRender extends React.Component {
   state = {
@@ -16,7 +15,7 @@ class MediaLibraryRender extends React.Component {
   componentDidMount() {
     const elems = document.querySelectorAll('.modal');
     M.Modal.init(elems, {});
-    document.title = 'Media Library < Project Rode';
+    document.title = 'Media Library | Admin Panel | Project Rode';
   }
 
   renderModal = item => {
@@ -26,7 +25,7 @@ class MediaLibraryRender extends React.Component {
     let usedIn = null;
     parks.find(park => {
       if (park.headerImage === item.uid) {
-        usedIn = { ...park, url: `/park/${park.id}` };
+        usedIn = { ...park, url: `/park/${park.slug}` };
       }
       return usedIn;
     });
@@ -35,7 +34,7 @@ class MediaLibraryRender extends React.Component {
       if (attr.headerImage === item.uid) {
         usedIn = {
           ...attr,
-          url: `/park/${uidToId(attr.park, parks)}/attractie/${attr.id}`,
+          url: `/park/${uidToSlug(attr.park, parks)}/attractie/${attr.slug}`,
         };
       }
       return usedIn;
@@ -46,6 +45,7 @@ class MediaLibraryRender extends React.Component {
       src: item.src,
       uid: item.uid,
       timestamp: item.timestamp,
+      path: item.path,
       usedIn,
     };
     console.log(modal);
@@ -104,7 +104,8 @@ class MediaLibraryRender extends React.Component {
               href="#!"
               className="modal-close"
               onClick={() => {
-                deleteDocInFirebase('media', modal.uid);
+                deleteDoc('media', modal.uid);
+                storage.ref(modal.path).delete();
                 updateContext();
               }}
             >
