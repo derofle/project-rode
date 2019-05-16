@@ -298,3 +298,13 @@ strong {
 	height: auto !important;
 	box-sizing: border-box !important;
 }
+
+.rowControls {
+	display: inline-block;
+	visibility: hidden;
+}
+
+.ReactTable .rt-tbody .rt-tr-group:hover .rowControls {
+	display: inline-block;
+	visibility: visible;
+}

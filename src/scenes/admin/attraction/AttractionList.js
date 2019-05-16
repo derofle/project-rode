@@ -3,9 +3,8 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Consumer } from 'services/context';
 import { Link } from 'react-router-dom';
-import { uidToName, uidToSlug, deleteDoc } from 'services/utilities';
+import { deleteDoc, getProperty } from 'services/utilities';
 import { css, jsx } from '@emotion/core';
-import Category from 'components/Category';
 import CountryFlag from 'components/CountryFlag';
 import matchSorter from 'match-sorter';
 /** @jsx jsx */
@@ -13,6 +12,7 @@ import matchSorter from 'match-sorter';
 const chipStyle = css`
   height: 24px !important;
   line-height: 24px !important;
+  box-shadow: 2px 2px 5px -5px rgba(0, 0, 0, 0.75);
 `;
 
 class AttractionListRender extends React.Component {
@@ -29,9 +29,40 @@ class AttractionListRender extends React.Component {
     document.title = 'Attraction List | Admin Panel | Project Rode';
   }
 
+  renderStatus = (status, type) => {
+    if (type === 'color') {
+      if (status === 'defunct') {
+        return '#ff2e00';
+      }
+      if (status === 'constructing') {
+        return '#ffbf00';
+      }
+      if (status === 'operating') {
+        return '#57d500';
+      }
+      return '#ffffff';
+    }
+    if (type === 'text') {
+      if (status === 'defunct') {
+        return 'Defunct';
+      }
+      if (status === 'constructing') {
+        return 'Under Construction';
+      }
+      if (status === 'operating') {
+        return 'Operating';
+      }
+      return 'Unknown';
+    }
+  };
+
   render() {
     const { attractionsInfo, parks, updateContext } = this.context;
-    const { attractions, attractionTypes } = attractionsInfo;
+    const {
+      attractions,
+      attractionTypes,
+      attractionCategories,
+    } = attractionsInfo;
     const editLink = ({ original }) => (
       <span>
         <Link to={`/admin/attractions/edit/${original.uid}`}>
@@ -43,9 +74,12 @@ class AttractionListRender extends React.Component {
     const viewLink = ({ original }) => (
       <span>
         <Link
-          to={`/park/${uidToSlug(original.park, parks)}/attractie/${
-            original.slug
-          }`}
+          to={`/park/${getProperty(
+            original.park,
+            'uid',
+            'slug',
+            parks
+          )}/attractie/${original.slug}`}
         >
           <i className="material-icons">visibility</i>
         </Link>
@@ -59,6 +93,8 @@ class AttractionListRender extends React.Component {
             deleteDoc('attractions', original.uid);
             updateContext();
           }}
+          role="button"
+          tabIndex="-1"
           style={{ cursor: 'pointer' }}
         >
           <i className="material-icons" style={{ color: 'red' }}>
@@ -81,9 +117,10 @@ class AttractionListRender extends React.Component {
       {
         Header: 'Park',
         accessor: 'park',
+        minWidth: 125,
         filterMethod: (filter, rows) =>
           matchSorter(rows, filter.value, {
-            keys: [data => uidToName(data.park, parks)],
+            keys: [data => getProperty(data.park, 'uid', 'name', parks)],
           }),
         filterAll: true,
         Cell: props => (
@@ -91,7 +128,7 @@ class AttractionListRender extends React.Component {
             <CountryFlag park={props.value} />
             {'  '}
             <span style={{ verticalAlign: 'middle' }}>
-              {uidToName(props.value, parks)}
+              {getProperty(props.value, 'uid', 'name', parks)}
             </span>
           </div>
         ),
@@ -102,7 +139,27 @@ class AttractionListRender extends React.Component {
         maxWidth: 200,
         Cell: props => (
           <div>
-            <Category category={props.value} height={40} margin={0} />
+            {props.value &&
+              props.value.map(val => (
+                <div
+                  className="chip"
+                  css={chipStyle}
+                  style={{
+                    color: 'white',
+                    backgroundColor: getProperty(
+                      val,
+                      'uid',
+                      'color',
+                      attractionCategories
+                    ),
+                    opacity: 0.8,
+                    textShadow: '1px 1px 4px #000000',
+                  }}
+                  key={val}
+                >
+                  {getProperty(val, 'uid', 'name', attractionCategories)}
+                </div>
+              ))}
           </div>
         ),
       },
@@ -114,7 +171,7 @@ class AttractionListRender extends React.Component {
             {props.value &&
               props.value.map(val => (
                 <div className="chip" css={chipStyle} key={val}>
-                  {uidToName(val, attractionTypes)}
+                  {getProperty(val, 'uid', 'name', attractionTypes)}
                 </div>
               ))}
           </div>
@@ -123,6 +180,7 @@ class AttractionListRender extends React.Component {
       {
         Header: 'Status',
         accessor: 'status',
+        maxWidth: 175,
         filterMethod: (filter, row) => {
           if (filter.value === 'all') {
             return true;
@@ -154,22 +212,13 @@ class AttractionListRender extends React.Component {
           <span>
             <span
               style={{
-                color:
-                  row.value === 'defunct'
-                    ? '#ff2e00'
-                    : row.value === 'constructing'
-                    ? '#ffbf00'
-                    : '#57d500',
+                color: this.renderStatus(row.value, 'color'),
                 transition: 'all .3s ease',
               }}
             >
               &#x25cf;
             </span>{' '}
-            {row.value === 'defunct'
-              ? 'Defunct'
-              : row.value === 'constructing'
-              ? `Under Construction`
-              : 'Operating'}
+            {this.renderStatus(row.value, 'text')}
           </span>
         ),
       },

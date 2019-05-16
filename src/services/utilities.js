@@ -118,9 +118,46 @@ export const updateLicense = async doc =>
       return true;
     });
 
+// Category Handling
+export const updateCategory = async doc =>
+  firebase.db
+    .collection('attractionCategories')
+    .doc(doc.uid)
+    .update(removeUID(doc))
+    .then(error => {
+      if (error) {
+        return false;
+      }
+      return true;
+    });
+
+// Type Handling
+export const addType = async doc =>
+  firebase.db
+    .collection('attractionTypes')
+    .add(doc)
+    .then(ref => ref.id);
+
+export const updateType = async doc =>
+  firebase.db
+    .collection('attractionTypes')
+    .doc(doc.uid)
+    .update(removeUID(doc))
+    .then(error => {
+      if (error) {
+        return false;
+      }
+      return true;
+    });
+
 // Property retrieving
 
 export const getCountryId = (param, collection) => {
   const string = collection.find(item => item.uid === param);
   return string.country;
+};
+
+export const getProperty = (arg, type, prop, collection) => {
+  const property = collection.find(item => item[type] === arg);
+  return property[prop];
 };

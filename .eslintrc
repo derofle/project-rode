@@ -3,6 +3,7 @@
 	"rules": {
 		"react/display-name": 0,
 		"import/no-unresolved": 0,
-		"react/jsx-uses-vars": [ 2 ]
+		"react/jsx-uses-vars": [ 2 ],
+		"no-plusplus": 0
 	}
 }

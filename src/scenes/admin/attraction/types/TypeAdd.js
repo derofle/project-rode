@@ -1,48 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
-import { updateCategory } from 'services/utilities';
-import { SketchPicker } from 'react-color';
+import { addType } from 'services/utilities';
+import Select from 'react-select';
 
-class CategoryEdit extends React.Component {
+class TypeAdd extends React.Component {
   state = {
     uid: '',
     name: '',
+    category: '',
   };
 
   componentDidMount() {
-    document.title = 'Edit Category | Admin Panel | Project Rode';
-    const { attractionsInfo } = this.context;
-    const { attractionCategories } = attractionsInfo;
-    const { match } = this.props;
-    const category =
-      attractionCategories &&
-      attractionCategories.find(cat => cat.uid === match.params.Id);
-
-    this.setState({
-      uid: category.uid,
-      name: category.name,
-      color: category.color,
-    });
+    document.title = 'Edit Type | Admin Panel | Project Rode';
   }
 
   handleSubmit = async e => {
     e.preventDefault();
 
     const { updateContext } = this.context;
-    const { name } = this.state;
+    const { name, category } = this.state;
     const { history } = this.props;
     const objSlug = name
       .toLowerCase()
       .replace(/ /g, '-')
       .replace('.', '');
-    const updatedDoc = { ...this.state, slug: objSlug };
+    const newDoc = { name, slug: objSlug, category: category.value };
 
-    updateCategory(updatedDoc).then(resp => {
+    addType(newDoc).then(resp => {
       updateContext();
-      if (resp === true) {
-        history.push('/admin/attractions/categories');
-      } else if (resp === false) {
+      if (resp) {
+        history.push('/admin/attractions/types');
+      } else {
         alert('Something went wrong, try again!');
       }
     });
@@ -60,14 +49,16 @@ class CategoryEdit extends React.Component {
     });
   };
 
-  handleChangeComplete = e => {
-    this.setState({
-      color: e.hex,
-    });
-  };
-
   render() {
-    const { name, color } = this.state;
+    const { name, category } = this.state;
+    const { attractionsInfo } = this.context;
+    const { attractionCategories } = attractionsInfo;
+    const categorySelection = attractionCategories
+      .map(cat => ({
+        value: cat.uid,
+        label: cat.name,
+      }))
+      .sort((a, b) => (a.label > b.label ? 1 : -1));
     return (
       <div className="container" style={{ width: '95%' }}>
         <div
@@ -107,9 +98,12 @@ class CategoryEdit extends React.Component {
                   value={name}
                 />
               </div>
-              <SketchPicker
-                color={color || '#000000'}
-                onChangeComplete={this.handleChangeComplete}
+              <p>Category: </p>
+              <Select
+                value={category}
+                onChange={e => this.handleSelectChange(e, 'category')}
+                options={categorySelection}
+                placeholder="Choose Category"
               />
             </div>
             <div className="col s12 m4" />
@@ -125,7 +119,7 @@ class CategoryEdit extends React.Component {
                 type="button"
                 onClick={this.handleSubmit}
               >
-                Update Category
+                Update Type
               </button>
             </div>
           </div>
@@ -135,11 +129,9 @@ class CategoryEdit extends React.Component {
   }
 }
 
-CategoryEdit.propTypes = {
+TypeAdd.propTypes = {
   match: PropTypes.object,
 };
 
-CategoryEdit.contextType = Consumer;
-export default props => (
-  <Consumer>{() => <CategoryEdit {...props} />}</Consumer>
-);
+TypeAdd.contextType = Consumer;
+export default props => <Consumer>{() => <TypeAdd {...props} />}</Consumer>;
