@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { AppProvider, Consumer } from 'services/context';
+import { AppProvider, Consumer, Context } from 'services/context';
 
 // Components
 import Header from 'components/Header';
@@ -33,10 +33,8 @@ const AdminContainer = () => (
 
 const DefaultContainer = () => (
   <div className="root-app">
-    <header>
-      <Header />
-      <Sidebar />
-    </header>
+    <Header />
+    <Sidebar />
     <main>
       <Switch>
         <Route exact path="/" component={NotFound} />
@@ -48,7 +46,7 @@ const DefaultContainer = () => (
         <Route exact path="/login" component={() => <Login />} />
         <Route path="/park/:parkId" component={ParkDetails} />
         <Route path="/parken" component={Parks} />
-        <Route path="/aanmelden" component={Signup} />
+        <Route path="/signup" component={Signup} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
@@ -81,7 +79,7 @@ class AppRender extends React.Component {
   }
 }
 
-AppRender.contextType = Consumer;
+AppRender.contextType = Context;
 const App = props => (
   <AppProvider>
     <Consumer>{() => <AppRender {...props} />}</Consumer>

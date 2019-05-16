@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { signIn } from '../../services/firebase/components/auth';
-import { Consumer } from '../../services/context';
+import { Consumer, Context } from '../../services/context';
 
 class SigninRender extends Component {
   state = {
@@ -106,7 +106,7 @@ class SigninRender extends Component {
   }
 }
 
-SigninRender.contextType = Consumer;
+SigninRender.contextType = Context;
 const Signin = props => (
   <Consumer>{() => <SigninRender {...props} />}</Consumer>
 );
