@@ -16,6 +16,8 @@ import Categories from './attraction/categories/Categories';
 import CategoryEdit from './attraction/categories/CategoryEdit';
 
 import Types from './attraction/types/Types';
+import TypeEdit from './attraction/types/TypeEdit';
+import TypeAdd from './attraction/types/TypeAdd';
 
 import ParkList from './park/ParkList';
 import ParkEdit from './park/ParkEdit';
@@ -68,6 +70,11 @@ class AdminRender extends React.Component {
               component={CategoryEdit}
             />
             <Route exact path="/admin/attractions/types" component={Types} />
+            <Route
+              path="/admin/attractions/types/edit/:Id"
+              component={TypeEdit}
+            />
+            <Route path="/admin/attractions/types/add" component={TypeAdd} />
             <Route exact path="/admin/media" component={MediaLibrary} />
             <Route exact path="/admin/media/licenses" component={Licenses} />
             <Route path="/admin/media/licenses/add" component={LicenseAdd} />

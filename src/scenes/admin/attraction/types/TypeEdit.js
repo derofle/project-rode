@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Consumer } from 'services/context';
-import { updateCategory } from 'services/utilities';
+import { updateType } from 'services/utilities';
 import { SketchPicker } from 'react-color';
 
 class CategoryEdit extends React.Component {
@@ -11,18 +11,18 @@ class CategoryEdit extends React.Component {
   };
 
   componentDidMount() {
-    document.title = 'Edit Category | Admin Panel | Project Rode';
+    document.title = 'Edit Type | Admin Panel | Project Rode';
     const { attractionsInfo } = this.context;
-    const { attractionCategories } = attractionsInfo;
+    const { attractionTypes } = attractionsInfo;
     const { match } = this.props;
-    const category =
-      attractionCategories &&
-      attractionCategories.find(cat => cat.uid === match.params.Id);
+    const type =
+      attractionTypes &&
+      attractionTypes.find(typ => typ.uid === match.params.Id);
 
     this.setState({
-      uid: category.uid,
-      name: category.name,
-      color: category.color,
+      uid: type.uid,
+      name: type.name,
+      description: type.description,
     });
   }
 
@@ -38,10 +38,10 @@ class CategoryEdit extends React.Component {
       .replace('.', '');
     const updatedDoc = { ...this.state, slug: objSlug };
 
-    updateCategory(updatedDoc).then(resp => {
+    updateType(updatedDoc).then(resp => {
       updateContext();
       if (resp === true) {
-        history.push('/admin/attractions/categories');
+        history.push('/admin/attractions/types');
       } else if (resp === false) {
         alert('Something went wrong, try again!');
       }
@@ -60,14 +60,8 @@ class CategoryEdit extends React.Component {
     });
   };
 
-  handleChangeComplete = e => {
-    this.setState({
-      color: e.hex,
-    });
-  };
-
   render() {
-    const { name, color } = this.state;
+    const { name, description } = this.state;
     return (
       <div className="container" style={{ width: '95%' }}>
         <div
@@ -107,10 +101,20 @@ class CategoryEdit extends React.Component {
                   value={name}
                 />
               </div>
-              <SketchPicker
-                color={color || '#000000'}
-                onChangeComplete={this.handleChangeComplete}
-              />
+              <p
+                className="bold-text grey-text text-darken-2"
+                style={{ marginTop: 0 }}
+              >
+                Description:
+              </p>
+              <div className="input-field">
+                <textarea
+                  id="description"
+                  value={description}
+                  onChange={this.handleChange}
+                  className="materialize-textarea"
+                />
+              </div>
             </div>
             <div className="col s12 m4" />
           </div>
@@ -125,7 +129,7 @@ class CategoryEdit extends React.Component {
                 type="button"
                 onClick={this.handleSubmit}
               >
-                Update Category
+                Update Type
               </button>
             </div>
           </div>
