@@ -1705,20 +1705,7 @@ img {
 svg:not(:root) {
 	overflow: hidden;
 }
-button,
-input,
-optgroup,
-select,
-textarea {
-	font-family: sans-serif;
-	font-size: 100%;
-	line-height: 1.15;
-	margin: 0;
-}
-button,
-input {
-	overflow: visible;
-}
+
 button,
 select {
 	text-transform: none;
@@ -6596,23 +6583,6 @@ input[type=range]::-ms-thumb {
 	display: -webkit-flex;
 	display: -ms-flexbox;
 	display: flex;
-}
-.datepicker-controls .select-wrapper input {
-	border-bottom: none;
-	text-align: center;
-	margin: 0;
-}
-.datepicker-controls .select-wrapper input:focus {
-	border-bottom: none;
-}
-.datepicker-controls .select-wrapper .caret {
-	display: none;
-}
-.datepicker-controls .select-year input {
-	width: 50px;
-}
-.datepicker-controls .select-month input {
-	width: 70px;
 }
 .month-prev,
 .month-next {
