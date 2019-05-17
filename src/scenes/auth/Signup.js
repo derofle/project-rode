@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { Consumer } from 'services/context';
+import { Consumer, Context } from 'services/context';
 import { signUp } from 'services/firebase/components/auth';
 
 class SignupRender extends Component {
@@ -124,7 +124,7 @@ class SignupRender extends Component {
   }
 }
 
-SignupRender.contextType = Consumer;
+SignupRender.contextType = Context;
 const Signup = props => (
   <Consumer>{() => <SignupRender {...props} />}</Consumer>
 );

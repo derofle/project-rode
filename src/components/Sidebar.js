@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { NavLink, Link } from 'react-router-dom';
-import { Consumer } from 'services/context';
+import { Consumer, Context } from 'services/context';
 import { auth } from '../services/firebase';
 import 'materialize-css/dist/css/materialize.min.css';
 
@@ -67,7 +67,7 @@ class SidebarRender extends Component {
   }
 }
 
-SidebarRender.contextType = Consumer;
+SidebarRender.contextType = Context;
 const Sidebar = props => (
   <Consumer>{() => <SidebarRender {...props} />}</Consumer>
 );

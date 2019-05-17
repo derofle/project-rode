@@ -1,8 +1,9 @@
-import React, { Component, createContext } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { firebase, database } from './firebase';
 
-export const { Provider, Consumer } = createContext();
+export const Context = React.createContext();
+export const { Consumer, Provider } = Context;
 
 export class AppProvider extends Component {
   state = {
@@ -97,7 +98,7 @@ export class AppProvider extends Component {
     } = this.state;
     const { children } = this.props;
     return (
-      <Provider
+      <Context.Provider
         value={{
           loading,
           countries,
@@ -125,7 +126,7 @@ export class AppProvider extends Component {
         }}
       >
         {children}
-      </Provider>
+      </Context.Provider>
     );
   }
 }
