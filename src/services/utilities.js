@@ -158,6 +158,19 @@ export const getCountryId = (param, collection) => {
 };
 
 export const getProperty = (arg, type, prop, collection) => {
+  console.log(arg, type, prop, collection);
   const property = collection.find(item => item[type] === arg);
   return property[prop];
 };
+
+export const addFavorite = async doc =>
+  firebase.db
+    .collection('users')
+    .doc(doc.uid)
+    .update(removeUID(doc))
+    .then(error => {
+      if (error) {
+        return false;
+      }
+      return true;
+    });

@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { AppProvider, Consumer, Context } from 'services/context';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 // Components
-import Header from 'components/Header';
+import Header from 'components/Header/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import NotFound from 'components/NotFound';
@@ -23,6 +25,14 @@ import Attractions from 'scenes/attraction/Attractions';
 import ParkDetails from 'scenes/park/ParkDetails';
 import Parks from 'scenes/park/Parks';
 
+const pageContainer = css`
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+  height: 100%;
+`;
+
 const AdminContainer = () => (
   <div className="root-app">
     <Switch>
@@ -36,24 +46,24 @@ const DefaultContainer = () => (
     <Header />
     <Sidebar />
     <main>
-      <Switch>
-        <Route exact path="/" component={NotFound} />
-        <Route
-          path="/park/:parkId/attractie/:attractionId"
-          component={AttractionDetails}
-        />
-        <Route path="/attracties" component={Attractions} />
-        <Route exact path="/login" component={() => <Login />} />
-        <Route path="/park/:parkId" component={ParkDetails} />
-        <Route path="/parken" component={Parks} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/404" component={NotFound} />
-        <Route component={NotFound} />
-      </Switch>
+      <div css={pageContainer}>
+        <Switch>
+          <Route exact path="/" component={NotFound} />
+          <Route
+            path="/park/:parkId/attractie/:attractionId"
+            component={AttractionDetails}
+          />
+          <Route path="/attracties" component={Attractions} />
+          <Route exact path="/login" component={() => <Login />} />
+          <Route path="/park/:parkId" component={ParkDetails} />
+          <Route path="/parken" component={Parks} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/404" component={NotFound} />
+          <Route component={NotFound} />
+        </Switch>
+      </div>
     </main>
-    <footer>
-      <Footer />
-    </footer>
+    <Footer />
   </div>
 );
 
