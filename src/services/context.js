@@ -23,13 +23,6 @@ export class AppProvider extends Component {
   };
 
   async componentDidMount() {
-    firebase.auth.onAuthStateChanged(
-      user =>
-        user &&
-        this.setState({
-          currentUser: user,
-        })
-    );
     this.setState(
       {
         countries: await database.getCollectionData('countries'),
@@ -47,9 +40,18 @@ export class AppProvider extends Component {
         users: await database.getCollectionData('users'),
       },
       () => {
-        this.setState({
-          loading: false,
-        });
+        firebase.auth.onAuthStateChanged(
+          user =>
+            user &&
+            this.setState({
+              currentUser: {
+                ...user,
+                profile: this.state.users.find(i => i.uid === user.uid),
+              },
+              loading: false,
+            })
+        );
+        console.log(this.state);
       }
     );
   }
@@ -74,6 +76,12 @@ export class AppProvider extends Component {
       },
       () => {
         this.setState({
+          currentUser: {
+            ...this.state.currentUser,
+            profile: this.state.users.find(
+              i => i.uid === this.state.currentUser.uid
+            ),
+          },
           loading: false,
         });
       }

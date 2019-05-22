@@ -158,7 +158,6 @@ export const getCountryId = (param, collection) => {
 };
 
 export const getProperty = (arg, type, prop, collection) => {
-  console.log(arg, type, prop, collection);
   const property = collection.find(item => item[type] === arg);
   return property[prop];
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Consumer } from 'services/context';
+import { Context } from 'services/context';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { getProperty, addFavorite } from 'services/utilities';
@@ -80,9 +80,41 @@ const sortingTopContainer = css`
   float: right;
 `;
 
+const sortingContainer = css`
+  margin-right: -12px;
+  font-size: 85.71%;
+  display: inline-block;
+  position: relative;
+`;
+
 const searchContainer = css`
   margin-top: 12px;
   color: #222;
+`;
+
+const searchButton = css`
+  padding-right: 25px;
+  position: relative;
+  background-color: transparent !important;
+  border: 0px;
+  box-shadow: none;
+  font-weight: 400;
+  height: auto;
+  font-size: 14px;
+  color: #222;
+  outline: auto 5px -webkit-focus-ring-color;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+`;
+
+const dropdownMenu = css`
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  padding-right: 25px;
+  z-index: 10;
 `;
 
 const filterWrapper = css`
@@ -174,11 +206,10 @@ const card = css`
 const favoriteIcon = css`
   position: absolute;
   color: #fff;
-  z-index: 10;
+  z-index: 9;
   right: 5px;
   top: 5px;
   font-size: 26px;
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.4));
   cursor: pointer;
   transition: 0.2s;
   opacity: 0;
@@ -269,15 +300,21 @@ const ratingAmount = css`
 `;
 
 class Attractions extends React.Component {
+  static contextType = Context;
+
   state = {
     search: '',
     filteredArray: [],
+    showMenu: false,
+    filterMethod: 'Naam A - Z',
   };
 
   componentDidMount() {
     const { attractionsInfo } = this.context;
     this.setState({
-      filteredArray: attractionsInfo.attractions,
+      filteredArray: attractionsInfo.attractions.sort((a, b) =>
+        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+      ),
     });
   }
 
@@ -308,38 +345,36 @@ class Attractions extends React.Component {
   };
 
   favoriteToggle = attr => {
-    const { currentUser, users, updateContext } = this.context;
-    console.log(currentUser, attr, users);
-
-    const favoriteArray = getProperty(
-      currentUser.uid,
-      'uid',
-      'favorites',
-      users
-    );
-    const updatedDoc = {
-      uid: currentUser.uid,
-      favorites: favoriteArray ? [...favoriteArray, attr] : [attr],
-    };
-
-    addFavorite(updatedDoc);
-    updateContext();
+    const { currentUser, updateContext } = this.context;
+    const search = currentUser.profile.favorites.some(item => item === attr);
+    if (search === false) {
+      const updatedDoc = {
+        uid: currentUser.uid,
+        favorites: currentUser.profile.favorites
+          ? [...currentUser.profile.favorites, attr]
+          : [attr],
+      };
+      addFavorite(updatedDoc);
+      updateContext();
+    } else {
+      const filteredArray = currentUser.profile.favorites.filter(
+        item => item !== attr
+      );
+      const updatedDoc = {
+        uid: currentUser.uid,
+        favorites: filteredArray,
+      };
+      addFavorite(updatedDoc);
+      updateContext();
+    }
   };
 
   renderFavorite = (attr, type) => {
-    const { currentUser, users } = this.context;
-    const favoriteArray = getProperty(
-      currentUser.uid,
-      'uid',
-      'favorites',
-      users
-    );
-    console.log(favoriteArray);
-    const search = favoriteArray.some(item => item === attr);
-    console.log(search);
+    const { currentUser } = this.context;
+    const search = currentUser.profile.favorites.some(item => item === attr);
     if (type === 'color') {
       if (search === true) {
-        return 'red';
+        return 'crimson';
       }
       return 'white';
     }
@@ -350,20 +385,52 @@ class Attractions extends React.Component {
       }
       return 'favorite_border';
     }
+
+    if (type === 'shadow') {
+      if (search === true) {
+        return 'drop-shadow(0 0 3px rgba(255, 255, 255, 0.2))';
+      }
+      return 'drop-shadow(0 0 2px rgba(0, 0, 0, 0.4))';
+    }
+  };
+
+  showMenu = event => {
+    event.preventDefault();
+
+    this.setState({ showMenu: true }, () => {
+      document.addEventListener('click', this.closeMenu);
+    });
+  };
+
+  closeMenu = () => {
+    this.setState({ showMenu: false }, () => {
+      document.removeEventListener('click', this.closeMenu);
+    });
+  };
+
+  sortArray = type => {
+    const { filteredArray } = this.state;
+    if (type === 'name-desc') {
+      this.setState({
+        filteredArray: filteredArray.sort((a, b) =>
+          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+        ),
+        filterMethod: 'Naam A - Z',
+      });
+    }
+    if (type === 'name-asc') {
+      this.setState({
+        filteredArray: filteredArray.sort((a, b) =>
+          a.name < b.name ? 1 : b.name < a.name ? -1 : 0
+        ),
+        filterMethod: 'Naam Z - A',
+      });
+    }
   };
 
   render() {
-    const { filteredArray } = this.state;
-    const {
-      media,
-      attractionsInfo,
-      parks,
-      countries,
-      currentUser,
-      users,
-    } = this.context;
-    const { attractions } = attractionsInfo;
-    const { history } = this.props;
+    const { filteredArray, showMenu, filterMethod } = this.state;
+    const { media, parks, countries } = this.context;
     return (
       <div css={fullContainer}>
         <div css={breadcrumbsWrapper}>
@@ -387,7 +454,31 @@ class Attractions extends React.Component {
               <h1 css={titleStyle}>Attracties</h1>
             </div>
             <div css={sortingTopContainer}>
-              <div>Sorteer op: Relevantie</div>
+              <div css={sortingContainer}>
+                <label>Sorteer op:</label>
+                <button onClick={this.showMenu} css={searchButton}>
+                  {filterMethod}{' '}
+                  <i css={ratingIcon} className="material-icons">
+                    arrow_drop_down
+                  </i>
+                </button>
+                {showMenu ? (
+                  <div className="sorting-menu" css={dropdownMenu}>
+                    <button
+                      style={{ float: 'right' }}
+                      onClick={() => this.sortArray('name-desc')}
+                    >
+                      Naam A - Z
+                    </button>
+                    <button
+                      style={{ float: 'right' }}
+                      onClick={() => this.sortArray('name-asc')}
+                    >
+                      Naam Z - A
+                    </button>
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
           <div css={searchContainer}>
@@ -401,8 +492,8 @@ class Attractions extends React.Component {
             <div css={cardWrapper}>
               <div css={cardContainer}>
                 <ul css={list}>
-                  {attractions &&
-                    attractions.map(attr => (
+                  {filteredArray &&
+                    filteredArray.map(attr => (
                       <li css={listCard} key={attr.uid}>
                         <div css={card}>
                           <i
@@ -411,6 +502,7 @@ class Attractions extends React.Component {
                             onClick={() => this.favoriteToggle(attr.uid)}
                             style={{
                               color: this.renderFavorite(attr.uid, 'color'),
+                              filter: this.renderFavorite(attr.uid, 'shadow'),
                             }}
                           >
                             {this.renderFavorite(attr.uid, 'icon')}
@@ -513,5 +605,4 @@ Attractions.propTypes = {
   history: PropTypes.object,
 };
 
-Attractions.contextType = Consumer;
-export default props => <Consumer>{() => <Attractions {...props} />}</Consumer>;
+export default Attractions;
