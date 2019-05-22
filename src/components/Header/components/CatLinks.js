@@ -5,8 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 const catContainer = css`
   color: #222;
-  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Droid Sans',
-    'Segoe UI', 'Helvetica', Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   line-height: 1.4;
   text-align: left;
@@ -26,8 +25,7 @@ const catContent = css`
   z-index: 10;
   position: relative;
   background-color: #fff;
-  font-family: 'Graphik Webfont', -apple-system, BlinkMacSystemFont, 'Roboto',
-    'Droid Sans', 'Segoe UI', 'Helvetica', Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   font-size: 13px;
   line-height: 18px;
