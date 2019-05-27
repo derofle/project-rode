@@ -173,3 +173,21 @@ export const addFavorite = async doc =>
       }
       return true;
     });
+
+export const sortArray = (array, property, direction) => {
+  if (direction === 'desc') {
+    const sortedArray = array.sort((a, b) =>
+      // eslint-disable-next-line no-nested-ternary
+      a[property] > b[property] ? 1 : b[property] > a[property] ? -1 : 0
+    );
+    return sortedArray;
+  }
+  if (direction === 'asc') {
+    const sortedArray = array.sort((a, b) =>
+      // eslint-disable-next-line no-nested-ternary
+      a[property] < b[property] ? 1 : b[property] < a[property] ? -1 : 0
+    );
+    return sortedArray;
+  }
+  return null;
+};

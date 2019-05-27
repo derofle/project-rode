@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Context } from 'services/context';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { getProperty, addFavorite } from 'services/utilities';
+import { getProperty, addFavorite, sortArray } from 'services/utilities';
 import { Link } from 'react-router-dom';
+import ReactCountryFlag from 'react-country-flag';
 
 const fullContainer = css`
   max-width: 1400px;
@@ -142,6 +143,32 @@ const filterContent = css`
   border: 1px solid #e1e3df;
   border-bottom-color: #cbccc9;
   margin: 0 0 12px;
+`;
+
+const filterTitle = css`
+  margin-bottom: 6px;
+  margin-top: 0;
+  font-size: 85.71%;
+  font-weight: 500;
+  line-height: 1.2;
+`;
+
+const filterCheckbox = css`
+  position: inherit !important;
+  opacity: 1 !important;
+  margin-right: 2px;
+  pointer-events: auto !important;
+  height: 16px;
+  vertical-align: middle;
+  width: 16px;
+`;
+
+const filterCheckboxLink = css`
+  text-decoration: none !important;
+  color: #222 !important;
+  font-size: 85.71%;
+  display: inline-block;
+  vertical-align: middle;
 `;
 
 const cardWrapper = css`
@@ -307,28 +334,30 @@ class Attractions extends React.Component {
     filteredArray: [],
     showMenu: false,
     filterMethod: 'Naam A - Z',
+    categoryFilter: [],
+    typeFilter: [],
   };
 
   componentDidMount() {
     const { attractionsInfo } = this.context;
+    const { attractions } = attractionsInfo;
     this.setState({
-      filteredArray: attractionsInfo.attractions.sort((a, b) =>
-        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-      ),
+      filteredArray: sortArray(attractions, 'name', 'desc'),
     });
   }
 
-  filterAttractions = (param, input) => {
+  filterAttractions = () => {
     const { attractionsInfo } = this.context;
-    const filter = input.toUpperCase();
-    const filtered = attractionsInfo.attractions.filter(item => {
-      if (item[param].toUpperCase().includes(filter)) {
-        return item;
-      }
-      return null;
-    });
+    const { attractions } = attractionsInfo;
+    const { categoryFilter, typeFilter } = this.state;
+    const filteredCategories = attractions.filter(({ category }) =>
+      category.some(() => categoryFilter.every(l => category.includes(l)))
+    );
+    const filteredArray = filteredCategories.filter(({ type }) =>
+      type.some(() => typeFilter.every(l => type.includes(l)))
+    );
     this.setState({
-      filteredArray: filtered,
+      filteredArray,
     });
   };
 
@@ -394,6 +423,95 @@ class Attractions extends React.Component {
     }
   };
 
+  renderCategories = () => {
+    const { attractionsInfo } = this.context;
+    const { attractionCategories } = attractionsInfo;
+    const sortedArray = sortArray(attractionCategories, 'name', 'desc');
+    const categorieElements = sortedArray.map(cat => (
+      <div key={cat.uid}>
+        <label htmlFor={cat.uid} css={filterCheckboxLink}>
+          <input
+            type="checkbox"
+            value={cat.uid}
+            name={cat.uid}
+            id={cat.uid}
+            className="browser-default"
+            css={filterCheckbox}
+            checked={this.props.checkBoxDefaultStatus}
+            onChange={this.handleCheckbox}
+          />
+          {cat.name}
+        </label>
+      </div>
+    ));
+    return categorieElements;
+  };
+
+  renderTypes = () => {
+    const { attractionsInfo } = this.context;
+    const { attractionTypes } = attractionsInfo;
+    const sortedArray = sortArray(attractionTypes, 'name', 'desc');
+    const TypeElements = sortedArray.map(type => (
+      <div key={type.uid}>
+        <input
+          type="checkbox"
+          value={type.uid}
+          name={type.uid}
+          className="browser-default"
+          css={filterCheckbox}
+          checked={this.props.checkBoxDefaultStatus}
+          onChange={this.handleCheckboxType}
+        />
+        <a css={filterCheckboxLink}>{type.name}</a>
+      </div>
+    ));
+    return TypeElements;
+  };
+
+  handleCheckbox = e => {
+    if (e.target.checked === true) {
+      this.setState(
+        {
+          categoryFilter: [...this.state.categoryFilter, e.target.value],
+        },
+        () => this.filterAttractions()
+      );
+    } else if (e.target.checked === false) {
+      this.setState(
+        {
+          categoryFilter: this.state.categoryFilter.filter(
+            i => i !== e.target.value
+          ),
+        },
+        () => this.filterAttractions()
+      );
+      this.filterAttractions();
+    }
+    console.log(e.target.checked);
+    console.log(e.target.value);
+  };
+
+  handleCheckboxType = e => {
+    if (e.target.checked === true) {
+      this.setState(
+        {
+          typeFilter: [...this.state.typeFilter, e.target.value],
+        },
+        () => this.filterAttractions()
+      );
+    } else if (e.target.checked === false) {
+      this.setState(
+        {
+          typeFilter: this.state.typeFilter.filter(i => i !== e.target.value),
+        },
+        () => this.filterAttractions()
+      );
+      this.filterAttractions();
+    }
+    console.log(e.target.checked);
+    console.log(e.target.value);
+  };
+
   showMenu = event => {
     event.preventDefault();
 
@@ -412,17 +530,13 @@ class Attractions extends React.Component {
     const { filteredArray } = this.state;
     if (type === 'name-desc') {
       this.setState({
-        filteredArray: filteredArray.sort((a, b) =>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-        ),
+        filteredArray: sortArray(filteredArray, 'name', 'desc'),
         filterMethod: 'Naam A - Z',
       });
     }
     if (type === 'name-asc') {
       this.setState({
-        filteredArray: filteredArray.sort((a, b) =>
-          a.name < b.name ? 1 : b.name < a.name ? -1 : 0
-        ),
+        filteredArray: sortArray(filteredArray, 'name', 'asc'),
         filterMethod: 'Naam Z - A',
       });
     }
@@ -451,12 +565,21 @@ class Attractions extends React.Component {
         <div css={contentContainer}>
           <div css={topContent}>
             <div css={titleContainer}>
-              <h1 css={titleStyle}>Attracties</h1>
+              <h1 css={titleStyle} style={{ display: 'inline' }}>
+                Attracties
+              </h1>
+              <p style={{ display: 'inline', paddingLeft: '4px' }}>
+                - Aantal resultaten: {filteredArray.length}
+              </p>
             </div>
             <div css={sortingTopContainer}>
               <div css={sortingContainer}>
-                <label>Sorteer op:</label>
-                <button onClick={this.showMenu} css={searchButton}>
+                <p style={{ display: 'inherit', margin: 0 }}>Sorteer op:</p>
+                <button
+                  onClick={this.showMenu}
+                  css={searchButton}
+                  type="button"
+                >
                   {filterMethod}{' '}
                   <i css={ratingIcon} className="material-icons">
                     arrow_drop_down
@@ -465,12 +588,14 @@ class Attractions extends React.Component {
                 {showMenu ? (
                   <div className="sorting-menu" css={dropdownMenu}>
                     <button
+                      type="button"
                       style={{ float: 'right' }}
                       onClick={() => this.sortArray('name-desc')}
                     >
                       Naam A - Z
                     </button>
                     <button
+                      type="button"
                       style={{ float: 'right' }}
                       onClick={() => this.sortArray('name-asc')}
                     >
@@ -485,6 +610,21 @@ class Attractions extends React.Component {
             <div css={filterWrapper}>
               <div css={filterContainer}>
                 <div css={filterContent}>
+                  <div style={{ marginBottom: '24px' }}>
+                    <fieldset style={{ padding: 0, border: 0 }}>
+                      <legend>
+                        <h3 css={filterTitle}>Categorie:</h3>
+                      </legend>
+                      <div>{this.renderCategories()}</div>
+                    </fieldset>
+                  </div>
+                  <fieldset style={{ padding: 0, border: 0 }}>
+                    <legend>
+                      <h3 css={filterTitle}>Types:</h3>
+                    </legend>
+                    <div>{this.renderTypes()}</div>
+                  </fieldset>
+
                   <form action="" />
                 </div>
               </div>
@@ -500,6 +640,9 @@ class Attractions extends React.Component {
                             css={favoriteIcon}
                             className="material-icons favorite"
                             onClick={() => this.favoriteToggle(attr.uid)}
+                            onKeyDown={() => this.favoriteToggle(attr.uid)}
+                            role="button"
+                            tabIndex="0"
                             style={{
                               color: this.renderFavorite(attr.uid, 'color'),
                               filter: this.renderFavorite(attr.uid, 'shadow'),
@@ -519,6 +662,7 @@ class Attractions extends React.Component {
                             <div css={imageWrapper} className="image-wrapper">
                               <img
                                 css={image}
+                                alt=""
                                 src={
                                   media &&
                                   attr.headerImage &&
@@ -531,11 +675,23 @@ class Attractions extends React.Component {
                             <div css={cardInfo}>
                               <h2 css={cardTitle}>{attr.name}</h2>
                               <div>
-                                <p css={cardPark}>
+                                <ReactCountryFlag
+                                  code={getProperty(
+                                    attr.park,
+                                    'uid',
+                                    'country',
+                                    parks
+                                  )}
+                                  svg
+                                />
+                                <p
+                                  style={{ paddingLeft: '4px' }}
+                                  css={cardPark}
+                                >
                                   {getProperty(attr.park, 'uid', 'name', parks)}
-                                </p>{' '}
+                                </p>
                                 <span css={cardPark}>
-                                  in{' '}
+                                  ,{' '}
                                   {getProperty(
                                     getProperty(
                                       attr.park,
