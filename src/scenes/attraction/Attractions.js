@@ -3,9 +3,15 @@ import PropTypes from 'prop-types';
 import { Context } from 'services/context';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { getProperty, addFavorite, sortArray } from 'services/utilities';
+import {
+  getProperty,
+  addFavorite,
+  sortArray,
+  getAvarageRating,
+} from 'services/utilities';
 import { Link } from 'react-router-dom';
 import ReactCountryFlag from 'react-country-flag';
+import RatingStars from 'components/RatingStars';
 
 const fullContainer = css`
   max-width: 1400px;
@@ -269,8 +275,6 @@ const image = css`
   height: 100%;
 `;
 
-const cardInfo = css``;
-
 const cardTitle = css`
   font-family: 'Graphik Webfont', -apple-system, BlinkMacSystemFont, 'Roboto',
     'Droid Sans', 'Segoe UI', 'Helvetica', Arial, sans-serif;
@@ -297,14 +301,6 @@ const cardPark = css`
   line-height: 1.6;
   letter-spacing: normal;
   margin: 0;
-`;
-const ratingContainer = css`
-  font-size: 0;
-  display: inline-block;
-  position: relative;
-  vertical-align: baseline;
-  bottom: 2px;
-  color: #222 !important;
 `;
 
 const ratingIcon = css`
@@ -339,10 +335,15 @@ class Attractions extends React.Component {
   };
 
   componentDidMount() {
+    document.title = `Attractions | Project Rode`;
     const { attractionsInfo } = this.context;
     const { attractions } = attractionsInfo;
+    const newArray = attractions.map(attr => ({
+      ...attr,
+      ratingAvg: attr.reviews ? getAvarageRating(attr.reviews) : 0,
+    }));
     this.setState({
-      filteredArray: sortArray(attractions, 'name', 'desc'),
+      filteredArray: sortArray(newArray, 'name', 'desc'),
     });
   }
 
@@ -356,8 +357,12 @@ class Attractions extends React.Component {
     const filteredArray = filteredCategories.filter(({ type }) =>
       type.some(() => typeFilter.every(l => type.includes(l)))
     );
+    const newArray = filteredArray.map(attr => ({
+      ...attr,
+      ratingAvg: attr.reviews ? getAvarageRating(attr.reviews) : 0,
+    }));
     this.setState({
-      filteredArray,
+      filteredArray: newArray,
     });
   };
 
@@ -469,47 +474,45 @@ class Attractions extends React.Component {
   };
 
   handleCheckbox = e => {
+    e.persist();
     if (e.target.checked === true) {
       this.setState(
-        {
-          categoryFilter: [...this.state.categoryFilter, e.target.value],
-        },
+        prevState => ({
+          categoryFilter: [...prevState.categoryFilter, e.target.value],
+        }),
         () => this.filterAttractions()
       );
     } else if (e.target.checked === false) {
       this.setState(
-        {
-          categoryFilter: this.state.categoryFilter.filter(
+        prevState => ({
+          categoryFilter: prevState.categoryFilter.filter(
             i => i !== e.target.value
           ),
-        },
+        }),
         () => this.filterAttractions()
       );
       this.filterAttractions();
     }
-    console.log(e.target.checked);
-    console.log(e.target.value);
   };
 
   handleCheckboxType = e => {
+    e.persist();
     if (e.target.checked === true) {
       this.setState(
-        {
-          typeFilter: [...this.state.typeFilter, e.target.value],
-        },
+        prevState => ({
+          typeFilter: [...prevState.typeFilter, e.target.value],
+        }),
         () => this.filterAttractions()
       );
     } else if (e.target.checked === false) {
       this.setState(
-        {
-          typeFilter: this.state.typeFilter.filter(i => i !== e.target.value),
-        },
+        prevState => ({
+          typeFilter: prevState.typeFilter.filter(i => i !== e.target.value),
+        }),
         () => this.filterAttractions()
       );
       this.filterAttractions();
     }
-    console.log(e.target.checked);
-    console.log(e.target.value);
   };
 
   showMenu = event => {
@@ -538,6 +541,12 @@ class Attractions extends React.Component {
       this.setState({
         filteredArray: sortArray(filteredArray, 'name', 'asc'),
         filterMethod: 'Naam Z - A',
+      });
+    }
+    if (type === 'rating-desc') {
+      this.setState({
+        filteredArray: sortArray(filteredArray, 'ratingAvg', 'asc'),
+        filterMethod: 'Beoordeling Hoog-Laag',
       });
     }
   };
@@ -600,6 +609,13 @@ class Attractions extends React.Component {
                       onClick={() => this.sortArray('name-asc')}
                     >
                       Naam Z - A
+                    </button>
+                    <button
+                      type="button"
+                      style={{ float: 'right' }}
+                      onClick={() => this.sortArray('rating-desc')}
+                    >
+                      Beoordeling Hoog - Laag
                     </button>
                   </div>
                 ) : null}
@@ -672,7 +688,7 @@ class Attractions extends React.Component {
                                 }
                               />
                             </div>
-                            <div css={cardInfo}>
+                            <div>
                               <h2 css={cardTitle}>{attr.name}</h2>
                               <div>
                                 <ReactCountryFlag
@@ -707,39 +723,11 @@ class Attractions extends React.Component {
                               </div>
                               <div>
                                 <span>
-                                  <span css={ratingContainer}>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star
-                                    </i>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star
-                                    </i>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star
-                                    </i>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star_half
-                                    </i>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star_border
-                                    </i>
+                                  <RatingStars rating={attr.ratingAvg} />
+
+                                  <span css={ratingAmount}>
+                                    ({attr.reviews ? attr.reviews.length : '0'})
                                   </span>
-                                  <span css={ratingAmount}>(59)</span>
                                 </span>
                               </div>
                             </div>

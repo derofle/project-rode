@@ -39,6 +39,47 @@ class CategoriesRender extends React.Component {
 
     const columns = [
       {
+        Header: 'Name',
+        accessor: 'name',
+        Cell: props => (
+          <div>
+            <span>{props.value}</span>
+            <br />
+            <p
+              style={{
+                fontSize: '13px',
+                lineHeight: '1.5em',
+                margin: 0,
+              }}
+              className="rowControls"
+            >
+              <Link
+                style={{ color: '#0073aa' }}
+                to={`/admin/attractions/categories/edit/${props.original.uid}`}
+              >
+                Edit
+              </Link>{' '}
+              |{' '}
+              <a
+                onClick={() => {
+                  deleteDoc('attractionCategories', props.original.uid);
+                  updateContext();
+                }}
+                style={{ color: '#a00', cursor: 'pointer' }}
+              >
+                Delete
+              </a>{' '}
+              | View
+            </p>
+          </div>
+        ),
+      },
+      {
+        Header: 'Description',
+        id: 'description',
+        accessor: d => (d.description ? d.description : '--'),
+      },
+      {
         Header: 'Icon',
         accessor: 'icon',
         maxWidth: 55,
@@ -59,10 +100,6 @@ class CategoriesRender extends React.Component {
             />
           </div>
         ),
-      },
-      {
-        Header: 'Name',
-        accessor: 'name',
       },
       {
         Header: '',
@@ -93,6 +130,8 @@ class CategoriesRender extends React.Component {
         <ReactTable
           data={attractionCategories}
           columns={columns}
+          minRows={10}
+          defaultPageSize={10}
           defaultSorted={[
             {
               id: 'name',
