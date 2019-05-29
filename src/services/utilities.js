@@ -159,7 +159,10 @@ export const getCountryId = (param, collection) => {
 
 export const getProperty = (arg, type, prop, collection) => {
   const property = collection.find(item => item[type] === arg);
-  return property[prop];
+  if (property[prop]) {
+    return property[prop];
+  }
+  return null;
 };
 
 export const addFavorite = async doc =>
@@ -173,3 +176,29 @@ export const addFavorite = async doc =>
       }
       return true;
     });
+
+export const sortArray = (array, property, direction) => {
+  if (direction === 'desc') {
+    const sortedArray = array.sort((a, b) =>
+      // eslint-disable-next-line no-nested-ternary
+      a[property] > b[property] ? 1 : b[property] > a[property] ? -1 : 0
+    );
+    console.log(sortedArray);
+    return sortedArray;
+  }
+  if (direction === 'asc') {
+    const sortedArray = array.sort((a, b) =>
+      // eslint-disable-next-line no-nested-ternary
+      a[property] < b[property] ? 1 : b[property] < a[property] ? -1 : 0
+    );
+    return sortedArray;
+  }
+  return null;
+};
+
+export const getAvarageRating = array => {
+  let sum = 0;
+  const { length } = array;
+  array.forEach(({ rating }) => (sum += rating));
+  return Math.round(sum / length);
+};

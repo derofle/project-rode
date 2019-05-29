@@ -25,6 +25,9 @@ import Attractions from 'scenes/attraction/Attractions';
 import ParkDetails from 'scenes/park/ParkDetails';
 import Parks from 'scenes/park/Parks';
 
+// Users
+import UserDetails from 'scenes/user/UserDetails';
+
 const pageContainer = css`
   width: 100%;
   margin: 0 auto;
@@ -56,6 +59,7 @@ const DefaultContainer = () => (
           <Route path="/attracties" component={Attractions} />
           <Route exact path="/login" component={() => <Login />} />
           <Route path="/park/:parkId" component={ParkDetails} />
+          <Route path="/gebruiker/:userId" component={UserDetails} />
           <Route path="/parken" component={Parks} />
           <Route path="/signup" component={Signup} />
           <Route path="/404" component={NotFound} />

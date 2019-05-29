@@ -3,8 +3,15 @@ import PropTypes from 'prop-types';
 import { Context } from 'services/context';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { getProperty, addFavorite } from 'services/utilities';
+import {
+  getProperty,
+  addFavorite,
+  sortArray,
+  getAvarageRating,
+} from 'services/utilities';
 import { Link } from 'react-router-dom';
+import ReactCountryFlag from 'react-country-flag';
+import RatingStars from 'components/RatingStars';
 
 const fullContainer = css`
   max-width: 1400px;
@@ -144,6 +151,32 @@ const filterContent = css`
   margin: 0 0 12px;
 `;
 
+const filterTitle = css`
+  margin-bottom: 6px;
+  margin-top: 0;
+  font-size: 85.71%;
+  font-weight: 500;
+  line-height: 1.2;
+`;
+
+const filterCheckbox = css`
+  position: inherit !important;
+  opacity: 1 !important;
+  margin-right: 2px;
+  pointer-events: auto !important;
+  height: 16px;
+  vertical-align: middle;
+  width: 16px;
+`;
+
+const filterCheckboxLink = css`
+  text-decoration: none !important;
+  color: #222 !important;
+  font-size: 85.71%;
+  display: inline-block;
+  vertical-align: middle;
+`;
+
 const cardWrapper = css`
   padding-left: 0px;
   padding-right: 18px;
@@ -242,8 +275,6 @@ const image = css`
   height: 100%;
 `;
 
-const cardInfo = css``;
-
 const cardTitle = css`
   font-family: 'Graphik Webfont', -apple-system, BlinkMacSystemFont, 'Roboto',
     'Droid Sans', 'Segoe UI', 'Helvetica', Arial, sans-serif;
@@ -270,14 +301,6 @@ const cardPark = css`
   line-height: 1.6;
   letter-spacing: normal;
   margin: 0;
-`;
-const ratingContainer = css`
-  font-size: 0;
-  display: inline-block;
-  position: relative;
-  vertical-align: baseline;
-  bottom: 2px;
-  color: #222 !important;
 `;
 
 const ratingIcon = css`
@@ -307,28 +330,39 @@ class Attractions extends React.Component {
     filteredArray: [],
     showMenu: false,
     filterMethod: 'Naam A - Z',
+    categoryFilter: [],
+    typeFilter: [],
   };
 
   componentDidMount() {
+    document.title = `Attractions | Project Rode`;
     const { attractionsInfo } = this.context;
+    const { attractions } = attractionsInfo;
+    const newArray = attractions.map(attr => ({
+      ...attr,
+      ratingAvg: attr.reviews ? getAvarageRating(attr.reviews) : 0,
+    }));
     this.setState({
-      filteredArray: attractionsInfo.attractions.sort((a, b) =>
-        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-      ),
+      filteredArray: sortArray(newArray, 'name', 'desc'),
     });
   }
 
-  filterAttractions = (param, input) => {
+  filterAttractions = () => {
     const { attractionsInfo } = this.context;
-    const filter = input.toUpperCase();
-    const filtered = attractionsInfo.attractions.filter(item => {
-      if (item[param].toUpperCase().includes(filter)) {
-        return item;
-      }
-      return null;
-    });
+    const { attractions } = attractionsInfo;
+    const { categoryFilter, typeFilter } = this.state;
+    const filteredCategories = attractions.filter(({ category }) =>
+      category.some(() => categoryFilter.every(l => category.includes(l)))
+    );
+    const filteredArray = filteredCategories.filter(({ type }) =>
+      type.some(() => typeFilter.every(l => type.includes(l)))
+    );
+    const newArray = filteredArray.map(attr => ({
+      ...attr,
+      ratingAvg: attr.reviews ? getAvarageRating(attr.reviews) : 0,
+    }));
     this.setState({
-      filteredArray: filtered,
+      filteredArray: newArray,
     });
   };
 
@@ -394,6 +428,93 @@ class Attractions extends React.Component {
     }
   };
 
+  renderCategories = () => {
+    const { attractionsInfo } = this.context;
+    const { attractionCategories } = attractionsInfo;
+    const sortedArray = sortArray(attractionCategories, 'name', 'desc');
+    const categorieElements = sortedArray.map(cat => (
+      <div key={cat.uid}>
+        <label htmlFor={cat.uid} css={filterCheckboxLink}>
+          <input
+            type="checkbox"
+            value={cat.uid}
+            name={cat.uid}
+            id={cat.uid}
+            className="browser-default"
+            css={filterCheckbox}
+            checked={this.props.checkBoxDefaultStatus}
+            onChange={this.handleCheckbox}
+          />
+          {cat.name}
+        </label>
+      </div>
+    ));
+    return categorieElements;
+  };
+
+  renderTypes = () => {
+    const { attractionsInfo } = this.context;
+    const { attractionTypes } = attractionsInfo;
+    const sortedArray = sortArray(attractionTypes, 'name', 'desc');
+    const TypeElements = sortedArray.map(type => (
+      <div key={type.uid}>
+        <input
+          type="checkbox"
+          value={type.uid}
+          name={type.uid}
+          className="browser-default"
+          css={filterCheckbox}
+          checked={this.props.checkBoxDefaultStatus}
+          onChange={this.handleCheckboxType}
+        />
+        <a css={filterCheckboxLink}>{type.name}</a>
+      </div>
+    ));
+    return TypeElements;
+  };
+
+  handleCheckbox = e => {
+    e.persist();
+    if (e.target.checked === true) {
+      this.setState(
+        prevState => ({
+          categoryFilter: [...prevState.categoryFilter, e.target.value],
+        }),
+        () => this.filterAttractions()
+      );
+    } else if (e.target.checked === false) {
+      this.setState(
+        prevState => ({
+          categoryFilter: prevState.categoryFilter.filter(
+            i => i !== e.target.value
+          ),
+        }),
+        () => this.filterAttractions()
+      );
+      this.filterAttractions();
+    }
+  };
+
+  handleCheckboxType = e => {
+    e.persist();
+    if (e.target.checked === true) {
+      this.setState(
+        prevState => ({
+          typeFilter: [...prevState.typeFilter, e.target.value],
+        }),
+        () => this.filterAttractions()
+      );
+    } else if (e.target.checked === false) {
+      this.setState(
+        prevState => ({
+          typeFilter: prevState.typeFilter.filter(i => i !== e.target.value),
+        }),
+        () => this.filterAttractions()
+      );
+      this.filterAttractions();
+    }
+  };
+
   showMenu = event => {
     event.preventDefault();
 
@@ -412,18 +533,20 @@ class Attractions extends React.Component {
     const { filteredArray } = this.state;
     if (type === 'name-desc') {
       this.setState({
-        filteredArray: filteredArray.sort((a, b) =>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-        ),
+        filteredArray: sortArray(filteredArray, 'name', 'desc'),
         filterMethod: 'Naam A - Z',
       });
     }
     if (type === 'name-asc') {
       this.setState({
-        filteredArray: filteredArray.sort((a, b) =>
-          a.name < b.name ? 1 : b.name < a.name ? -1 : 0
-        ),
+        filteredArray: sortArray(filteredArray, 'name', 'asc'),
         filterMethod: 'Naam Z - A',
+      });
+    }
+    if (type === 'rating-desc') {
+      this.setState({
+        filteredArray: sortArray(filteredArray, 'ratingAvg', 'asc'),
+        filterMethod: 'Beoordeling Hoog-Laag',
       });
     }
   };
@@ -451,12 +574,21 @@ class Attractions extends React.Component {
         <div css={contentContainer}>
           <div css={topContent}>
             <div css={titleContainer}>
-              <h1 css={titleStyle}>Attracties</h1>
+              <h1 css={titleStyle} style={{ display: 'inline' }}>
+                Attracties
+              </h1>
+              <p style={{ display: 'inline', paddingLeft: '4px' }}>
+                - Aantal resultaten: {filteredArray.length}
+              </p>
             </div>
             <div css={sortingTopContainer}>
               <div css={sortingContainer}>
-                <label>Sorteer op:</label>
-                <button onClick={this.showMenu} css={searchButton}>
+                <p style={{ display: 'inherit', margin: 0 }}>Sorteer op:</p>
+                <button
+                  onClick={this.showMenu}
+                  css={searchButton}
+                  type="button"
+                >
                   {filterMethod}{' '}
                   <i css={ratingIcon} className="material-icons">
                     arrow_drop_down
@@ -465,16 +597,25 @@ class Attractions extends React.Component {
                 {showMenu ? (
                   <div className="sorting-menu" css={dropdownMenu}>
                     <button
+                      type="button"
                       style={{ float: 'right' }}
                       onClick={() => this.sortArray('name-desc')}
                     >
                       Naam A - Z
                     </button>
                     <button
+                      type="button"
                       style={{ float: 'right' }}
                       onClick={() => this.sortArray('name-asc')}
                     >
                       Naam Z - A
+                    </button>
+                    <button
+                      type="button"
+                      style={{ float: 'right' }}
+                      onClick={() => this.sortArray('rating-desc')}
+                    >
+                      Beoordeling Hoog - Laag
                     </button>
                   </div>
                 ) : null}
@@ -485,6 +626,21 @@ class Attractions extends React.Component {
             <div css={filterWrapper}>
               <div css={filterContainer}>
                 <div css={filterContent}>
+                  <div style={{ marginBottom: '24px' }}>
+                    <fieldset style={{ padding: 0, border: 0 }}>
+                      <legend>
+                        <h3 css={filterTitle}>Categorie:</h3>
+                      </legend>
+                      <div>{this.renderCategories()}</div>
+                    </fieldset>
+                  </div>
+                  <fieldset style={{ padding: 0, border: 0 }}>
+                    <legend>
+                      <h3 css={filterTitle}>Types:</h3>
+                    </legend>
+                    <div>{this.renderTypes()}</div>
+                  </fieldset>
+
                   <form action="" />
                 </div>
               </div>
@@ -500,6 +656,9 @@ class Attractions extends React.Component {
                             css={favoriteIcon}
                             className="material-icons favorite"
                             onClick={() => this.favoriteToggle(attr.uid)}
+                            onKeyDown={() => this.favoriteToggle(attr.uid)}
+                            role="button"
+                            tabIndex="0"
                             style={{
                               color: this.renderFavorite(attr.uid, 'color'),
                               filter: this.renderFavorite(attr.uid, 'shadow'),
@@ -519,6 +678,7 @@ class Attractions extends React.Component {
                             <div css={imageWrapper} className="image-wrapper">
                               <img
                                 css={image}
+                                alt=""
                                 src={
                                   media &&
                                   attr.headerImage &&
@@ -528,14 +688,26 @@ class Attractions extends React.Component {
                                 }
                               />
                             </div>
-                            <div css={cardInfo}>
+                            <div>
                               <h2 css={cardTitle}>{attr.name}</h2>
                               <div>
-                                <p css={cardPark}>
+                                <ReactCountryFlag
+                                  code={getProperty(
+                                    attr.park,
+                                    'uid',
+                                    'country',
+                                    parks
+                                  )}
+                                  svg
+                                />
+                                <p
+                                  style={{ paddingLeft: '4px' }}
+                                  css={cardPark}
+                                >
                                   {getProperty(attr.park, 'uid', 'name', parks)}
-                                </p>{' '}
+                                </p>
                                 <span css={cardPark}>
-                                  in{' '}
+                                  ,{' '}
                                   {getProperty(
                                     getProperty(
                                       attr.park,
@@ -551,39 +723,11 @@ class Attractions extends React.Component {
                               </div>
                               <div>
                                 <span>
-                                  <span css={ratingContainer}>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star
-                                    </i>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star
-                                    </i>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star
-                                    </i>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star_half
-                                    </i>
-                                    <i
-                                      css={ratingIcon}
-                                      className="material-icons"
-                                    >
-                                      star_border
-                                    </i>
+                                  <RatingStars rating={attr.ratingAvg} />
+
+                                  <span css={ratingAmount}>
+                                    ({attr.reviews ? attr.reviews.length : '0'})
                                   </span>
-                                  <span css={ratingAmount}>(59)</span>
                                 </span>
                               </div>
                             </div>

@@ -75,7 +75,7 @@ class HeaderRender extends React.Component {
                   style={{ height: '56px', padding: 0 }}
                 >
                   <img
-                    src="http://www.avatarmeher.org/wp-content/uploads/2018/04/Toka-1928-head-274x300.jpg"
+                    src={currentUser.profile.avatar}
                     alt=""
                     css={avatarStyle}
                     className="circle responsive-img"

@@ -8,6 +8,7 @@ import { Consumer } from 'services/context';
 
 import Overview from './scenes/Overview';
 import Footage from './scenes/Footage';
+import Reviews from './scenes/Reviews';
 
 const bigPictureDivStyle = css`
   position: relative;
@@ -19,11 +20,10 @@ const bigPictureDivStyle = css`
 
 const overlayStyle = css`
   position: absolute;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+  background-image: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
   width: 100%;
   height: 100%;
   z-index: 3;
-  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.9);
 `;
 
 const attractionBigImageStyle = css`
@@ -83,15 +83,15 @@ const attractionMenuStyle = css`
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 0);
-  background-color: #f8f8f8;
+  background-color: #fff;
   padding: 10px 20px 10px 20px;
-  border-radius: 8px 8px 0 0;
+  border-radius: 2px 2px 0 0;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
 `;
 
 const menuLinkStyle = css`
-  background-color: #f8f8f8;
+  background-color: #fff;
   z-index: 6;
   color: #4c1971 !important;
   font-weight: bold;
@@ -358,6 +358,10 @@ class AttractionRender extends React.Component {
             {match.path === '/park/:parkId/attractie/:attractionId' &&
             location.pathname.includes('beeldmateriaal') ? (
               <Footage attraction={attraction} />
+            ) : null}
+            {match.path === '/park/:parkId/attractie/:attractionId' &&
+            location.pathname.includes('beoordelingen') ? (
+              <Reviews attraction={attraction} users={users} />
             ) : null}
           </div>
         </div>

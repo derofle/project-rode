@@ -25,6 +25,8 @@ const accountListItem = css`
   border: 0 none;
   margin: 0;
   padding: 0;
+  height: 100%;
+  vertical-align: middle;
 `;
 
 const accountNormalLink = css`
@@ -63,12 +65,19 @@ const accountSignInLink = css`
   border-radius: 3px;
   box-sizing: border-box;
   color: rgb(34, 34, 34);
+  vertical-align: middle;
   &:hover {
     background-color: #3c3c3c !important;
     color: #fff !important;
     border-color: #222222;
   }
 `;
+
+const avatarStyle = css`
+  height: 80px !important;
+  padding: 16px 8px 16px 8px;
+`;
+
 const handleLogout = destroySession => {
   auth.signOut();
   destroySession();
@@ -92,8 +101,14 @@ const UserLinks = () => (
           </React.Fragment>
         )}
         {currentUser && currentUser.uid ? (
-          <>
+          <React.Fragment>
             <li css={accountListItem}>
+              <img
+                src={currentUser.profile.avatar}
+                alt=""
+                css={avatarStyle}
+                className="circle responsive-img"
+              />
               <a
                 onClick={() => handleLogout(destroySession)}
                 css={accountNormalLink}
@@ -101,7 +116,7 @@ const UserLinks = () => (
                 Log out
               </a>
             </li>
-          </>
+          </React.Fragment>
         ) : null}
       </ul>
     )}
