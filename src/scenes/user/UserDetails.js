@@ -35,7 +35,8 @@ class UserDetails extends React.Component {
         <div>
           This is the user profile of {user.firstName}
           <div>
-            He has {user.favorites.length} favorites, which are:{' '}
+            He has {user.favorites ? user.favorites.length : 'no'} favorites,
+            which are:{' '}
             {user.favorites &&
               user.favorites.map(fav => (
                 <p>{getProperty(fav, 'uid', 'name', attractions)}</p>

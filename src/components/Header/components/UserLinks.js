@@ -104,7 +104,9 @@ const UserLinks = () => (
           <React.Fragment>
             <li css={accountListItem}>
               <img
-                src={currentUser.profile.avatar}
+                src={
+                  currentUser.profile.avatar ? currentUser.profile.avatar : null
+                }
                 alt=""
                 css={avatarStyle}
                 className="circle responsive-img"
