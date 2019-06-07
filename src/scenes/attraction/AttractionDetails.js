@@ -153,6 +153,14 @@ const editButtonStyle = css`
   }
 `;
 
+const sceneContainer = css`
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+`;
+
 class AttractionRender extends React.Component {
   state = {
     loading: true,
@@ -206,6 +214,7 @@ class AttractionRender extends React.Component {
       media,
       mediaProviders,
       mediaLicenses,
+      updateContext,
     } = this.context;
     const { attraction, attractionType, loading, park } = this.state;
 
@@ -350,7 +359,7 @@ class AttractionRender extends React.Component {
             </div>
           </div>
           <div className="row" style={{ height: '1px', marginBottom: 0 }} />
-          <div className="container">
+          <div css={sceneContainer}>
             {match.path === '/park/:parkId/attractie/:attractionId' &&
             match.isExact === true ? (
               <Overview attraction={attraction} />
@@ -361,7 +370,12 @@ class AttractionRender extends React.Component {
             ) : null}
             {match.path === '/park/:parkId/attractie/:attractionId' &&
             location.pathname.includes('beoordelingen') ? (
-              <Reviews attraction={attraction} users={users} />
+              <Reviews
+                attraction={attraction}
+                users={users}
+                currentUser={currentUser}
+                updateContext={updateContext}
+              />
             ) : null}
           </div>
         </div>

@@ -23,6 +23,7 @@ export class AppProvider extends Component {
   };
 
   async componentDidMount() {
+    database.watchCollectionData('attractions');
     this.setState(
       {
         countries: await database.getCollectionData('countries'),

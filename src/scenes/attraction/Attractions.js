@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import { Context } from 'services/context';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import {
-  getProperty,
-  addFavorite,
-  sortArray,
-  getAvarageRating,
-} from 'services/utilities';
+import { getProperty, addFavorite, sortArray } from 'services/utilities';
 import { Link } from 'react-router-dom';
 import ReactCountryFlag from 'react-country-flag';
 import RatingStars from 'components/RatingStars';
@@ -338,12 +333,8 @@ class Attractions extends React.Component {
     document.title = `Attractions | Project Rode`;
     const { attractionsInfo } = this.context;
     const { attractions } = attractionsInfo;
-    const newArray = attractions.map(attr => ({
-      ...attr,
-      ratingAvg: attr.reviews ? getAvarageRating(attr.reviews) : 0,
-    }));
     this.setState({
-      filteredArray: sortArray(newArray, 'name', 'desc'),
+      filteredArray: sortArray(attractions, 'name', 'desc'),
     });
   }
 
@@ -357,12 +348,8 @@ class Attractions extends React.Component {
     const filteredArray = filteredCategories.filter(({ type }) =>
       type.some(() => typeFilter.every(l => type.includes(l)))
     );
-    const newArray = filteredArray.map(attr => ({
-      ...attr,
-      ratingAvg: attr.reviews ? getAvarageRating(attr.reviews) : 0,
-    }));
     this.setState({
-      filteredArray: newArray,
+      filteredArray,
     });
   };
 
@@ -405,7 +392,12 @@ class Attractions extends React.Component {
 
   renderFavorite = (attr, type) => {
     const { currentUser } = this.context;
-    const search = currentUser.profile.favorites.some(item => item === attr);
+    let search;
+    if (currentUser.profile.favorites) {
+      search = currentUser.profile.favorites.some(item => item === attr);
+    } else {
+      search = false;
+    }
     if (type === 'color') {
       if (search === true) {
         return 'crimson';

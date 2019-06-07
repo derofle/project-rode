@@ -202,3 +202,17 @@ export const getAvarageRating = array => {
   array.forEach(({ rating }) => (sum += rating));
   return Math.round(sum / length);
 };
+
+export const addReview = async (doc, uid, prevReviews) =>
+  firebase.db
+    .collection('attractions')
+    .doc(uid)
+    .update(
+      prevReviews ? { reviews: [...prevReviews, doc] } : { reviews: [doc] }
+    )
+    .then(error => {
+      if (error) {
+        return false;
+      }
+      return true;
+    });

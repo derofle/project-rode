@@ -12,4 +12,19 @@ const getCollectionData = collection =>
       return dataArray;
     });
 
-export { getCollectionData };
+const watchCollectionData = collection =>
+  db.collection(collection).onSnapshot(function(snapshot) {
+    snapshot.docChanges().forEach(function(change) {
+      if (change.type === 'added') {
+        console.log('New attraction: ', change.doc.data());
+      }
+      if (change.type === 'modified') {
+        console.log('Modified attraction: ', change.doc.data());
+      }
+      if (change.type === 'removed') {
+        console.log('Removed attraction: ', change.doc.data());
+      }
+    });
+  });
+
+export { getCollectionData, watchCollectionData };
